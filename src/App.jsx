@@ -2601,7 +2601,7 @@ function CommandScore({urgentTasks}){
           <text x={cx} y={cy-outerR-14} textAnchor="middle" dominantBaseline="middle"
             style={{fontSize:8,fill:"#F59E0B",fontFamily:FONT_MONO,letterSpacing:2.5,opacity:0.75}}>COMMAND SCORE</text>
           {/* Number backdrop — bigger so number fits inside */}
-          <circle cx={cx} cy={cy} r={52} fill="rgba(6,11,22,0.72)" stroke="#F59E0B" strokeWidth={1.2} opacity={0.9}/>
+          <circle cx={cx} cy={cy} r={64} fill="rgba(6,11,22,0.72)" stroke="#F59E0B" strokeWidth={1.2} opacity={0.9}/>
           {/* Score number */}
           <text x={cx} y={cy} textAnchor="middle" dominantBaseline="central"
             style={{fontSize:62,fontWeight:900,fill:"#F59E0B",fontFamily:"'Orbitron',sans-serif"}}>{score}</text>
