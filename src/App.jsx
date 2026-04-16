@@ -2594,15 +2594,15 @@ function CommandScore({urgentTasks}){
           {/* Score track */}
           <circle cx={cx} cy={cy} r={innerR} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={11}/>
           {/* Score arc */}
-          <circle cx={cx} cy={cy} r={innerR} fill="none" stroke={scoreColor} strokeWidth={11} strokeLinecap="round"
+          <circle cx={cx} cy={cy} r={innerR} fill="none" stroke="#F59E0B" strokeWidth={11} strokeLinecap="round"
             strokeDasharray={`${innerArc} ${innerCirc}`}
-            style={{transform:"rotate(-90deg)",transformOrigin:`${cx}px ${cy}px`,filter:`drop-shadow(0 0 9px ${scoreColor}cc)`,transition:"stroke-dasharray 0.7s ease,stroke 0.7s ease"}}/>
+            style={{transform:"rotate(-90deg)",transformOrigin:`${cx}px ${cy}px`,filter:"drop-shadow(0 0 9px #F59E0Bcc)",transition:"stroke-dasharray 0.7s ease"}}/>
           {/* Score number — Orbitron digital font, true center */}
           <text x={cx} y={cy} textAnchor="middle" dominantBaseline="central"
-            style={{fontSize:62,fontWeight:900,fill:"#ffffff",fontFamily:"'Orbitron',sans-serif"}}>{score}</text>
-          {/* COMMAND SCORE label — colored */}
+            style={{fontSize:62,fontWeight:900,fill:"#F59E0B",fontFamily:"'Orbitron',sans-serif"}}>{score}</text>
+          {/* COMMAND SCORE label */}
           <text x={cx} y={cy+46} textAnchor="middle" dominantBaseline="middle"
-            style={{fontSize:8,fill:scoreColor,fontFamily:FONT_MONO,letterSpacing:2.5,opacity:0.75}}>COMMAND SCORE</text>
+            style={{fontSize:8,fill:"#F59E0B",fontFamily:FONT_MONO,letterSpacing:2.5,opacity:0.75}}>COMMAND SCORE</text>
           <text x={cx} y={cy+61} textAnchor="middle" dominantBaseline="middle"
             style={{fontSize:7,fill:"rgba(255,255,255,0.15)",fontFamily:FONT_MONO,letterSpacing:1}}>TAP FOR BREAKDOWN</text>
         </svg>
