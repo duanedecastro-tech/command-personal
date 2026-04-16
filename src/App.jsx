@@ -4864,14 +4864,15 @@ export default function App(){
             <text x="10" y="40" fontFamily="Sora,sans-serif" fontWeight="700" fontSize="18" textAnchor="middle" fill="#3B5BDB">c</text>
           </svg>
           <text x="100" y="158" fontFamily="Sora,sans-serif" fontWeight="800" fontSize="52" letterSpacing="-1.5" textAnchor="middle" fill="#F59E0B">bean</text>
-          <text x="105" y="176" fontFamily="Sora,sans-serif" fontWeight="400" fontSize="11" letterSpacing="3" textAnchor="middle" fill="#F59E0B" opacity="0.7">command.</text>
-          <text x="100" y="201" fontFamily="Inter,sans-serif" fontWeight="400" fontSize="9.5" letterSpacing="0.5" textAnchor="middle" fill="rgba(255,255,255,0.55)" style={{animation:"textPulse 3s ease-in-out infinite"}}>Stop typing. Start commanding.</text>
+          <text x="105" y="175" fontFamily="Sora,sans-serif" fontWeight="700" fontSize="11" letterSpacing="3" textAnchor="middle" fill="#F59E0B">command</text>
+          <text x="105" y="190" fontFamily="Sora,sans-serif" fontWeight="700" fontSize="11" letterSpacing="3" textAnchor="middle" fill="#EF5350">personal.</text>
+          <text x="100" y="212" fontFamily="Inter,sans-serif" fontWeight="400" fontSize="9.5" letterSpacing="0.5" textAnchor="middle" fill="rgba(255,255,255,0.55)" style={{animation:"textPulse 3s ease-in-out infinite"}}>Stop typing. Start commanding.</text>
         </svg>
-        <div style={{display:"flex",alignItems:"center",gap:6,marginTop:4,animation:"fadeSlideIn 1.6s ease-out both",opacity:0.55}}>
-          {[{n:"Mogul",c:"#F59E0B"},{n:"Personal",c:"#EF5350"},{n:"Pulse",c:"#7C3AED"},{n:"Partners",c:"#3949AB"},{n:"Family",c:"#66BB6A"}].map((p,i)=>(
-            <span key={p.n} style={{display:"flex",alignItems:"center",gap:6}}>
-              <span style={{fontSize:8,fontWeight:700,color:p.c,fontFamily:"Sora,sans-serif",letterSpacing:0.3}}>{p.n}</span>
-              {i<4&&<span style={{fontSize:8,color:"rgba(255,255,255,0.2)"}}>·</span>}
+        <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",justifyContent:"center",gap:4,marginTop:8,animation:"fadeSlideIn 1.6s ease-out both",opacity:0.55,maxWidth:280}}>
+          {[{n:"Command Mogul",c:"#F59E0B"},{n:"Command Personal",c:"#EF5350"},{n:"Command Pulse",c:"#7C3AED"},{n:"Command Partners",c:"#3949AB"},{n:"Command Family",c:"#66BB6A"}].map((p,i)=>(
+            <span key={p.n} style={{display:"flex",alignItems:"center",gap:5}}>
+              <span style={{fontSize:7,fontWeight:700,color:p.c,fontFamily:"Sora,sans-serif",letterSpacing:0.2}}>{p.n}</span>
+              {i<4&&<span style={{fontSize:7,color:"rgba(255,255,255,0.2)"}}>·</span>}
             </span>
           ))}
         </div>
