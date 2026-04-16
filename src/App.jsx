@@ -2583,28 +2583,28 @@ function CommandScore({urgentTasks}){
             <circle cx={cx+32} cy={cy+28} r={55} fill="#43A047" filter="url(#blobBlur)" className="score-blob-2"/>
             <circle cx={cx-8} cy={cy+35} r={48} fill="#3B5BDB" filter="url(#blobBlur)" className="score-blob-3"/>
             {/* Floating plasma orbs — widget colors, blobby, centered, always drifting */}
-            <circle cx={100} cy={168} r={42} fill="#F59E0B" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-1"/>
-            <circle cx={122} cy={174} r={42} fill="#F59E0B" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-2"/>
-            <circle cx={110} cy={165} r={42} fill="#F59E0B" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-3"/>
-            <circle cx={130} cy={170} r={42} fill="#F59E0B" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-4"/>
+            <circle cx={100} cy={168} r={42} fill="#EF5350" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-1"/>
+            <circle cx={122} cy={174} r={42} fill="#EF5350" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-2"/>
+            <circle cx={110} cy={165} r={42} fill="#EF5350" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-3"/>
+            <circle cx={130} cy={170} r={42} fill="#EF5350" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-4"/>
           </g>
-          {/* Outer frame ring — amber, glow + crisp edge */}
-          <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="#F59E0B" strokeWidth={4} opacity={0.18} style={{filter:"blur(3px)"}}/>
-          <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="#F59E0B" strokeWidth={1.5} opacity={0.78}/>
+          {/* Outer frame ring — coral, glow + crisp edge */}
+          <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="#EF5350" strokeWidth={4} opacity={0.18} style={{filter:"blur(3px)"}}/>
+          <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="#EF5350" strokeWidth={1.5} opacity={0.78}/>
           {/* Score track */}
           <circle cx={cx} cy={cy} r={innerR} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={11}/>
           {/* Score arc */}
-          <circle cx={cx} cy={cy} r={innerR} fill="none" stroke="#F59E0B" strokeWidth={11} strokeLinecap="round"
+          <circle cx={cx} cy={cy} r={innerR} fill="none" stroke="#EF5350" strokeWidth={11} strokeLinecap="round"
             strokeDasharray={`${innerArc} ${innerCirc}`}
-            style={{transform:"rotate(-90deg)",transformOrigin:`${cx}px ${cy}px`,filter:"drop-shadow(0 0 9px #F59E0Bcc)",transition:"stroke-dasharray 0.7s ease"}}/>
+            style={{transform:"rotate(-90deg)",transformOrigin:`${cx}px ${cy}px`,filter:"drop-shadow(0 0 9px #EF5350cc)",transition:"stroke-dasharray 0.7s ease"}}/>
           {/* COMMAND SCORE label — outside circle, above */}
           <text x={cx} y={cy-outerR-14} textAnchor="middle" dominantBaseline="middle"
-            style={{fontSize:8,fill:"#F59E0B",fontFamily:FONT_MONO,letterSpacing:2.5,opacity:0.75}}>COMMAND SCORE</text>
+            style={{fontSize:8,fill:"#EF5350",fontFamily:FONT_MONO,letterSpacing:2.5,opacity:0.75}}>COMMAND SCORE</text>
           {/* Number backdrop — bigger so number fits inside */}
-          <circle cx={cx} cy={cy} r={64} fill="rgba(6,11,22,0.72)" stroke="#F59E0B" strokeWidth={1.2} opacity={0.9}/>
+          <circle cx={cx} cy={cy} r={64} fill="rgba(6,11,22,0.72)" stroke="#EF5350" strokeWidth={1.2} opacity={0.9}/>
           {/* Score number */}
           <text x={cx} y={cy} textAnchor="middle" dominantBaseline="central"
-            style={{fontSize:62,fontWeight:900,fill:"#F59E0B",fontFamily:"'Orbitron',sans-serif"}}>{score}</text>
+            style={{fontSize:62,fontWeight:900,fill:"#EF5350",fontFamily:"'Orbitron',sans-serif"}}>{score}</text>
           {/* TAP FOR BREAKDOWN — outside circle, below */}
           <text x={cx} y={cy+outerR+14} textAnchor="middle" dominantBaseline="middle"
             style={{fontSize:7,fill:"rgba(255,255,255,0.25)",fontFamily:FONT_MONO,letterSpacing:1}}>TAP FOR BREAKDOWN</text>
