@@ -1970,7 +1970,7 @@ function DailySheetCard({authToken}){
     <div style={{borderRadius:20,overflow:"hidden",boxShadow:"0 8px 40px rgba(0,0,0,0.35),0 0 0 1px rgba(239,83,80,0.15)",cursor:open?"default":"pointer"}}
       onClick={()=>setOpen(true)}>
       {/* Collapsed header */}
-      <div style={{position:"relative",background:"linear-gradient(135deg,#12192b 0%,#1c1408 55%,#1a2744 100%)",padding:isMobile?"14px 16px 28px":"16px 20px 32px",overflow:"hidden"}}>
+      <div style={{position:"relative",background:"linear-gradient(135deg,#12192b 0%,#1c1408 55%,#1a2744 100%)",padding:isMobile?"14px 16px 28px":"16px 20px 32px",overflow:"hidden",minHeight:isMobile?120:148}}>
         <svg style={{position:"absolute",bottom:0,left:0,width:"100%",height:"100%",pointerEvents:"none"}} viewBox="0 0 620 80" preserveAspectRatio="xMidYMax slice">
           <defs>{EQ_BANDS.map((b,i)=>(<linearGradient key={i} id={`eqg${i}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={b.color.replace(/[\d.]+\)$/,"0.95)")}/><stop offset="100%" stopColor={b.color.replace(/[\d.]+\)$/,"0.1)")}/></linearGradient>))}</defs>
           {EQ_BANDS.map((b,i)=>(<path key={i} d={bell(b.cx,b.w,80)} fill={`url(#eqg${i})`} className={`eq-b${i}`} style={{transformOrigin:`${b.cx}px 80px`}}/>))}
