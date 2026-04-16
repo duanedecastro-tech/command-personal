@@ -2533,7 +2533,7 @@ function WidgetCard({widget,onOpen,goalsData}){
   const ringSize=isMobile?40:46;
   return(
     <div onClick={onOpen}
-      style={{background:`linear-gradient(180deg,${c}18 0%,${c}08 100%)`,border:`1px solid ${c}30`,borderTop:`1px solid ${c}55`,borderRadius:14,padding:isMobile?"10px 12px 14px":"14px 16px 16px",cursor:"pointer",position:"relative",minWidth:0,overflow:"hidden",display:"flex",flexDirection:"column",boxSizing:"border-box",boxShadow:`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`,transition:"all 0.18s",minHeight:isMobile?90:160}}
+      style={{background:`linear-gradient(180deg,${c}18 0%,${c}08 100%)`,border:`1px solid ${c}30`,borderTop:`1px solid ${c}55`,borderRadius:14,padding:isMobile?"10px 12px 14px":"14px 16px 16px",cursor:"pointer",position:"relative",minWidth:0,overflow:"hidden",display:"flex",flexDirection:"column",boxSizing:"border-box",boxShadow:`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`,transition:"all 0.18s",minHeight:isMobile?90:112}}
       onMouseEnter={e=>{e.currentTarget.style.background=`linear-gradient(180deg,${c}28 0%,${c}12 100%)`;e.currentTarget.style.boxShadow=`0 8px 44px ${c}66, 0 1px 0 ${c}33 inset`;e.currentTarget.style.transform="translateY(-3px) scale(1.02)";}}
       onMouseLeave={e=>{e.currentTarget.style.background=`linear-gradient(180deg,${c}18 0%,${c}08 100%)`;e.currentTarget.style.boxShadow=`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`;e.currentTarget.style.transform="none";}}>
       <div style={{fontSize:14,fontWeight:700,color:c,marginBottom:3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{widget.name}</div>
