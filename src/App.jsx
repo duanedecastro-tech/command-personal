@@ -3310,6 +3310,8 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
         <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?22:32,fontWeight:900,letterSpacing:-1,color:"#F59E0B",lineHeight:1.1}}><span style={{color:"#F59E0B"}}>command</span><br/><span style={{color:"#EF5350"}}>personal.</span></div>
         <div style={{fontSize:isMobile?10:13,color:"rgba(255,255,255,0.4)",letterSpacing:2,marginTop:6,fontWeight:500,fontFamily:FONT_MONO}}>{new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}).toUpperCase()}</div>
       </div>
+      <div style={{display:"flex",gap:20,alignItems:"flex-start",width:"100%"}}>
+      <div style={{display:"flex",flexDirection:"column",gap:12,flex:1,minWidth:0,maxWidth:580}}>
       <div style={{display:"flex",flexDirection:"column",gap:12,width:"100%",maxWidth:520}}>
         <StatCards allTasks={allTasks.filter(t=>!t.done)} urgentTasks={urgentTasks} upcoming={upcoming} allNotes={state.notes} open={statOpen} onOpen={setStatOpen} unreadMail={unreadMail}/>
         {statOpen&&statActiveCard&&(
@@ -3382,9 +3384,6 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
           </div>
         </div>
       )}
-      {/* My Rhythm + Command Score — side by side on desktop */}
-      <div style={{display:"flex",gap:16,alignItems:"flex-start",width:"100%"}}>
-        <div style={{display:"flex",flexDirection:"column",gap:12,flex:1,minWidth:0,maxWidth:isMobile?"100%":640}}>
         <DailySheetCard authToken={authToken}/>
       {/* Daily Brief — always visible */}
       {(()=>{
@@ -3433,9 +3432,9 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
           </div>
         );
       })()}
-      </div>{/* end left col */}
-        {!isMobile&&<div style={{flex:1,display:"flex",justifyContent:"center",alignItems:"flex-start"}}><CommandScore urgentTasks={urgentTasks}/></div>}
-      </div>{/* end two-col row */}
+      </div>{/* end outer left col */}
+      {!isMobile&&<div style={{flex:1,display:"flex",justifyContent:"center",alignItems:"flex-start"}}><CommandScore urgentTasks={urgentTasks}/></div>}
+      </div>{/* end outer two-col */}
       {briefOpen&&<TodayBriefModal urgentTasks={urgentTasks} allEvents={allEvents} td={td} onNavigate={onNavigate} onClose={()=>setBriefOpen(false)} state={state} isAuthed={isAuthed} gTasksFlat={gTasksFlat||[]}/>}
       {(()=>{
         const liveGoals=(()=>{try{return JSON.parse(localStorage.getItem("cp_goals")||"[]");}catch{return[];}})();
