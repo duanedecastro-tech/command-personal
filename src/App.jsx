@@ -1979,8 +1979,9 @@ function DailySheetCard({authToken}){
           <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10}}>
             <div>
               <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?20:24,fontWeight:800,color:"#EF5350",letterSpacing:-0.5,lineHeight:1}}>my rhythm.</div>
-              <div style={{transition:"opacity 0.9s ease",opacity:quoteFade?1:0,marginTop:5,overflow:"hidden",height:36}}>
-                <div style={{fontSize:11,color:"rgba(239,83,80,0.65)",fontFamily:FONT,fontStyle:"italic",lineHeight:1.4}}>"{activeQuotes[quoteIdx%activeQuotes.length].q}"</div>
+              <div style={{transition:"opacity 0.9s ease",opacity:quoteFade?1:0,marginTop:5}}>
+                <div style={{fontSize:11,color:"rgba(239,83,80,0.65)",fontFamily:FONT,fontStyle:"italic",lineHeight:1.45}}>"{activeQuotes[quoteIdx%activeQuotes.length].q}"</div>
+                <div style={{fontSize:9,color:"rgba(239,83,80,0.4)",fontFamily:FONT_MONO,letterSpacing:1,marginTop:3}}>— {activeQuotes[quoteIdx%activeQuotes.length].a}</div>
               </div>
             </div>
             <div style={{textAlign:"right",flexShrink:0}}>
