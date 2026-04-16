@@ -62,14 +62,14 @@
       .score-blob-1{animation:scoreBlob1 13s ease-in-out infinite}
       .score-blob-2{animation:scoreBlob2 17s ease-in-out infinite -5s}
       .score-blob-3{animation:scoreBlob3 11s ease-in-out infinite -8s}
-      @keyframes orbDrift1 { 0%{transform:translate(0px,0px)} 20%{transform:translate(36px,8px)} 42%{transform:translate(18px,-34px)} 60%{transform:translate(-26px,-14px)} 80%{transform:translate(-10px,28px)} 100%{transform:translate(0px,0px)} }
-      @keyframes orbDrift2 { 0%{transform:translate(0px,0px)} 22%{transform:translate(-8px,38px)} 48%{transform:translate(30px,20px)} 68%{transform:translate(14px,-30px)} 88%{transform:translate(-24px,-6px)} 100%{transform:translate(0px,0px)} }
-      @keyframes orbDrift3 { 0%{transform:translate(0px,0px)} 18%{transform:translate(-30px,16px)} 38%{transform:translate(-12px,-36px)} 58%{transform:translate(28px,-10px)} 80%{transform:translate(10px,32px)} 100%{transform:translate(0px,0px)} }
-      @keyframes orbDrift4 { 0%{transform:translate(0px,0px)} 25%{transform:translate(-22px,32px)} 52%{transform:translate(28px,14px)} 75%{transform:translate(12px,-28px)} 100%{transform:translate(0px,0px)} }
-      .score-orb-1{animation:orbDrift1 52s ease-in-out infinite}
-      .score-orb-2{animation:orbDrift2 72s ease-in-out infinite -24s}
-      .score-orb-3{animation:orbDrift3 62s ease-in-out infinite -42s}
-      .score-orb-4{animation:orbDrift4 64s ease-in-out infinite -12s}
+      @keyframes smokeRise1 { 0%{transform:translate(0px,0px);opacity:0} 10%{opacity:0.42} 50%{transform:translate(14px,-65px);opacity:0.35} 85%{transform:translate(-6px,-120px);opacity:0.1} 100%{transform:translate(-4px,-136px);opacity:0} }
+      @keyframes smokeRise2 { 0%{transform:translate(0px,0px);opacity:0} 12%{opacity:0.38} 48%{transform:translate(-16px,-62px);opacity:0.32} 84%{transform:translate(8px,-118px);opacity:0.08} 100%{transform:translate(6px,-132px);opacity:0} }
+      @keyframes smokeRise3 { 0%{transform:translate(0px,0px);opacity:0} 8%{opacity:0.45} 52%{transform:translate(10px,-68px);opacity:0.3} 86%{transform:translate(-12px,-122px);opacity:0.09} 100%{transform:translate(-8px,-138px);opacity:0} }
+      @keyframes smokeRise4 { 0%{transform:translate(0px,0px);opacity:0} 11%{opacity:0.4} 46%{transform:translate(-8px,-60px);opacity:0.33} 82%{transform:translate(12px,-116px);opacity:0.1} 100%{transform:translate(10px,-130px);opacity:0} }
+      .score-orb-1{animation:smokeRise1 18s linear infinite}
+      .score-orb-2{animation:smokeRise2 22s linear infinite -7s}
+      .score-orb-3{animation:smokeRise3 20s linear infinite -13s}
+      .score-orb-4{animation:smokeRise4 16s linear infinite -4s}
       @keyframes bubbleRise { 0%{transform:translateY(0) scale(1);opacity:0} 8%{opacity:0.9} 80%{opacity:0.45} 100%{transform:translateY(-58px) scale(0.3);opacity:0} }
       input[type=range].goal-slider{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;background:transparent;outline:none;cursor:pointer;}
       input[type=range].goal-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:13px;height:13px;border-radius:50%;background:#fff;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.5);border:2px solid var(--goal-color,#FF7043);transition:transform 0.15s;}
