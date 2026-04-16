@@ -2583,10 +2583,10 @@ function CommandScore({urgentTasks}){
             <circle cx={cx+32} cy={cy+28} r={55} fill="#43A047" filter="url(#blobBlur)" className="score-blob-2"/>
             <circle cx={cx-8} cy={cy+35} r={48} fill="#3B5BDB" filter="url(#blobBlur)" className="score-blob-3"/>
             {/* Floating plasma orbs — widget colors, blobby, centered, always drifting */}
-            <circle cx={100} cy={168} r={42} fill="#ffffff" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-1"/>
-            <circle cx={122} cy={174} r={42} fill="#ffffff" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-2"/>
-            <circle cx={110} cy={165} r={42} fill="#ffffff" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-3"/>
-            <circle cx={130} cy={170} r={42} fill="#ffffff" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-4"/>
+            <circle cx={100} cy={168} r={42} fill="#F59E0B" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-1"/>
+            <circle cx={122} cy={174} r={42} fill="#F59E0B" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-2"/>
+            <circle cx={110} cy={165} r={42} fill="#F59E0B" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-3"/>
+            <circle cx={130} cy={170} r={42} fill="#F59E0B" opacity={0.4} filter="url(#orbBlob)" style={{mixBlendMode:"screen"}} className="score-orb-4"/>
           </g>
           {/* Outer frame ring — amber, glow + crisp edge */}
           <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="#F59E0B" strokeWidth={4} opacity={0.18} style={{filter:"blur(3px)"}}/>
