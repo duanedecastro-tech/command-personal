@@ -2527,33 +2527,26 @@ function EditBizModal({bizId,onSave,onClose}){
 }
 
 function CommandScore({urgentTasks}){
+  const[open,setOpen]=useState(false);
   const today=todayStr();
   const rhythmToday=(()=>{try{const s=JSON.parse(localStorage.getItem("dws_rhythm")||"null");if(s&&s.date===today)return s.blocks;}catch{}return null;})();
   const goals=(()=>{try{return JSON.parse(localStorage.getItem("cp_goals")||"[]");}catch{return[];}})();
 
-  // Rhythm — 30pts
   const rhythmChecked=rhythmToday?Object.values(rhythmToday).filter(b=>Object.values(b.eq||{}).some(v=>v>0)).length:0;
   const rhythmPts=rhythmChecked>=4?30:rhythmChecked===3?22:rhythmChecked===2?14:rhythmChecked===1?7:0;
-
-  // Goals — 20pts
   const goalsLogged=goals.filter(g=>g.lastLogged===today).length;
   const goalsPts=goalsLogged>=2?20:goalsLogged===1?12:0;
-
-  // Tasks — 25pts (no urgent = full marks)
   const urgent=urgentTasks.length;
   const tasksPts=urgent===0?25:urgent<=2?15:5;
-
-  // Streaks — 10pts
   const bestStreak=goals.length?Math.max(...goals.map(g=>g.streak||0)):0;
   const streakPts=bestStreak>=7?10:bestStreak>=3?6:bestStreak>=1?3:0;
-
-  // Budget — 15pts neutral until wired
   const budgetPts=15;
 
   const score=Math.min(100,rhythmPts+goalsPts+tasksPts+streakPts+budgetPts);
   const scoreColor=score<40?"#EF5350":score<70?"#F59E0B":"#43A047";
+  const scoreMsg=score>=70?"Strong day. Keep it up.":score>=40?"Building momentum.":"Get your day started.";
 
-  const sz=180,cx=90,cy=90,outerR=82,innerR=68;
+  const sz=230,cx=115,cy=115,outerR=108,innerR=91;
   const innerCirc=2*Math.PI*innerR;
   const innerArc=(score/100)*innerCirc;
 
@@ -2566,33 +2559,61 @@ function CommandScore({urgentTasks}){
   ];
 
   return(
-    <div style={{background:"#080e1c",border:`1px solid ${scoreColor}25`,borderRadius:20,padding:"20px 22px",display:"flex",flexDirection:"column",alignItems:"center",gap:14,boxShadow:`0 0 48px ${scoreColor}12, 0 4px 28px rgba(0,0,0,0.5)`,minWidth:220,flexShrink:0}}>
-      <div style={{fontSize:9,fontWeight:700,color:"rgba(255,255,255,0.3)",fontFamily:FONT_MONO,letterSpacing:2.5}}>COMMAND SCORE</div>
-      <svg width={sz} height={sz} style={{overflow:"visible"}}>
-        {/* Outer frame ring */}
-        <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={1.5}/>
-        {/* Score track */}
-        <circle cx={cx} cy={cy} r={innerR} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={9}/>
-        {/* Score arc */}
-        <circle cx={cx} cy={cy} r={innerR} fill="none" stroke={scoreColor} strokeWidth={9} strokeLinecap="round"
-          strokeDasharray={`${innerArc} ${innerCirc}`}
-          style={{transform:"rotate(-90deg)",transformOrigin:`${cx}px ${cy}px`,filter:`drop-shadow(0 0 7px ${scoreColor}99)`,transition:"stroke-dasharray 0.7s ease,stroke 0.7s ease"}}/>
-        {/* Score number */}
-        <text x={cx} y={cy-8} textAnchor="middle" dominantBaseline="middle"
-          style={{fontSize:48,fontWeight:900,fill:scoreColor,fontFamily:"'Sora',sans-serif",transition:"fill 0.7s ease"}}>{score}</text>
-        <text x={cx} y={cy+22} textAnchor="middle" dominantBaseline="middle"
-          style={{fontSize:9,fill:"rgba(255,255,255,0.22)",fontFamily:FONT_MONO,letterSpacing:1}}>/100</text>
-      </svg>
-      <div style={{width:"100%",display:"flex",flexDirection:"column",gap:5}}>
-        {cats.map(cat=>(
-          <div key={cat.label} style={{display:"flex",alignItems:"center",gap:8}}>
-            <div style={{width:5,height:5,borderRadius:"50%",background:cat.pts>0?cat.color:"rgba(255,255,255,0.12)",flexShrink:0}}/>
-            <div style={{fontSize:9,color:"rgba(255,255,255,0.4)",fontFamily:FONT_MONO,flex:1,letterSpacing:0.8}}>{cat.label}</div>
-            <div style={{fontSize:9,fontWeight:700,color:cat.pts>0?cat.color:"rgba(255,255,255,0.18)",fontFamily:FONT_MONO}}>{cat.pts}/{cat.max}</div>
-          </div>
-        ))}
+    <>
+      <div onClick={()=>setOpen(true)} style={{cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0,userSelect:"none"}}
+        onMouseEnter={e=>e.currentTarget.querySelector("svg").style.filter=`drop-shadow(0 0 28px ${scoreColor}55)`}
+        onMouseLeave={e=>e.currentTarget.querySelector("svg").style.filter=`drop-shadow(0 0 18px ${scoreColor}33)`}>
+        <svg width={sz} height={sz} style={{overflow:"visible",filter:`drop-shadow(0 0 18px ${scoreColor}33)`,transition:"filter 0.3s ease"}}>
+          <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={1.5}/>
+          <circle cx={cx} cy={cy} r={innerR} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={11}/>
+          <circle cx={cx} cy={cy} r={innerR} fill="none" stroke={scoreColor} strokeWidth={11} strokeLinecap="round"
+            strokeDasharray={`${innerArc} ${innerCirc}`}
+            style={{transform:"rotate(-90deg)",transformOrigin:`${cx}px ${cy}px`,filter:`drop-shadow(0 0 8px ${scoreColor}bb)`,transition:"stroke-dasharray 0.7s ease,stroke 0.7s ease"}}/>
+          <text x={cx} y={cy-10} textAnchor="middle" dominantBaseline="middle"
+            style={{fontSize:58,fontWeight:900,fill:scoreColor,fontFamily:"'Sora',sans-serif",transition:"fill 0.7s ease"}}>{score}</text>
+          <text x={cx} y={cy+32} textAnchor="middle" dominantBaseline="middle"
+            style={{fontSize:8,fill:"rgba(255,255,255,0.25)",fontFamily:FONT_MONO,letterSpacing:2.5}}>COMMAND SCORE</text>
+          <text x={cx} y={cy+48} textAnchor="middle" dominantBaseline="middle"
+            style={{fontSize:7,fill:"rgba(255,255,255,0.12)",fontFamily:FONT_MONO,letterSpacing:1}}>TAP FOR BREAKDOWN</text>
+        </svg>
       </div>
-    </div>
+
+      {open&&createPortal(
+        <div onClick={()=>setOpen(false)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(10px)",padding:20}}>
+          <div onClick={e=>e.stopPropagation()} style={{background:"#080e1c",border:`1px solid ${scoreColor}28`,borderRadius:24,padding:"28px 28px 24px",width:"min(380px,92vw)",display:"flex",flexDirection:"column",gap:20,boxShadow:`0 0 60px ${scoreColor}18, 0 24px 80px rgba(0,0,0,0.8)`,animation:"fadeSlideIn 0.2s ease-out"}}>
+            <div style={{display:"flex",alignItems:"center",gap:18}}>
+              <svg width={76} height={76} style={{flexShrink:0}}>
+                <circle cx={38} cy={38} r={32} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={6}/>
+                <circle cx={38} cy={38} r={32} fill="none" stroke={scoreColor} strokeWidth={6} strokeLinecap="round"
+                  strokeDasharray={`${(score/100)*2*Math.PI*32} ${2*Math.PI*32}`}
+                  style={{transform:"rotate(-90deg)",transformOrigin:"38px 38px",filter:`drop-shadow(0 0 5px ${scoreColor}88)`}}/>
+                <text x={38} y={38} textAnchor="middle" dominantBaseline="middle" style={{fontSize:20,fontWeight:900,fill:scoreColor,fontFamily:"'Sora',sans-serif"}}>{score}</text>
+              </svg>
+              <div>
+                <div style={{fontSize:17,fontWeight:800,color:"rgba(255,255,255,0.9)",fontFamily:"'Sora',sans-serif",letterSpacing:-0.3}}>Command Score</div>
+                <div style={{fontSize:12,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,marginTop:5,lineHeight:1.5}}>{scoreMsg}</div>
+              </div>
+            </div>
+            <div style={{height:1,background:"rgba(255,255,255,0.07)"}}/>
+            <div style={{display:"flex",flexDirection:"column",gap:14}}>
+              {cats.map(cat=>(
+                <div key={cat.label}>
+                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
+                    <div style={{fontSize:10,fontWeight:700,color:cat.pts>0?cat.color:"rgba(255,255,255,0.25)",fontFamily:FONT_MONO,letterSpacing:1.2}}>{cat.label}</div>
+                    <div style={{fontSize:10,fontWeight:700,color:cat.pts>0?cat.color:"rgba(255,255,255,0.18)",fontFamily:FONT_MONO}}>{cat.pts} / {cat.max}</div>
+                  </div>
+                  <div style={{height:3,borderRadius:2,background:"rgba(255,255,255,0.07)"}}>
+                    <div style={{height:"100%",width:`${(cat.pts/cat.max)*100}%`,borderRadius:2,background:cat.color,boxShadow:`0 0 6px ${cat.color}55`,transition:"width 0.5s ease"}}/>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button onClick={()=>setOpen(false)} style={{padding:"11px 0",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.45)",borderRadius:10,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:FONT,marginTop:4}}>Close</button>
+          </div>
+        </div>,
+        document.body
+      )}
+    </>
   );
 }
 
