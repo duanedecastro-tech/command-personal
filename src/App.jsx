@@ -2574,12 +2574,14 @@ function CommandScore({urgentTasks}){
             <circle cx={cx-28} cy={cy-22} r={60} fill="#EF5350" filter="url(#blobBlur)" className="score-blob-1"/>
             <circle cx={cx+32} cy={cy+28} r={55} fill="#43A047" filter="url(#blobBlur)" className="score-blob-2"/>
             <circle cx={cx-8} cy={cy+35} r={48} fill="#3B5BDB" filter="url(#blobBlur)" className="score-blob-3"/>
-            {/* Lightning bolts — draw animation */}
-            <path d="M 108,42 L 128,88 L 110,93 L 133,178" fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" className="score-bolt-1"/>
-            <path d="M 125,38 L 102,86 L 121,91 L 99,177" fill="none" stroke="#F59E0B" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="score-bolt-2"/>
+            {/* Floating plasma orbs */}
+            <circle cx={30} cy={130} r={5} fill="#00B4FF" style={{filter:"drop-shadow(0 0 7px #00B4FF)"}} className="score-orb-1"/>
+            <circle cx={185} cy={45} r={4.5} fill="#B06FFF" style={{filter:"drop-shadow(0 0 7px #B06FFF)"}} className="score-orb-2"/>
+            <circle cx={95} cy={195} r={5} fill="#00E5CC" style={{filter:"drop-shadow(0 0 7px #00E5CC)"}} className="score-orb-3"/>
           </g>
-          {/* Outer frame ring — amber */}
-          <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="#F59E0B" strokeWidth={1.5} opacity={0.45}/>
+          {/* Outer frame ring — amber, glow + crisp edge */}
+          <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="#F59E0B" strokeWidth={4} opacity={0.18} style={{filter:"blur(3px)"}}/>
+          <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="#F59E0B" strokeWidth={1.5} opacity={0.78}/>
           {/* Score track */}
           <circle cx={cx} cy={cy} r={innerR} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={11}/>
           {/* Score arc */}
