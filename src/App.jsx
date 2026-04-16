@@ -2567,6 +2567,14 @@ function CommandScore({urgentTasks}){
           <defs>
             <clipPath id="scoreClip"><circle cx={cx} cy={cy} r={outerR-1}/></clipPath>
             <filter id="blobBlur"><feGaussianBlur stdDeviation="20"/></filter>
+            <filter id="orbBlob" x="-40%" y="-40%" width="180%" height="180%">
+              <feTurbulence type="turbulence" baseFrequency="0.03" numOctaves="2" result="noise">
+                <animate attributeName="baseFrequency" values="0.025;0.042;0.03;0.022;0.025" dur="22s" repeatCount="indefinite"/>
+              </feTurbulence>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G" result="warped"/>
+              <feGaussianBlur in="warped" stdDeviation="4" result="glow"/>
+              <feMerge><feMergeNode in="glow"/><feMergeNode in="warped"/></feMerge>
+            </filter>
           </defs>
           {/* Dark fill + animated color blobs clipped to circle */}
           <g clipPath="url(#scoreClip)">
@@ -2574,10 +2582,10 @@ function CommandScore({urgentTasks}){
             <circle cx={cx-28} cy={cy-22} r={60} fill="#EF5350" filter="url(#blobBlur)" className="score-blob-1"/>
             <circle cx={cx+32} cy={cy+28} r={55} fill="#43A047" filter="url(#blobBlur)" className="score-blob-2"/>
             <circle cx={cx-8} cy={cy+35} r={48} fill="#3B5BDB" filter="url(#blobBlur)" className="score-blob-3"/>
-            {/* Floating plasma orbs */}
-            <circle cx={30} cy={130} r={18} fill="#5B9EC9" style={{filter:"drop-shadow(0 0 10px #5B9EC988)"}} className="score-orb-1"/>
-            <circle cx={185} cy={45} r={18} fill="#8B6BB5" style={{filter:"drop-shadow(0 0 10px #8B6BB588)"}} className="score-orb-2"/>
-            <circle cx={95} cy={195} r={18} fill="#45B0A0" style={{filter:"drop-shadow(0 0 10px #45B0A088)"}} className="score-orb-3"/>
+            {/* Floating plasma orbs — blobby, centered, always drifting */}
+            <circle cx={90} cy={95} r={22} fill="#5B9EC9" opacity={0.62} filter="url(#orbBlob)" className="score-orb-1"/>
+            <circle cx={140} cy={88} r={22} fill="#8B6BB5" opacity={0.62} filter="url(#orbBlob)" className="score-orb-2"/>
+            <circle cx={100} cy={142} r={22} fill="#45B0A0" opacity={0.62} filter="url(#orbBlob)" className="score-orb-3"/>
           </g>
           {/* Outer frame ring — amber, glow + crisp edge */}
           <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="#F59E0B" strokeWidth={4} opacity={0.18} style={{filter:"blur(3px)"}}/>
