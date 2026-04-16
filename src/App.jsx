@@ -3410,7 +3410,7 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
           <div onClick={()=>setBriefOpen(true)} style={{background:'#080c14',borderRadius:20,border:'1px solid rgba(0,180,200,0.18)',padding:'14px 16px',
             backgroundImage:'linear-gradient(rgba(0,180,200,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,200,0.03) 1px,transparent 1px)',
             backgroundSize:'22px 22px',boxShadow:'0 4px 30px rgba(0,0,0,0.5),inset 0 1px 0 rgba(0,180,200,0.08)',cursor:'pointer',transition:'border-color 0.15s',
-            minHeight:130,maxWidth:640,width:"100%"}}
+            minHeight:148,maxWidth:640,width:"100%"}}
             onMouseEnter={e=>e.currentTarget.style.borderColor='rgba(0,180,200,0.35)'}
             onMouseLeave={e=>e.currentTarget.style.borderColor='rgba(0,180,200,0.18)'}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
