@@ -1,0 +1,17 @@
+{
+  "name": "Command Personal",
+  "short_name": "Personal",
+  "description": "Your personal command center.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0e1320",
+  "theme_color": "#E53935",
+  "icons": [
+    {
+      "src": "/icon-personal.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -13,7 +13,7 @@ const BIZ = [
   { id:3, name:"Ocean Street Tacos",        short:"OST",             type:"Restaurant",     color:"#F9A825" },
   { id:4, name:"The Circuit Barcade",       short:"The Circuit",     type:"Arcade Bar",     color:"#0097A7" },
   { id:5, name:"American Terrapin Apparel", short:"ATA",             type:"Clothing Brand", color:"#2E7D32" },
-  { id:6, name:"Personal",                  short:"Personal",        type:"My Hub",         color:"#9333EA" },
+  { id:6, name:"Personal",                  short:"Personal",        type:"My Hub",         color:"#E53935" },
   { id:7, name:"Command Bean Mogul",         short:"CB Mogul",        type:"Tech Platform",  color:"#3B5BDB" },
 ];
 
@@ -97,46 +97,46 @@ const MONTHS = ["January","February","March","April","May","June","July","August
 const DAYS_S = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
 const GC_EVENTS = [
-  { id:"s1",  summary:"\u{1F338} Evening with Stephanie",            start:"2026-04-10", end:"2026-04-11", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s2",  summary:"\u{1F4CA} Budget Review \u2014 April 2026",       start:"2026-04-14T20:00:00-04:00",    allDay:false, bizId:6, color:"#7B1FA2" },
-  { id:"s3",  summary:"\u{1F697} Jaguar car payment",                start:"2026-04-25", end:"2026-04-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s4",  summary:"\u{1F382} Solomon DeCastro's birthday",       start:"2026-04-25", end:"2026-04-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s5",  summary:"\u{1F9B7} Island Walk Dental Care",           start:"2026-04-28T14:30:00-04:00",    allDay:false, bizId:6, color:"#7B1FA2" },
-  { id:"s6",  summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-05-01", end:"2026-05-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s7",  summary:"\u{1F697} Jaguar car payment",                start:"2026-05-25", end:"2026-05-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s8",  summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-06-01", end:"2026-06-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s9",  summary:"\u{1F382} Peter & Tish Gappmayr birthday",    start:"2026-06-23", end:"2026-06-24", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s10", summary:"\u{1F697} Jaguar car payment",                start:"2026-06-25", end:"2026-06-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s11", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-07-01", end:"2026-07-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s12", summary:"\u{1F697} Jaguar car payment",                start:"2026-07-25", end:"2026-07-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s13", summary:"\u{1F4B3} Care Credit \u2014 Verify Payoff",       start:"2026-08-01", end:"2026-08-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s14", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-08-01", end:"2026-08-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s15", summary:"\u{1F6A8} Care Credit \u2014 FINAL DEADLINE",      start:"2026-08-09", end:"2026-08-10", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s16", summary:"\u{1F697} Jaguar car payment",                start:"2026-08-25", end:"2026-08-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s17", summary:"\u{1F4B3} Lowes \u2014 Review & Increase Payment", start:"2026-09-01", end:"2026-09-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s18", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-09-01", end:"2026-09-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s19", summary:"\u{1F697} Jaguar car payment",                start:"2026-09-25", end:"2026-09-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s20", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-10-01", end:"2026-10-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s21", summary:"\u{1F382} Frank & Mercedez Dinino birthday",  start:"2026-10-07", end:"2026-10-08", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s22", summary:"\u{1F697} Jaguar car payment",                start:"2026-10-25", end:"2026-10-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s23", summary:"\u{1F382} Jason Hunnicutt birthday",          start:"2026-11-01", end:"2026-11-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s24", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-11-01", end:"2026-11-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s25", summary:"\u{1F4B3} Lowes \u2014 Verify Payoff on Track",    start:"2026-11-01", end:"2026-11-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s26", summary:"\u{1F382} Jeff Davis birthday",               start:"2026-11-10", end:"2026-11-11", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s27", summary:"\u{1F382} Isaac's birthday",                  start:"2026-11-11", end:"2026-11-12", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s28", summary:"\u{1F697} Jaguar car payment",                start:"2026-11-25", end:"2026-11-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s29", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-12-01", end:"2026-12-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s30", summary:"\u{1F697} Jaguar car payment",                start:"2026-12-25", end:"2026-12-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s31", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2027-01-01", end:"2027-01-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s32", summary:"\u{1F697} Jaguar car payment",                start:"2027-01-25", end:"2027-01-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s33", summary:"\u{1F382} Kristin Dinino birthday",           start:"2027-01-25", end:"2027-01-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s34", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2027-02-01", end:"2027-02-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s35", summary:"\u{1F6A8} Lowes \u2014 FINAL DEADLINE TODAY",      start:"2027-02-02", end:"2027-02-03", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s36", summary:"\u{1F697} Jaguar car payment",                start:"2027-02-25", end:"2027-02-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s37", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2027-03-01", end:"2027-03-02", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s38", summary:"\u{1F382} Ken & Charmaine Collins birthday",  start:"2027-03-05", end:"2027-03-06", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s39", summary:"\u{1F697} Jaguar car payment",                start:"2027-03-25", end:"2027-03-26", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s40", summary:"\u{1F382} Karl & Cassandra Kovacs birthday",  start:"2027-03-30", end:"2027-03-31", allDay:true,  bizId:6, color:"#7B1FA2" },
+  { id:"s1",  summary:"\u{1F338} Evening with Stephanie",            start:"2026-04-10", end:"2026-04-11", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s2",  summary:"\u{1F4CA} Budget Review \u2014 April 2026",       start:"2026-04-14T20:00:00-04:00",    allDay:false, bizId:6, color:"#E53935" },
+  { id:"s3",  summary:"\u{1F697} Jaguar car payment",                start:"2026-04-25", end:"2026-04-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s4",  summary:"\u{1F382} Solomon DeCastro's birthday",       start:"2026-04-25", end:"2026-04-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s5",  summary:"\u{1F9B7} Island Walk Dental Care",           start:"2026-04-28T14:30:00-04:00",    allDay:false, bizId:6, color:"#E53935" },
+  { id:"s6",  summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-05-01", end:"2026-05-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s7",  summary:"\u{1F697} Jaguar car payment",                start:"2026-05-25", end:"2026-05-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s8",  summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-06-01", end:"2026-06-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s9",  summary:"\u{1F382} Peter & Tish Gappmayr birthday",    start:"2026-06-23", end:"2026-06-24", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s10", summary:"\u{1F697} Jaguar car payment",                start:"2026-06-25", end:"2026-06-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s11", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-07-01", end:"2026-07-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s12", summary:"\u{1F697} Jaguar car payment",                start:"2026-07-25", end:"2026-07-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s13", summary:"\u{1F4B3} Care Credit \u2014 Verify Payoff",       start:"2026-08-01", end:"2026-08-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s14", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-08-01", end:"2026-08-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s15", summary:"\u{1F6A8} Care Credit \u2014 FINAL DEADLINE",      start:"2026-08-09", end:"2026-08-10", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s16", summary:"\u{1F697} Jaguar car payment",                start:"2026-08-25", end:"2026-08-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s17", summary:"\u{1F4B3} Lowes \u2014 Review & Increase Payment", start:"2026-09-01", end:"2026-09-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s18", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-09-01", end:"2026-09-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s19", summary:"\u{1F697} Jaguar car payment",                start:"2026-09-25", end:"2026-09-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s20", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-10-01", end:"2026-10-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s21", summary:"\u{1F382} Frank & Mercedez Dinino birthday",  start:"2026-10-07", end:"2026-10-08", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s22", summary:"\u{1F697} Jaguar car payment",                start:"2026-10-25", end:"2026-10-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s23", summary:"\u{1F382} Jason Hunnicutt birthday",          start:"2026-11-01", end:"2026-11-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s24", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-11-01", end:"2026-11-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s25", summary:"\u{1F4B3} Lowes \u2014 Verify Payoff on Track",    start:"2026-11-01", end:"2026-11-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s26", summary:"\u{1F382} Jeff Davis birthday",               start:"2026-11-10", end:"2026-11-11", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s27", summary:"\u{1F382} Isaac's birthday",                  start:"2026-11-11", end:"2026-11-12", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s28", summary:"\u{1F697} Jaguar car payment",                start:"2026-11-25", end:"2026-11-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s29", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-12-01", end:"2026-12-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s30", summary:"\u{1F697} Jaguar car payment",                start:"2026-12-25", end:"2026-12-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s31", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2027-01-01", end:"2027-01-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s32", summary:"\u{1F697} Jaguar car payment",                start:"2027-01-25", end:"2027-01-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s33", summary:"\u{1F382} Kristin Dinino birthday",           start:"2027-01-25", end:"2027-01-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s34", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2027-02-01", end:"2027-02-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s35", summary:"\u{1F6A8} Lowes \u2014 FINAL DEADLINE TODAY",      start:"2027-02-02", end:"2027-02-03", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s36", summary:"\u{1F697} Jaguar car payment",                start:"2027-02-25", end:"2027-02-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s37", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2027-03-01", end:"2027-03-02", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s38", summary:"\u{1F382} Ken & Charmaine Collins birthday",  start:"2027-03-05", end:"2027-03-06", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s39", summary:"\u{1F697} Jaguar car payment",                start:"2027-03-25", end:"2027-03-26", allDay:true,  bizId:6, color:"#E53935" },
+  { id:"s40", summary:"\u{1F382} Karl & Cassandra Kovacs birthday",  start:"2027-03-30", end:"2027-03-31", allDay:true,  bizId:6, color:"#E53935" },
   { id:"s41", summary:"\u{1F382} Dave & Jenny DeCastro Birthday",    start:"2027-03-31", end:"2027-04-01", allDay:true,  bizId:6, color:"#7B1FA2" },
   { id:"s42", summary:"\u{1F4B5} Cash Count \u2014 Spliffs Downtown",     start:"2026-04-06", end:"2026-04-07", allDay:true,  bizId:0, color:"#E65100" },
 ];
@@ -2527,9 +2527,10 @@ function EditBizModal({bizId,onSave,onClose}){
 
 function WidgetCard({widget,onOpen}){
   const c=widget.color;
+  const isMobile=window.innerWidth<768;
   return(
     <div onClick={onOpen}
-      style={{background:`linear-gradient(180deg,${c}18 0%,${c}08 100%)`,border:`1px solid ${c}30`,borderTop:`1px solid ${c}55`,borderRadius:16,padding:"14px 16px 32px",cursor:"pointer",position:"relative",minWidth:0,overflow:"hidden",display:"flex",flexDirection:"column",boxSizing:"border-box",boxShadow:`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`,transition:"all 0.18s",minHeight:160}}
+      style={{background:`linear-gradient(180deg,${c}18 0%,${c}08 100%)`,border:`1px solid ${c}30`,borderTop:`1px solid ${c}55`,borderRadius:14,padding:isMobile?"10px 12px 14px":"14px 16px 32px",cursor:"pointer",position:"relative",minWidth:0,overflow:"hidden",display:"flex",flexDirection:"column",boxSizing:"border-box",boxShadow:`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`,transition:"all 0.18s",minHeight:isMobile?90:160}}
       onMouseEnter={e=>{e.currentTarget.style.background=`linear-gradient(180deg,${c}28 0%,${c}12 100%)`;e.currentTarget.style.boxShadow=`0 8px 44px ${c}66, 0 1px 0 ${c}33 inset`;e.currentTarget.style.transform="translateY(-3px) scale(1.02)";}}
       onMouseLeave={e=>{e.currentTarget.style.background=`linear-gradient(180deg,${c}18 0%,${c}08 100%)`;e.currentTarget.style.boxShadow=`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`;e.currentTarget.style.transform="none";}}>
       <div style={{fontSize:14,fontWeight:700,color:c,marginBottom:3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{widget.name}</div>
@@ -2603,7 +2604,7 @@ function PlatformStrip(){
     <div style={{...panelSt("#1A2744"),background:"linear-gradient(135deg,#12192b,#1a2744)",border:"1px solid rgba(255,255,255,0.08)",padding:"16px 20px"}}>
       <div style={{fontSize:9,fontWeight:700,color:"rgba(255,255,255,0.3)",letterSpacing:2,fontFamily:FONT_MONO,textTransform:"uppercase",marginBottom:12}}>More from the Command Bean platform</div>
       <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-        {[{n:"Command Bean Mogul",c:"#F59E0B",s:"Run everything. Miss nothing.",badge:"Early Access"},{n:"Command Bean Personal",c:"#9333EA",s:"Control your time. Own your freedom.",badge:"Coming Soon"},{n:"Command Bean Pulse",c:"#2E7D32",s:"Every app. One pulse.",badge:"Roadmap"},{n:"Command Bean Partners",c:"#0097A7",s:"One business. One view. Every partner.",badge:"Roadmap"},{n:"Command Bean Family",c:"#E65100",s:"For families that win.",badge:"Roadmap"}].map(p=>(
+        {[{n:"Command Bean Mogul",c:"#F59E0B",s:"Run everything. Miss nothing.",badge:"Early Access"},{n:"Command Bean Personal",c:"#E53935",s:"Control your time. Own your freedom.",badge:"Coming Soon"},{n:"Command Bean Pulse",c:"#7C3AED",s:"Every app. One pulse.",badge:"Roadmap"},{n:"Command Bean Partners",c:"#3949AB",s:"One business. One view. Every partner.",badge:"Roadmap"},{n:"Command Bean Family",c:"#66BB6A",s:"For families that win.",badge:"Roadmap"}].map(p=>(
           <div key={p.n} style={{display:"flex",alignItems:"center",gap:8,flex:"1 1 140px"}}>
             <div style={{width:3,height:32,borderRadius:2,background:p.c,flexShrink:0}}/>
             <div>
@@ -2840,6 +2841,11 @@ function GoalsWidget({onBack}){
   const[newTarget,setNewTarget]=useState("");
   const[newUnit,setNewUnit]=useState("");
   const[newColor,setNewColor]=useState("#FF7043");
+  // Edit state
+  const[editGoalId,setEditGoalId]=useState(null);
+  const[editTitle,setEditTitle]=useState("");
+  const[editTarget,setEditTarget]=useState("");
+  const[editUnit,setEditUnit]=useState("");
   // Voice state
   const[voiceGoalId,setVoiceGoalId]=useState(null);
   const[voiceTranscript,setVoiceTranscript]=useState("");
@@ -2905,6 +2911,13 @@ function GoalsWidget({onBack}){
   };
 
   const deleteGoal=(id)=>save(goals.filter(g=>g.id!==id));
+  const resetGoal=(id)=>save(goals.map(g=>g.id===id?{...g,current:0,lastLogged:null,streak:0}:g));
+  const startEdit=(g)=>{setEditGoalId(g.id);setEditTitle(g.title);setEditTarget(String(g.target));setEditUnit(g.unit||"");};
+  const saveEdit=(id)=>{
+    if(!editTitle.trim()||!editTarget)return;
+    save(goals.map(g=>g.id===id?{...g,title:editTitle.trim(),target:parseFloat(editTarget)||g.target,unit:editUnit.trim()}:g));
+    setEditGoalId(null);
+  };
 
   const visibleExamples=EXAMPLE_GOALS.filter(e=>!dismissedExamples.includes(e.id)&&!goals.some(g=>g.title===e.title));
   const GOAL_COLORS=["#EF5350","#FF7043","#F59E0B","#43A047","#3B5BDB","#42A5F5","#AB47BC","#0097A7"];
@@ -2974,55 +2987,74 @@ function GoalsWidget({onBack}){
         return(
           <div key={g.id} style={{background:`linear-gradient(180deg,${g.color}14 0%,${g.color}06 100%)`,border:`1px solid ${g.color}30`,borderTop:`2px solid ${g.color}66`,borderRadius:16,padding:"16px 18px",display:"flex",flexDirection:"column",gap:12,animation:"fadeSlideIn 0.2s ease-out"}}>
             {/* Title row */}
-            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8}}>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{display:"flex",alignItems:"center",gap:8}}>
-                  <span style={{fontSize:15,fontWeight:700,color:"rgba(255,255,255,0.92)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{g.title}</span>
-                  {sk&&<span style={{fontSize:9,fontWeight:700,color:"#F59E0B",fontFamily:FONT_MONO,letterSpacing:0.5,flexShrink:0}}>🔥 {sk}</span>}
+            {editGoalId===g.id?(
+              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                <input value={editTitle} onChange={e=>setEditTitle(e.target.value)} style={{background:"rgba(255,255,255,0.06)",border:`1px solid ${g.color}55`,borderRadius:8,padding:"8px 12px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}}/>
+                <div style={{display:"flex",gap:8}}>
+                  <input value={editTarget} onChange={e=>setEditTarget(e.target.value)} type="number" placeholder="Target" style={{flex:1,background:"rgba(255,255,255,0.06)",border:`1px solid ${g.color}55`,borderRadius:8,padding:"8px 12px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}}/>
+                  <input value={editUnit} onChange={e=>setEditUnit(e.target.value)} placeholder="Unit" style={{flex:1,background:"rgba(255,255,255,0.06)",border:`1px solid ${g.color}55`,borderRadius:8,padding:"8px 12px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}}/>
                 </div>
-                <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,letterSpacing:1,marginTop:2}}>
-                  {g.current} / {g.target}{g.unit?" "+g.unit:""} · {pct}%
+                <div style={{display:"flex",gap:8}}>
+                  <button onClick={()=>saveEdit(g.id)} style={{flex:1,padding:"8px 0",background:g.color,border:"none",color:"#fff",borderRadius:8,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:FONT}}>Save</button>
+                  <button onClick={()=>setEditGoalId(null)} style={{flex:1,padding:"8px 0",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",color:"rgba(255,255,255,0.55)",borderRadius:8,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:FONT}}>Cancel</button>
                 </div>
-                {da!==null&&<div style={{fontSize:9,color:"rgba(255,255,255,0.22)",fontFamily:FONT_MONO,marginTop:3}}>{da===0?"Updated today":da===1?"Updated yesterday":`Updated ${da} days ago`}</div>}
               </div>
-              <button onClick={()=>deleteGoal(g.id)} style={{background:"transparent",border:"none",color:"rgba(255,255,255,0.18)",fontSize:16,cursor:"pointer",padding:"2px 4px",lineHeight:1,borderRadius:4,flexShrink:0,transition:"color 0.15s"}}
-                onMouseEnter={e=>e.currentTarget.style.color="#EF5350"}
-                onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.18)"}>✕</button>
-            </div>
+            ):(
+              <>
+                <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8}}>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <span style={{fontSize:15,fontWeight:700,color:"rgba(255,255,255,0.92)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{g.title}</span>
+                      {sk&&<span style={{fontSize:9,fontWeight:700,color:"#F59E0B",fontFamily:FONT_MONO,letterSpacing:0.5,flexShrink:0}}>🔥 {sk}</span>}
+                    </div>
+                    <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,letterSpacing:1,marginTop:2}}>
+                      {g.current} / {g.target}{g.unit?" "+g.unit:""} · {pct}%
+                    </div>
+                    {da!==null&&<div style={{fontSize:9,color:"rgba(255,255,255,0.22)",fontFamily:FONT_MONO,marginTop:3}}>{da===0?"Updated today":da===1?"Updated yesterday":`Updated ${da} days ago`}</div>}
+                  </div>
+                  {/* Edit / Reset / Delete */}
+                  <div style={{display:"flex",gap:4,flexShrink:0}}>
+                    <button onClick={()=>startEdit(g)} title="Edit goal" style={{background:"transparent",border:"none",color:"rgba(255,255,255,0.25)",fontSize:13,cursor:"pointer",padding:"2px 5px",lineHeight:1,borderRadius:4,transition:"color 0.15s"}}
+                      onMouseEnter={e=>e.currentTarget.style.color=g.color}
+                      onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.25)"}>✎</button>
+                    <button onClick={()=>{if(window.confirm("Reset progress to 0?"))resetGoal(g.id);}} title="Reset progress" style={{background:"transparent",border:"none",color:"rgba(255,255,255,0.25)",fontSize:11,cursor:"pointer",padding:"2px 5px",lineHeight:1,borderRadius:4,fontFamily:FONT_MONO,fontWeight:700,transition:"color 0.15s"}}
+                      onMouseEnter={e=>e.currentTarget.style.color="#F59E0B"}
+                      onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.25)"}>RST</button>
+                    <button onClick={()=>deleteGoal(g.id)} title="Delete goal" style={{background:"transparent",border:"none",color:"rgba(255,255,255,0.18)",fontSize:16,cursor:"pointer",padding:"2px 4px",lineHeight:1,borderRadius:4,transition:"color 0.15s"}}
+                      onMouseEnter={e=>e.currentTarget.style.color="#EF5350"}
+                      onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.18)"}>✕</button>
+                  </div>
+                </div>
 
-            {/* Voice center + Thermometer right */}
-            <div style={{display:"flex",alignItems:"center",padding:"8px 0 4px"}}>
-              {/* Voice button — centered in remaining space */}
-              <div style={{flex:1,display:"flex",justifyContent:"center"}}>
-                {done
-                  ?<div style={{fontSize:14,color:g.color,fontWeight:700,fontFamily:FONT_MONO,letterSpacing:1,textAlign:"center",lineHeight:1.4}}>🎉<br/>COMPLETE</div>
-                  :<GoalVoiceButton onTap={()=>startVoice(g.id)} listening={isListening} color={g.color}/>
-                }
-              </div>
-              {/* Lava lamp — far right */}
-              <div style={{paddingRight:4,paddingBottom:12}}>
-                <ArcRing pct={pct} color={g.color}/>
-              </div>
-            </div>
+                {/* EQ bar centered + ArcRing centered — side by side, full-width centered */}
+                <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:24,padding:"8px 0 4px"}}>
+                  {done
+                    ?<div style={{fontSize:14,color:g.color,fontWeight:700,fontFamily:FONT_MONO,letterSpacing:1,textAlign:"center",lineHeight:1.4}}>🎉<br/>COMPLETE</div>
+                    :<GoalVoiceButton onTap={()=>startVoice(g.id)} listening={isListening} color={g.color}/>
+                  }
+                  <ArcRing pct={pct} color={g.color}/>
+                </div>
 
-            {/* Voice recording state */}
-            {isListening&&(
-              <div style={{textAlign:"center",padding:"6px 0",animation:"fadeSlideIn 0.15s ease-out"}}>
-                <div style={{fontSize:12,color:g.color,fontWeight:600,marginBottom:4}}>{goalPrompt(g)}</div>
-                {voiceTranscript&&<div style={{fontSize:14,color:"rgba(255,255,255,0.85)",fontWeight:500}}>{voiceTranscript}</div>}
-              </div>
-            )}
-            {voiceStatus&&voiceStatusFor===g.id&&(
-              <div style={{textAlign:"center",fontSize:12,fontWeight:700,color:voiceStatus.includes("logged")?"#43A047":"rgba(255,255,255,0.45)",fontFamily:FONT_MONO,animation:"fadeSlideIn 0.15s ease-out"}}>{voiceStatus}</div>
-            )}
+                {/* Voice recording state */}
+                {isListening&&(
+                  <div style={{textAlign:"center",padding:"6px 0",animation:"fadeSlideIn 0.15s ease-out"}}>
+                    <div style={{fontSize:12,color:g.color,fontWeight:600,marginBottom:4}}>{goalPrompt(g)}</div>
+                    {voiceTranscript&&<div style={{fontSize:14,color:"rgba(255,255,255,0.85)",fontWeight:500}}>{voiceTranscript}</div>}
+                  </div>
+                )}
+                {voiceStatus&&voiceStatusFor===g.id&&(
+                  <div style={{textAlign:"center",fontSize:12,fontWeight:700,color:voiceStatus.includes("logged")?"#43A047":"rgba(255,255,255,0.45)",fontFamily:FONT_MONO,animation:"fadeSlideIn 0.15s ease-out"}}>{voiceStatus}</div>
+                )}
 
-            {/* Thin slider bar — auxiliary */}
-            {!done&&(
-              <div style={{position:"relative",height:16,display:"flex",alignItems:"center",opacity:0.55}}>
-                <div style={{position:"absolute",left:0,right:0,height:3,borderRadius:2,background:"rgba(255,255,255,0.07)",zIndex:0}}/>
-                <div style={{position:"absolute",left:0,width:`${pct}%`,height:3,borderRadius:2,background:`linear-gradient(90deg,${g.color}55,${g.color}99)`,transition:"width 0.3s ease",pointerEvents:"none",zIndex:1}}/>
-                <input type="range" className="goal-slider" style={{"--goal-color":g.color,position:"relative",zIndex:2}} min={0} max={g.target} step={g.target>=100?1:0.1} value={g.current} onChange={e=>{const v=parseFloat(e.target.value);save(goals.map(gg=>gg.id===g.id?{...gg,current:v}:gg));}}/>
-              </div>
+                {/* Progress bar — boosted contrast */}
+                {!done&&(
+                  <div style={{position:"relative",height:16,display:"flex",alignItems:"center"}}>
+                    <div style={{position:"absolute",left:0,right:0,height:4,borderRadius:2,background:"rgba(255,255,255,0.14)",zIndex:0}}/>
+                    <div style={{position:"absolute",left:0,width:`${pct}%`,height:4,borderRadius:2,background:`linear-gradient(90deg,${g.color}bb,${g.color})`,boxShadow:`0 0 6px ${g.color}66`,transition:"width 0.3s ease",pointerEvents:"none",zIndex:1}}/>
+                    <input type="range" className="goal-slider" style={{"--goal-color":g.color,position:"relative",zIndex:2}} min={0} max={g.target} step={g.target>=100?1:0.1} value={g.current} onChange={e=>{const v=parseFloat(e.target.value);save(goals.map(gg=>gg.id===g.id?{...gg,current:v}:gg));}}/>
+                  </div>
+                )}
+              </>
             )}
           </div>
         );
@@ -3203,6 +3235,8 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
           </div>
         </div>
       )}
+      {/* My Rhythm — above Daily Brief so date in brief can't push it down */}
+      <div style={{maxWidth:isMobile?"100%":640,width:"100%"}}><DailySheetCard authToken={authToken}/></div>
       {/* Daily Brief — always visible */}
       {(()=>{
         const hasBriefData=BIZ.some((b,i)=>{
@@ -3251,12 +3285,20 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
         );
       })()}
       {briefOpen&&<TodayBriefModal urgentTasks={urgentTasks} allEvents={allEvents} td={td} onNavigate={onNavigate} onClose={()=>setBriefOpen(false)} state={state} isAuthed={isAuthed} gTasksFlat={gTasksFlat||[]}/>}
-      <div style={{maxWidth:isMobile?"100%":640,width:"100%"}}><DailySheetCard authToken={authToken}/></div>
-      <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":"repeat(8,minmax(0,175px))",gap:12,width:isMobile?"100%":"fit-content"}}>
-        {WIDGETS.map(w=>(
-          <WidgetCard key={w.id} widget={w} onOpen={()=>w.id==="goals"?onNavigate("goals"):w.id==="budget"?onNavigate("budget"):null}/>
-        ))}
-      </div>
+      {(()=>{
+        const liveGoals=(()=>{try{return JSON.parse(localStorage.getItem("cp_goals")||"[]");}catch{return[];}})();
+        const activeG=liveGoals.filter(g=>Math.round(Math.min(100,g.current/g.target*100))<100).length;
+        const onTrackG=liveGoals.filter(g=>{const p=Math.round(Math.min(100,g.current/g.target*100));return p>0&&p<100;}).length;
+        const doneG=liveGoals.filter(g=>Math.round(Math.min(100,g.current/g.target*100))>=100).length;
+        const widgets=WIDGETS.map(w=>w.id==="goals"?{...w,stats:[{v:activeG||"—",l:"ACTIVE"},{v:onTrackG||"—",l:"IN PROG"},{v:doneG||"—",l:"DONE"}]}:w);
+        return(
+          <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":"repeat(8,minmax(0,175px))",gap:isMobile?8:12,width:isMobile?"100%":"fit-content"}}>
+            {widgets.map(w=>(
+              <WidgetCard key={w.id} widget={w} onOpen={()=>w.id==="goals"?onNavigate("goals"):w.id==="budget"?onNavigate("budget"):null}/>
+            ))}
+          </div>
+        );
+      })()}
       {urgentTasks.length>0&&(
         <div style={panelSt("#C62828")}>
           <div style={{fontSize:13,fontWeight:800,color:"#C62828",letterSpacing:2,marginBottom:14}}>URGENT TASKS</div>
