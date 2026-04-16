@@ -3434,7 +3434,7 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
         );
       })()}
       </div>{/* end left col */}
-        {!isMobile&&<CommandScore urgentTasks={urgentTasks}/>}
+        {!isMobile&&<div style={{flex:1,display:"flex",justifyContent:"center",alignItems:"flex-start"}}><CommandScore urgentTasks={urgentTasks}/></div>}
       </div>{/* end two-col row */}
       {briefOpen&&<TodayBriefModal urgentTasks={urgentTasks} allEvents={allEvents} td={td} onNavigate={onNavigate} onClose={()=>setBriefOpen(false)} state={state} isAuthed={isAuthed} gTasksFlat={gTasksFlat||[]}/>}
       {(()=>{
