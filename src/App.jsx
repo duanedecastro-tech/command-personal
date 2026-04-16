@@ -2526,7 +2526,7 @@ function EditBizModal({bizId,onSave,onClose}){
     </div>,document.body);
 }
 
-function CommandScore({urgentTasks}){
+function CommandScore({urgentTasks, mini=false}){
   const[open,setOpen]=useState(false);
   const today=todayStr();
   const rhythmToday=(()=>{try{const s=JSON.parse(localStorage.getItem("dws_rhythm")||"null");if(s&&s.date===today)return s.blocks;}catch{}return null;})();
@@ -2557,6 +2557,74 @@ function CommandScore({urgentTasks}){
     {label:"STREAKS",pts:streakPts, max:10, color:"#43A047"},
     {label:"BUDGET", pts:budgetPts, max:15, color:"#0097A7"},
   ];
+
+  if(mini){
+    const msz=110,mcx=55,mcy=55,mouterR=50,minnerR=40;
+    const minnerCirc=2*Math.PI*minnerR;
+    const minnerArc=(score/100)*minnerCirc;
+    return(
+      <>
+        <div onClick={()=>setOpen(true)} style={{cursor:"pointer",userSelect:"none",display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <svg width={msz} height={msz} style={{overflow:"visible",filter:"drop-shadow(0 0 10px #EF535044)",transition:"filter 0.3s ease"}}>
+            <defs>
+              <clipPath id="scoreMiniClip"><circle cx={mcx} cy={mcy} r={mouterR-1}/></clipPath>
+              <filter id="blobBlurMini"><feGaussianBlur stdDeviation="8"/></filter>
+            </defs>
+            <g clipPath="url(#scoreMiniClip)">
+              <circle cx={mcx} cy={mcy} r={mouterR} fill="#060b16"/>
+              <circle cx={mcx-14} cy={mcy-10} r={28} fill="#EF5350" filter="url(#blobBlurMini)" className="score-blob-1" opacity={0.7}/>
+              <circle cx={mcx+16} cy={mcy+14} r={24} fill="#43A047" filter="url(#blobBlurMini)" className="score-blob-2" opacity={0.6}/>
+              <circle cx={mcx-4} cy={mcy+18} r={22} fill="#3B5BDB" filter="url(#blobBlurMini)" className="score-blob-3" opacity={0.5}/>
+            </g>
+            <circle cx={mcx} cy={mcy} r={mouterR} fill="none" stroke="#EF5350" strokeWidth={2} opacity={0.18} style={{filter:"blur(2px)"}}/>
+            <circle cx={mcx} cy={mcy} r={mouterR} fill="none" stroke="#EF5350" strokeWidth={1} opacity={0.78}/>
+            <circle cx={mcx} cy={mcy} r={minnerR} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={6}/>
+            <circle cx={mcx} cy={mcy} r={minnerR} fill="none" stroke="#EF5350" strokeWidth={6} strokeLinecap="round"
+              strokeDasharray={`${minnerArc} ${minnerCirc}`}
+              style={{transform:"rotate(-90deg)",transformOrigin:`${mcx}px ${mcy}px`,filter:"drop-shadow(0 0 5px #EF5350cc)",transition:"stroke-dasharray 0.7s ease"}}/>
+            <circle cx={mcx} cy={mcy} r={26} fill="rgba(6,11,22,0.72)" stroke="#EF5350" strokeWidth={0.8} opacity={0.9}/>
+            <text x={mcx} y={mcy} textAnchor="middle" dominantBaseline="central"
+              style={{fontSize:22,fontWeight:900,fill:"#EF5350",fontFamily:"'Orbitron',sans-serif"}}>{score}</text>
+          </svg>
+        </div>
+        {open&&createPortal(
+          <div onClick={()=>setOpen(false)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(10px)",padding:20}}>
+            <div onClick={e=>e.stopPropagation()} style={{background:"#080e1c",border:`1px solid ${scoreColor}28`,borderRadius:24,padding:"28px 28px 24px",width:"min(380px,92vw)",display:"flex",flexDirection:"column",gap:20,boxShadow:`0 0 60px ${scoreColor}18, 0 24px 80px rgba(0,0,0,0.8)`,animation:"fadeSlideIn 0.2s ease-out"}}>
+              <div style={{display:"flex",alignItems:"center",gap:18}}>
+                <svg width={76} height={76} style={{flexShrink:0}}>
+                  <circle cx={38} cy={38} r={32} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={6}/>
+                  <circle cx={38} cy={38} r={32} fill="none" stroke={scoreColor} strokeWidth={6} strokeLinecap="round"
+                    strokeDasharray={`${(score/100)*2*Math.PI*32} ${2*Math.PI*32}`}
+                    style={{transform:"rotate(-90deg)",transformOrigin:"38px 38px",filter:`drop-shadow(0 0 5px ${scoreColor}88)`}}/>
+                  <text x={38} y={38} textAnchor="middle" dominantBaseline="middle" style={{fontSize:20,fontWeight:900,fill:scoreColor,fontFamily:"'Sora',sans-serif"}}>{score}</text>
+                </svg>
+                <div>
+                  <div style={{fontSize:17,fontWeight:800,color:"rgba(255,255,255,0.9)",fontFamily:"'Sora',sans-serif",letterSpacing:-0.3}}>Command Score</div>
+                  <div style={{fontSize:12,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,marginTop:5,lineHeight:1.5}}>{scoreMsg}</div>
+                </div>
+              </div>
+              <div style={{height:1,background:"rgba(255,255,255,0.07)"}}/>
+              <div style={{display:"flex",flexDirection:"column",gap:14}}>
+                {cats.map(cat=>(
+                  <div key={cat.label}>
+                    <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
+                      <div style={{fontSize:10,fontWeight:700,color:cat.pts>0?cat.color:"rgba(255,255,255,0.25)",fontFamily:FONT_MONO,letterSpacing:1.2}}>{cat.label}</div>
+                      <div style={{fontSize:10,fontWeight:700,color:cat.pts>0?cat.color:"rgba(255,255,255,0.18)",fontFamily:FONT_MONO}}>{cat.pts} / {cat.max}</div>
+                    </div>
+                    <div style={{height:3,borderRadius:2,background:"rgba(255,255,255,0.07)"}}>
+                      <div style={{height:"100%",width:`${(cat.pts/cat.max)*100}%`,borderRadius:2,background:cat.color,boxShadow:`0 0 6px ${cat.color}55`,transition:"width 0.5s ease"}}/>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <button onClick={()=>setOpen(false)} style={{padding:"11px 0",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.45)",borderRadius:10,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:FONT,marginTop:4}}>Close</button>
+            </div>
+          </div>,
+          document.body
+        )}
+      </>
+    );
+  }
 
   return(
     <>
@@ -3407,42 +3475,52 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
           return u>0||todayEv>0;
         });
         return(
-          <div onClick={()=>setBriefOpen(true)} style={{background:'#080c14',borderRadius:20,border:'1px solid rgba(0,180,200,0.18)',padding:'14px 16px',
+          <div style={{background:'#080c14',borderRadius:20,border:'1px solid rgba(0,180,200,0.18)',
             backgroundImage:'linear-gradient(rgba(0,180,200,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,200,0.03) 1px,transparent 1px)',
-            backgroundSize:'22px 22px',boxShadow:'0 4px 30px rgba(0,0,0,0.5),inset 0 1px 0 rgba(0,180,200,0.08)',cursor:'pointer',transition:'border-color 0.15s',
-            minHeight:148,maxWidth:640,width:"100%"}}
+            backgroundSize:'22px 22px',boxShadow:'0 4px 30px rgba(0,0,0,0.5),inset 0 1px 0 rgba(0,180,200,0.08)',transition:'border-color 0.15s',
+            minHeight:148,maxWidth:640,width:"100%",display:'flex',flexDirection:'row',alignItems:'stretch',overflow:'hidden'}}
             onMouseEnter={e=>e.currentTarget.style.borderColor='rgba(0,180,200,0.35)'}
             onMouseLeave={e=>e.currentTarget.style.borderColor='rgba(0,180,200,0.18)'}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
-              <div style={{fontSize:11,fontWeight:800,color:'#EF5350',letterSpacing:2,fontFamily:FONT_MONO}}>⚡ TODAY'S BRIEF</div>
-              <div style={{fontSize:9,color:'rgba(0,180,200,0.5)',fontFamily:FONT_MONO,letterSpacing:1}}>TAP TO OPEN ›</div>
-            </div>
-            {hasBriefData
-              ?<div style={{display:'flex',flexDirection:'column',gap:4}}>
-                {BIZ.map((b,i)=>{
-                  const u=urgentTasks.filter(t=>t.bizId===i).length;
-                  const todayEvs=allEvents.filter(ev=>ev.bizId===i&&(ev.start||"").split("T")[0]===td);
-                  if(u===0&&todayEvs.length===0)return null;
-                  return(
-                    <div key={b.id} style={{display:'flex',alignItems:'center',gap:0,borderRadius:8,overflow:'hidden'}}>
-                      <div style={{width:3,alignSelf:'stretch',background:b.color,flexShrink:0,borderRadius:'2px 0 0 2px'}}/>
-                      <div style={{display:'flex',alignItems:'center',gap:8,padding:'6px 10px',flex:1,minWidth:0}}>
-                        <span style={{fontSize:10,fontWeight:800,color:b.color,fontFamily:FONT_MONO,minWidth:74,flexShrink:0,letterSpacing:0.3}}>{b.short.toUpperCase()}</span>
-                        <div style={{display:'flex',gap:6,alignItems:'center',flex:1,minWidth:0,flexWrap:'wrap'}}>
-                          {u>0&&<span style={{fontSize:9,fontWeight:800,color:'#FF3B3B',fontFamily:FONT_MONO,background:'rgba(255,59,59,0.12)',border:'1px solid rgba(255,59,59,0.3)',borderRadius:5,padding:'1px 6px',flexShrink:0}}>⚠ {u} URGENT</span>}
-                          {todayEvs.slice(0,2).map(ev=>(
-                            <span key={ev.id} style={{fontSize:9,color:'#EF5350',fontFamily:FONT_MONO,opacity:0.75,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:160}}>
-                              {ev.allDay?'ALL DAY':fmtTime(ev.start)} · {ev.summary}
-                            </span>
-                          ))}
+            {/* Left tap zone: brief content */}
+            <div onClick={()=>setBriefOpen(true)} style={{flex:1,cursor:'pointer',padding:'14px 16px',minWidth:0}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+                <div style={{fontSize:11,fontWeight:800,color:'#EF5350',letterSpacing:2,fontFamily:FONT_MONO}}>⚡ TODAY'S BRIEF</div>
+                <div style={{fontSize:9,color:'rgba(0,180,200,0.5)',fontFamily:FONT_MONO,letterSpacing:1}}>TAP TO OPEN ›</div>
+              </div>
+              {hasBriefData
+                ?<div style={{display:'flex',flexDirection:'column',gap:4}}>
+                  {BIZ.map((b,i)=>{
+                    const u=urgentTasks.filter(t=>t.bizId===i).length;
+                    const todayEvs=allEvents.filter(ev=>ev.bizId===i&&(ev.start||"").split("T")[0]===td);
+                    if(u===0&&todayEvs.length===0)return null;
+                    return(
+                      <div key={b.id} style={{display:'flex',alignItems:'center',gap:0,borderRadius:8,overflow:'hidden'}}>
+                        <div style={{width:3,alignSelf:'stretch',background:b.color,flexShrink:0,borderRadius:'2px 0 0 2px'}}/>
+                        <div style={{display:'flex',alignItems:'center',gap:8,padding:'6px 10px',flex:1,minWidth:0}}>
+                          <span style={{fontSize:10,fontWeight:800,color:b.color,fontFamily:FONT_MONO,minWidth:74,flexShrink:0,letterSpacing:0.3}}>{b.short.toUpperCase()}</span>
+                          <div style={{display:'flex',gap:6,alignItems:'center',flex:1,minWidth:0,flexWrap:'wrap'}}>
+                            {u>0&&<span style={{fontSize:9,fontWeight:800,color:'#FF3B3B',fontFamily:FONT_MONO,background:'rgba(255,59,59,0.12)',border:'1px solid rgba(255,59,59,0.3)',borderRadius:5,padding:'1px 6px',flexShrink:0}}>⚠ {u} URGENT</span>}
+                            {todayEvs.slice(0,2).map(ev=>(
+                              <span key={ev.id} style={{fontSize:9,color:'#EF5350',fontFamily:FONT_MONO,opacity:0.75,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:isMobile?80:160}}>
+                                {ev.allDay?'ALL DAY':fmtTime(ev.start)} · {ev.summary}
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+                :<div style={{fontSize:12,color:'rgba(255,255,255,0.25)',fontFamily:FONT_MONO,letterSpacing:1}}>All clear — nothing urgent today.</div>
+              }
+            </div>
+            {/* Right tap zone: mini Command Score (mobile only) */}
+            {isMobile&&(
+              <div style={{width:120,flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',borderLeft:'1px solid rgba(0,180,200,0.12)',gap:4}}>
+                <CommandScore urgentTasks={urgentTasks} mini/>
+                <div style={{fontSize:8,color:'rgba(255,255,255,0.2)',fontFamily:FONT_MONO,letterSpacing:1,textAlign:'center'}}>SCORE</div>
               </div>
-              :<div style={{fontSize:12,color:'rgba(255,255,255,0.25)',fontFamily:FONT_MONO,letterSpacing:1}}>All clear — nothing urgent today.</div>
-            }
+            )}
           </div>
         );
       })()}
