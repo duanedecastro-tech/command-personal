@@ -17,6 +17,17 @@ const BIZ = [
   { id:7, name:"Command Bean Mogul",         short:"CB Mogul",        type:"Tech Platform",  color:"#3B5BDB" },
 ];
 
+const WIDGETS = [
+  { id:"net-worth",     name:"Net Worth",     category:"Finance",    color:"#EF5350", stats:[{v:"—",l:"ASSETS"},{v:"—",l:"DEBT"},{v:"—",l:"NET"}] },
+  { id:"finance",       name:"Finance",       category:"Banking",    color:"#3B5BDB", stats:[{v:"—",l:"CHECK"},{v:"—",l:"SAVE"},{v:"—",l:"CARD"}] },
+  { id:"budget",        name:"Budget",        category:"Spending",   color:"#F59E0B", stats:[{v:"—",l:"SPENT"},{v:"—",l:"LEFT"},{v:"—",l:"BILLS"}] },
+  { id:"investments",   name:"Investments",   category:"Portfolio",  color:"#43A047", stats:[{v:"—",l:"VALUE"},{v:"—",l:"TODAY"},{v:"—",l:"401K"}] },
+  { id:"health",        name:"Health",        category:"Wellness",   color:"#42A5F5", stats:[{v:"—",l:"STEPS"},{v:"—",l:"SLEEP"},{v:"—",l:"HRV"}] },
+  { id:"habits",        name:"Habits",        category:"Daily",      color:"#AB47BC", stats:[{v:"—",l:"TODAY"},{v:"—",l:"STREAK"},{v:"—",l:"WEEK"}] },
+  { id:"goals",         name:"Goals",         category:"Personal",   color:"#FF7043", stats:[{v:"—",l:"ACTIVE"},{v:"—",l:"ON TRACK"},{v:"—",l:"DONE"}] },
+  { id:"subscriptions", name:"Subscriptions", category:"Monthly",    color:"#0097A7", stats:[{v:"—",l:"ACTIVE"},{v:"—",l:"MO COST"},{v:"—",l:"UNUSED"}] },
+];
+
 // Apply user business config over the BIZ defaults at module load time
 (function applyUserBiz(){
   try{
@@ -283,7 +294,7 @@ function VoiceTaskBar({onTask,onAddCalEvent,onAddNote,isAuthed,bizId,compact}){
   const[status,setStatus]=useState("");
   const[hoveredMode,setHoveredMode]=useState(null);
   const recRef=useRef(null);
-  const MODE_COLORS={calendar:"#F59E0B",task:"#3B5BDB",note:"#7B1FA2"};
+  const MODE_COLORS={calendar:"#EF5350",task:"#3B5BDB",note:"#7B1FA2"};
   const MODE_ICONS={calendar:CalendarDays,task:ListChecks,note:PenLine};
   const ac=activeMode?MODE_COLORS[activeMode]:"#3B5BDB";
   const btnSize=compact?40:64;
@@ -797,7 +808,7 @@ function NoteModal({note,biz,bizId,onClose,onUpdate,onDelete,onAddTask}){
           {editing
             ?<div>
               <textarea ref={taRef} value={editText} onChange={e=>setEditText(e.target.value)} style={{...iSt(biz.color),minHeight:80,resize:"none",width:"100%",boxSizing:"border-box",overflow:"auto"}} autoFocus/>
-              <button onClick={voicing?stopVoice:startVoice} style={{marginTop:6,width:"100%",background:voicing?"rgba(198,40,40,0.15)":`rgba(245,158,11,0.1)`,border:voicing?"1px solid #C62828":`1px solid ${biz.color}44`,color:voicing?"#C62828":biz.color,borderRadius:8,padding:"8px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:FONT_MONO,letterSpacing:0.5,display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+              <button onClick={voicing?stopVoice:startVoice} style={{marginTop:6,width:"100%",background:voicing?"rgba(198,40,40,0.15)":`rgba(239,83,80,0.1)`,border:voicing?"1px solid #C62828":`1px solid ${biz.color}44`,color:voicing?"#C62828":biz.color,borderRadius:8,padding:"8px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:FONT_MONO,letterSpacing:0.5,display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
                 {voicing?"\u25A0 STOP RECORDING":"\uD83C\uDF99\uFE0F SPEAK TO APPEND"}
               </button>
             </div>
@@ -812,7 +823,7 @@ function NoteModal({note,biz,bizId,onClose,onUpdate,onDelete,onAddTask}){
           :<div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
             {[
               {label:"EDIT",action:()=>setEditing(true),bg:`${biz.color}18`,border:`${biz.color}44`,color:biz.color},
-              {label:note.pinned?"UNPIN":"\uD83D\uDCCC PIN",action:togglePin,bg:note.pinned?"#F59E0B18":"rgba(255,255,255,0.08)",border:note.pinned?"#F59E0B44":"rgba(255,255,255,0.12)",color:note.pinned?"#F59E0B":"rgba(255,255,255,0.5)"},
+              {label:note.pinned?"UNPIN":"\uD83D\uDCCC PIN",action:togglePin,bg:note.pinned?"#EF535018":"rgba(255,255,255,0.08)",border:note.pinned?"#EF535044":"rgba(255,255,255,0.12)",color:note.pinned?"#EF5350":"rgba(255,255,255,0.5)"},
               {label:copied?"COPIED!":"COPY",action:copyNote,bg:"rgba(255,255,255,0.08)",border:"rgba(255,255,255,0.12)",color:copied?"#2E7D32":"rgba(255,255,255,0.5)"},
               {label:"\u2192 TASK",action:sendToTask,bg:"#3B5BDB18",border:"#3B5BDB44",color:"#3B5BDB"},
               {label:".TXT",action:()=>downloadNote(".txt"),bg:"rgba(255,255,255,0.08)",border:"rgba(255,255,255,0.12)",color:"rgba(255,255,255,0.5)"},
@@ -934,12 +945,12 @@ const RHYTHM_QUOTES=[
 
 const EQ_BANDS=[
   {cx:35, w:110, color:"rgba(59,91,219,0.32)"},
-  {cx:110,w:130, color:"rgba(245,158,11,0.28)"},
+  {cx:110,w:130, color:"rgba(239,83,80,0.28)"},
   {cx:190,w:140, color:"rgba(0,151,167,0.26)"},
   {cx:270,w:130, color:"rgba(180,90,30,0.24)"},
   {cx:345,w:140, color:"rgba(26,39,68,0.38)"},
   {cx:420,w:120, color:"rgba(99,131,255,0.22)"},
-  {cx:488,w:130, color:"rgba(245,158,11,0.2)"},
+  {cx:488,w:130, color:"rgba(239,83,80,0.2)"},
   {cx:555,w:110, color:"rgba(0,120,140,0.28)"},
 ];
 
@@ -953,7 +964,7 @@ async function fetchMarcusQuotes(){
   }catch{return null;}
 }
 
-const BLOCK_COLORS={morning:"#F59E0B",afternoon:"#FCD34D",evening:"#F97316",night:"#818CF8"};
+const BLOCK_COLORS={morning:"#EF5350",afternoon:"#FCD34D",evening:"#F97316",night:"#818CF8"};
 const EQ_MOODS=[
   {key:"sleep",   label:"SLEEP"},
   {key:"focus",   label:"FOCUS"},
@@ -998,14 +1009,14 @@ function getBlockFromTimes(times){
 }
 
 // VU-meter gradient anchored to bottom — same palette as decorative EQ_BANDS
-const VU_FILL="linear-gradient(to top,#3B5BDB 0%,#0097A7 25%,#F59E0B 55%,#F97316 78%,#EF5350 100%)";
-const VU_GHOST="linear-gradient(to top,rgba(59,91,219,0.13) 0%,rgba(0,151,167,0.1) 25%,rgba(245,158,11,0.08) 55%,rgba(249,115,22,0.07) 78%,rgba(239,83,80,0.06) 100%)";
+const VU_FILL="linear-gradient(to top,#3B5BDB 0%,#0097A7 25%,#EF5350 55%,#F97316 78%,#EF5350 100%)";
+const VU_GHOST="linear-gradient(to top,rgba(59,91,219,0.13) 0%,rgba(0,151,167,0.1) 25%,rgba(239,83,80,0.08) 55%,rgba(249,115,22,0.07) 78%,rgba(239,83,80,0.06) 100%)";
 function vuKnobColor(v){
   if(v===0)return"rgba(255,255,255,0.08)";
   const p=v/5;
   if(p<=0.25)return"#3B5BDB";
   if(p<=0.55)return"#0097A7";
-  if(p<=0.78)return"#F59E0B";
+  if(p<=0.78)return"#EF5350";
   if(p<=0.9)return"#F97316";
   return"#EF5350";
 }
@@ -1579,16 +1590,16 @@ function InsightsPanel({onClose,history,todayRhythm}){
       {/* Header */}
       <div style={{flexShrink:0,padding:isMobile?"16px 18px 12px":"20px 28px 14px",
         background:"linear-gradient(135deg,#12192b,#1c1408 60%,#1a2744)",
-        borderBottom:"1px solid rgba(245,158,11,0.15)",display:"flex",flexDirection:"column",gap:12}}>
+        borderBottom:"1px solid rgba(239,83,80,0.15)",display:"flex",flexDirection:"column",gap:12}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
           <div>
-            <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?22:28,fontWeight:800,color:"#F59E0B",letterSpacing:-0.5,lineHeight:1}}>performance insights.</div>
+            <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?22:28,fontWeight:800,color:"#EF5350",letterSpacing:-0.5,lineHeight:1}}>performance insights.</div>
             <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",fontFamily:FONT_MONO,marginTop:3,letterSpacing:1}}>
               {realDays} DAY{realDays!==1?"S":""} OF DATA{showDemo?" · SHOWING EXAMPLE DATA":""}
             </div>
           </div>
           <button onClick={onClose}
-            style={{background:"rgba(245,158,11,0.18)",border:"1px solid rgba(245,158,11,0.4)",color:"#F59E0B",borderRadius:9,padding:"8px 14px",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:FONT_MONO}}>✕</button>
+            style={{background:"rgba(239,83,80,0.18)",border:"1px solid rgba(239,83,80,0.4)",color:"#EF5350",borderRadius:9,padding:"8px 14px",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:FONT_MONO}}>✕</button>
         </div>
         {/* Controls */}
         <div style={{display:"flex",gap:isMobile?8:16,flexWrap:"wrap",alignItems:"center"}}>
@@ -1596,9 +1607,9 @@ function InsightsPanel({onClose,history,todayRhythm}){
           <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
             {blockFilters.map(f=>(
               <button key={f.v} onClick={()=>setBlockFilter(f.v)}
-                style={{background:blockFilter===f.v?"rgba(245,158,11,0.25)":"rgba(255,255,255,0.06)",
-                  border:`1px solid ${blockFilter===f.v?"rgba(245,158,11,0.6)":"rgba(255,255,255,0.1)"}`,
-                  color:blockFilter===f.v?"#F59E0B":"rgba(255,255,255,0.45)",
+                style={{background:blockFilter===f.v?"rgba(239,83,80,0.25)":"rgba(255,255,255,0.06)",
+                  border:`1px solid ${blockFilter===f.v?"rgba(239,83,80,0.6)":"rgba(255,255,255,0.1)"}`,
+                  color:blockFilter===f.v?"#EF5350":"rgba(255,255,255,0.45)",
                   borderRadius:6,padding:"4px 8px",fontSize:9,fontFamily:FONT_MONO,cursor:"pointer",letterSpacing:0.5,transition:"all 0.15s"}}>
                 {f.label}
               </button>
@@ -1672,7 +1683,7 @@ function InsightsPanel({onClose,history,todayRhythm}){
           {!showDemo&&(
             <div style={{display:"flex",justifyContent:"space-between"}}>
               <span style={{fontSize:8,color:"rgba(255,255,255,0.2)",fontFamily:FONT_MONO}}>{dailyScores[0]?.date||""}</span>
-              <span style={{fontSize:8,color:"rgba(245,158,11,0.5)",fontFamily:FONT_MONO,letterSpacing:0.5}}>─ ─ HIGH PERFORMER BENCHMARK</span>
+              <span style={{fontSize:8,color:"rgba(239,83,80,0.5)",fontFamily:FONT_MONO,letterSpacing:0.5}}>─ ─ HIGH PERFORMER BENCHMARK</span>
               <span style={{fontSize:8,color:"rgba(255,255,255,0.2)",fontFamily:FONT_MONO}}>TODAY</span>
             </div>
           )}
@@ -1747,13 +1758,13 @@ function InsightsPanel({onClose,history,todayRhythm}){
         </div>
 
         {/* ④ Insights card */}
-        <div style={{background:"rgba(255,255,255,0.03)",borderRadius:16,border:"1px solid rgba(245,158,11,0.12)",
+        <div style={{background:"rgba(255,255,255,0.03)",borderRadius:16,border:"1px solid rgba(239,83,80,0.12)",
           padding:"16px 18px",display:"flex",flexDirection:"column",gap:12}}>
           <div style={{fontSize:9,fontFamily:FONT_MONO,color:"rgba(255,255,255,0.35)",letterSpacing:1}}>PERFORMANCE SIGNALS</div>
           <div style={{flex:1,display:"flex",flexDirection:"column",gap:14,justifyContent:"center"}}>
             {insights.map((msg,i)=>(
               <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-                <div style={{width:6,height:6,borderRadius:"50%",background:["#F59E0B","#3B5BDB","#0097A7"][i],flexShrink:0,marginTop:3}}/>
+                <div style={{width:6,height:6,borderRadius:"50%",background:["#EF5350","#3B5BDB","#0097A7"][i],flexShrink:0,marginTop:3}}/>
                 <div style={{fontSize:11,color:"rgba(255,255,255,0.75)",fontFamily:FONT,lineHeight:1.6}}>{msg}</div>
               </div>
             ))}
@@ -1909,8 +1920,8 @@ function DailySheetCard({authToken}){
   const updateScheduleSlot=(i,field,val)=>saveSchedule(schedule.map((s,idx)=>idx===i?{...s,[field]:val}:s));
   const updateCategory=(i,val)=>saveCategories(categories.map((c,idx)=>idx===i?{...c,value:val}:c));
   const updateHabitName=(i,val)=>saveHabits(habits.map((h,idx)=>idx===i?{...h,name:val}:h));
-  const tabBtn=(active)=>({padding:"8px 20px",borderRadius:20,border:"none",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:FONT_MONO,letterSpacing:1,transition:"all 0.15s",background:active?"#F59E0B":"rgba(255,255,255,0.05)",color:active?"#080c14":"rgba(255,255,255,0.4)"});
-  const inp=()=>({background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"9px 12px",color:"rgba(255,255,255,0.85)",fontSize:13,fontFamily:FONT,outline:"none",width:"100%",boxSizing:"border-box",caretColor:"#F59E0B"});
+  const tabBtn=(active)=>({padding:"8px 20px",borderRadius:20,border:"none",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:FONT_MONO,letterSpacing:1,transition:"all 0.15s",background:active?"#EF5350":"rgba(255,255,255,0.05)",color:active?"#080c14":"rgba(255,255,255,0.4)"});
+  const inp=()=>({background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"9px 12px",color:"rgba(255,255,255,0.85)",fontSize:13,fontFamily:FONT,outline:"none",width:"100%",boxSizing:"border-box",caretColor:"#EF5350"});
 
   // Drive sync — read on auth, write on change or auth (debounced)
   const rhythmSaveTimer=useRef(null);
@@ -1952,11 +1963,11 @@ function DailySheetCard({authToken}){
     <>
     {/* Block transition toast */}
     {chimeToast&&createPortal(
-      <div style={{position:"fixed",bottom:90,left:"50%",transform:"translateX(-50%)",zIndex:9999,background:"linear-gradient(135deg,#1c1408,#1a2744)",border:"1px solid rgba(245,158,11,0.4)",borderRadius:14,padding:"12px 20px",boxShadow:"0 8px 32px rgba(0,0,0,0.5)",animation:"fadeSlideIn 0.3s ease-out",whiteSpace:"nowrap"}}>
+      <div style={{position:"fixed",bottom:90,left:"50%",transform:"translateX(-50%)",zIndex:9999,background:"linear-gradient(135deg,#1c1408,#1a2744)",border:"1px solid rgba(239,83,80,0.4)",borderRadius:14,padding:"12px 20px",boxShadow:"0 8px 32px rgba(0,0,0,0.5)",animation:"fadeSlideIn 0.3s ease-out",whiteSpace:"nowrap"}}>
         <div style={{fontSize:13,color:"rgba(255,255,255,0.9)",fontFamily:FONT,fontWeight:600}}>{chimeToast}</div>
       </div>,document.body
     )}
-    <div style={{borderRadius:20,overflow:"hidden",boxShadow:"0 8px 40px rgba(0,0,0,0.35),0 0 0 1px rgba(245,158,11,0.15)",cursor:open?"default":"pointer"}}
+    <div style={{borderRadius:20,overflow:"hidden",boxShadow:"0 8px 40px rgba(0,0,0,0.35),0 0 0 1px rgba(239,83,80,0.15)",cursor:open?"default":"pointer"}}
       onClick={()=>setOpen(true)}>
       {/* Collapsed header */}
       <div style={{position:"relative",background:"linear-gradient(135deg,#12192b 0%,#1c1408 55%,#1a2744 100%)",padding:isMobile?"14px 16px 28px":"16px 20px 32px",overflow:"hidden"}}>
@@ -1967,9 +1978,9 @@ function DailySheetCard({authToken}){
         <div style={{position:"relative",zIndex:1}}>
           <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10}}>
             <div>
-              <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?20:24,fontWeight:800,color:"#F59E0B",letterSpacing:-0.5,lineHeight:1}}>my rhythm.</div>
+              <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?20:24,fontWeight:800,color:"#EF5350",letterSpacing:-0.5,lineHeight:1}}>my rhythm.</div>
               <div style={{transition:"opacity 0.9s ease",opacity:quoteFade?1:0,marginTop:5,overflow:"hidden",height:36}}>
-                <div style={{fontSize:11,color:"rgba(245,158,11,0.65)",fontFamily:FONT,fontStyle:"italic",lineHeight:1.4}}>"{activeQuotes[quoteIdx%activeQuotes.length].q}"</div>
+                <div style={{fontSize:11,color:"rgba(239,83,80,0.65)",fontFamily:FONT,fontStyle:"italic",lineHeight:1.4}}>"{activeQuotes[quoteIdx%activeQuotes.length].q}"</div>
               </div>
             </div>
             <div style={{textAlign:"right",flexShrink:0}}>
@@ -1977,17 +1988,17 @@ function DailySheetCard({authToken}){
             </div>
           </div>
         </div>
-        <div style={{position:"absolute",bottom:6,left:"50%",transform:`translateX(-50%) rotate(${open?180:0}deg)`,color:"rgba(245,158,11,0.4)",fontSize:9,transition:"transform 0.3s ease",zIndex:2}}>▼</div>
+        <div style={{position:"absolute",bottom:6,left:"50%",transform:`translateX(-50%) rotate(${open?180:0}deg)`,color:"rgba(239,83,80,0.4)",fontSize:9,transition:"transform 0.3s ease",zIndex:2}}>▼</div>
       </div>
 
     </div>
 
     {open&&createPortal(
       <div onClick={()=>setOpen(false)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(8px)",padding:isMobile?"8px":"20px"}}>
-        <div onClick={e=>e.stopPropagation()} style={{background:"#0b1120",border:"1px solid rgba(245,158,11,0.2)",borderTop:"3px solid #F59E0B",borderRadius:20,width:"100%",maxWidth:520,height:isMobile?"88vh":"min(92vh,780px)",display:"flex",flexDirection:"column",boxShadow:"0 24px 80px rgba(0,0,0,0.8)",animation:"fadeSlideIn 0.2s ease-out"}}>
+        <div onClick={e=>e.stopPropagation()} style={{background:"#0b1120",border:"1px solid rgba(239,83,80,0.2)",borderTop:"3px solid #EF5350",borderRadius:20,width:"100%",maxWidth:520,height:isMobile?"88vh":"min(92vh,780px)",display:"flex",flexDirection:"column",boxShadow:"0 24px 80px rgba(0,0,0,0.8)",animation:"fadeSlideIn 0.2s ease-out"}}>
           <div style={{padding:"20px 20px 0",flexShrink:0}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-              <div style={{fontFamily:"'Sora',sans-serif",fontSize:18,fontWeight:800,color:"#F59E0B",letterSpacing:-0.5}}>my rhythm.</div>
+              <div style={{fontFamily:"'Sora',sans-serif",fontSize:18,fontWeight:800,color:"#EF5350",letterSpacing:-0.5}}>my rhythm.</div>
               <button onClick={()=>setOpen(false)} style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.5)",width:32,height:32,borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
             </div>
             <div style={{display:"flex",gap:8,marginBottom:16}}>
@@ -1999,10 +2010,10 @@ function DailySheetCard({authToken}){
             {tab==="today"&&(
               <>
                 <div style={{marginBottom:24}}>
-                  <div style={{fontSize:10,color:"rgba(245,158,11,0.7)",fontFamily:FONT_MONO,letterSpacing:2,marginBottom:10}}>TOP 3 PRIORITIES</div>
+                  <div style={{fontSize:10,color:"rgba(239,83,80,0.7)",fontFamily:FONT_MONO,letterSpacing:2,marginBottom:10}}>TOP 3 PRIORITIES</div>
                   {priorities.map((p,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-                      <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(245,158,11,0.12)",border:"1px solid rgba(245,158,11,0.3)",color:"#F59E0B",fontSize:11,fontWeight:800,fontFamily:FONT_MONO,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{i+1}</div>
+                      <div style={{width:22,height:22,borderRadius:"50%",background:"rgba(239,83,80,0.12)",border:"1px solid rgba(239,83,80,0.3)",color:"#EF5350",fontSize:11,fontWeight:800,fontFamily:FONT_MONO,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{i+1}</div>
                       <input value={p} onChange={e=>{const n=[...priorities];n[i]=e.target.value;savePriorities(n);}} placeholder={"Priority "+(i+1)} style={inp()}/>
                     </div>
                   ))}
@@ -2012,13 +2023,13 @@ function DailySheetCard({authToken}){
                   {schedule.map((sl,i)=>{
                     const isNow=parseInt(sl.time.split(":")[0])===nowHour;
                     return(
-                      <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 8px",borderRadius:8,background:isNow?"rgba(245,158,11,0.06)":"transparent",borderLeft:isNow?"2px solid #F59E0B":"2px solid transparent",marginBottom:2}}>
+                      <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 8px",borderRadius:8,background:isNow?"rgba(239,83,80,0.06)":"transparent",borderLeft:isNow?"2px solid #EF5350":"2px solid transparent",marginBottom:2}}>
                         {editingTimeIdx===i?(
-                          <input value={sl.time} onChange={e=>updateScheduleSlot(i,"time",e.target.value)} onBlur={()=>setEditingTimeIdx(null)} autoFocus style={{width:54,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(245,158,11,0.4)",borderRadius:6,padding:"3px 6px",color:"#F59E0B",fontSize:11,fontFamily:FONT_MONO,outline:"none",textAlign:"center"}}/>
+                          <input value={sl.time} onChange={e=>updateScheduleSlot(i,"time",e.target.value)} onBlur={()=>setEditingTimeIdx(null)} autoFocus style={{width:54,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(239,83,80,0.4)",borderRadius:6,padding:"3px 6px",color:"#EF5350",fontSize:11,fontFamily:FONT_MONO,outline:"none",textAlign:"center"}}/>
                         ):(
-                          <span onClick={()=>setEditingTimeIdx(i)} style={{fontSize:11,color:isNow?"#F59E0B":"rgba(0,180,200,0.5)",fontFamily:FONT_MONO,width:54,flexShrink:0,cursor:"pointer"}}>{sl.time}</span>
+                          <span onClick={()=>setEditingTimeIdx(i)} style={{fontSize:11,color:isNow?"#EF5350":"rgba(0,180,200,0.5)",fontFamily:FONT_MONO,width:54,flexShrink:0,cursor:"pointer"}}>{sl.time}</span>
                         )}
-                        <input value={sl.label} onChange={e=>updateScheduleSlot(i,"label",e.target.value)} placeholder="—" style={{flex:1,background:"transparent",border:"none",borderBottom:"1px solid rgba(255,255,255,0.06)",color:"rgba(255,255,255,0.85)",fontSize:13,fontFamily:FONT,outline:"none",padding:"3px 0",caretColor:"#F59E0B"}}/>
+                        <input value={sl.label} onChange={e=>updateScheduleSlot(i,"label",e.target.value)} placeholder="—" style={{flex:1,background:"transparent",border:"none",borderBottom:"1px solid rgba(255,255,255,0.06)",color:"rgba(255,255,255,0.85)",fontSize:13,fontFamily:FONT,outline:"none",padding:"3px 0",caretColor:"#EF5350"}}/>
                       </div>
                     );
                   })}
@@ -2028,12 +2039,12 @@ function DailySheetCard({authToken}){
             {tab==="week"&&(
               <>
                 <div style={{marginBottom:24}}>
-                  <div style={{fontSize:10,color:"rgba(245,158,11,0.7)",fontFamily:FONT_MONO,letterSpacing:2,marginBottom:10}}>LIFE INTENTIONS</div>
+                  <div style={{fontSize:10,color:"rgba(239,83,80,0.7)",fontFamily:FONT_MONO,letterSpacing:2,marginBottom:10}}>LIFE INTENTIONS</div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
                     {categories.map((c,i)=>(
                       <div key={c.key} style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:10,padding:"10px 12px"}}>
-                        <div style={{fontSize:9,color:"rgba(245,158,11,0.5)",fontFamily:FONT_MONO,letterSpacing:1,marginBottom:6}}>{c.label.toUpperCase()}</div>
-                        <input value={c.value} onChange={e=>updateCategory(i,e.target.value)} placeholder="Add intention..." style={{background:"transparent",border:"none",borderBottom:"1px solid rgba(255,255,255,0.08)",color:"rgba(255,255,255,0.8)",fontSize:12,fontFamily:FONT,outline:"none",padding:"2px 0",width:"100%",caretColor:"#F59E0B"}}/>
+                        <div style={{fontSize:9,color:"rgba(239,83,80,0.5)",fontFamily:FONT_MONO,letterSpacing:1,marginBottom:6}}>{c.label.toUpperCase()}</div>
+                        <input value={c.value} onChange={e=>updateCategory(i,e.target.value)} placeholder="Add intention..." style={{background:"transparent",border:"none",borderBottom:"1px solid rgba(255,255,255,0.08)",color:"rgba(255,255,255,0.8)",fontSize:12,fontFamily:FONT,outline:"none",padding:"2px 0",width:"100%",caretColor:"#EF5350"}}/>
                       </div>
                     ))}
                   </div>
@@ -2046,11 +2057,11 @@ function DailySheetCard({authToken}){
                   </div>
                   {habits.map((h,hi)=>(
                     <div key={hi} style={{display:"grid",gridTemplateColumns:isMobile?"1fr repeat(7, 22px)":"1fr repeat(7, 28px)",gap:isMobile?3:4,alignItems:"center",marginBottom:8,paddingLeft:4}}>
-                      <input value={h.name} onChange={e=>updateHabitName(hi,e.target.value)} style={{background:"transparent",border:"none",borderBottom:"1px solid rgba(255,255,255,0.08)",color:"rgba(255,255,255,0.75)",fontSize:12,fontFamily:FONT,outline:"none",padding:"2px 0",caretColor:"#F59E0B"}}/>
+                      <input value={h.name} onChange={e=>updateHabitName(hi,e.target.value)} style={{background:"transparent",border:"none",borderBottom:"1px solid rgba(255,255,255,0.08)",color:"rgba(255,255,255,0.75)",fontSize:12,fontFamily:FONT,outline:"none",padding:"2px 0",caretColor:"#EF5350"}}/>
                       {DAYS.map((_,di)=>{
                         const checked=!!checks[hi+"-"+di];
                         return(
-                          <div key={di} onClick={()=>toggleCheck(hi,di)} style={{width:isMobile?20:24,height:isMobile?20:24,borderRadius:5,border:"1.5px solid "+(checked?"#F59E0B":"rgba(255,255,255,0.12)"),background:checked?"#F59E0B":"transparent",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto",transition:"all 0.15s"}}>
+                          <div key={di} onClick={()=>toggleCheck(hi,di)} style={{width:isMobile?20:24,height:isMobile?20:24,borderRadius:5,border:"1.5px solid "+(checked?"#EF5350":"rgba(255,255,255,0.12)"),background:checked?"#EF5350":"transparent",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto",transition:"all 0.15s"}}>
                             {checked&&<span style={{fontSize:isMobile?9:10,color:"#080c14",fontWeight:900}}>✓</span>}
                           </div>
                         );
@@ -2117,7 +2128,7 @@ function ComposeModal({token,onClose}){
     <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:11000,backdropFilter:"blur(4px)"}} onClick={onClose}>
       <div style={{...panelSt("#3B5BDB"),width:480,maxWidth:"94vw",maxHeight:"90vh",display:"flex",flexDirection:"column",boxShadow:"0 16px 60px rgba(0,0,0,0.6)"}} onClick={e=>e.stopPropagation()}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-          <div style={{fontSize:12,fontWeight:800,color:"#F59E0B",letterSpacing:2,fontFamily:FONT_MONO}}>✉ COMPOSE DRAFT</div>
+          <div style={{fontSize:12,fontWeight:800,color:"#EF5350",letterSpacing:2,fontFamily:FONT_MONO}}>✉ COMPOSE DRAFT</div>
           <button onClick={onClose} style={{background:"none",border:"none",color:"rgba(255,255,255,0.4)",cursor:"pointer",fontSize:18,padding:0}}>✕</button>
         </div>
         <div style={{marginBottom:10}}>
@@ -2126,7 +2137,7 @@ function ComposeModal({token,onClose}){
             {fromOpts.length===0&&<div style={{fontSize:11,color:"rgba(255,255,255,0.3)",fontFamily:FONT_MONO}}>Loading...</div>}
             {fromOpts.map(o=>(
               <button key={o} onClick={()=>setFrom(o)}
-                style={{textAlign:"left",padding:"7px 12px",borderRadius:8,border:from===o?"1px solid #F59E0B":"1px solid rgba(255,255,255,0.1)",background:from===o?"rgba(245,158,11,0.15)":"rgba(255,255,255,0.04)",color:from===o?"#F59E0B":"rgba(255,255,255,0.5)",fontSize:11,fontFamily:FONT_MONO,cursor:"pointer",transition:"all 0.15s",letterSpacing:0.3}}>
+                style={{textAlign:"left",padding:"7px 12px",borderRadius:8,border:from===o?"1px solid #EF5350":"1px solid rgba(255,255,255,0.1)",background:from===o?"rgba(239,83,80,0.15)":"rgba(255,255,255,0.04)",color:from===o?"#EF5350":"rgba(255,255,255,0.5)",fontSize:11,fontFamily:FONT_MONO,cursor:"pointer",transition:"all 0.15s",letterSpacing:0.3}}>
                 {from===o?"✓ ":""}{o}
               </button>
             ))}
@@ -2143,7 +2154,7 @@ function ComposeModal({token,onClose}){
         <div style={{marginBottom:10,flex:1}}>
           <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,letterSpacing:1,marginBottom:4}}>BODY</div>
           <textarea value={body} onChange={e=>setBody(e.target.value)} placeholder="Type or speak your message..." style={{...iSt("#3B5BDB"),width:"100%",boxSizing:"border-box",minHeight:120,resize:"vertical"}}/>
-          <button onClick={voicing?stopVoice:startVoice} style={{marginTop:6,width:"100%",background:voicing?"rgba(198,40,40,0.15)":"rgba(245,158,11,0.15)",border:voicing?"1px solid #C62828":"1px solid #F59E0B44",color:voicing?"#C62828":"#F59E0B",borderRadius:8,padding:"8px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:FONT_MONO,letterSpacing:0.5}}>
+          <button onClick={voicing?stopVoice:startVoice} style={{marginTop:6,width:"100%",background:voicing?"rgba(198,40,40,0.15)":"rgba(239,83,80,0.15)",border:voicing?"1px solid #C62828":"1px solid #EF535044",color:voicing?"#C62828":"#EF5350",borderRadius:8,padding:"8px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:FONT_MONO,letterSpacing:0.5}}>
             {voicing?"⏹ STOP RECORDING":"🎤 SPEAK TO APPEND"}
           </button>
         </div>
@@ -2174,7 +2185,7 @@ function GmailEmailModal({token,msg,onClose,onCompose}){
   return createPortal(
     <div style={{position:"fixed",inset:0,zIndex:12000,background:"#f4f4f4",display:"flex",flexDirection:"column",animation:"fadeSlideIn 0.2s ease-out"}}>
       {/* Header */}
-      <div style={{background:"linear-gradient(135deg,#F59E0B,#FFB830)",padding:"12px 16px",display:"flex",alignItems:"center",gap:12,flexShrink:0}}>
+      <div style={{background:"linear-gradient(135deg,#EF5350,#FF8A80)",padding:"12px 16px",display:"flex",alignItems:"center",gap:12,flexShrink:0}}>
         <button onClick={onClose} style={{background:"rgba(255,255,255,0.25)",border:"none",color:"#fff",borderRadius:8,padding:"7px 14px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:FONT_MONO,flexShrink:0}}>← INBOX</button>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontSize:13,fontWeight:700,color:"#fff",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{gmailHeader(headers,"Subject")||"(no subject)"}</div>
@@ -2363,7 +2374,7 @@ function GmailPanel({token,unreadCount,onClose}){
       {selectedMsg&&<GmailEmailModal token={token} msg={selectedMsg} onClose={()=>setSelectedMsg(null)} onCompose={()=>setComposeOpen(true)}/>}
       {composeOpen&&<ComposeModal token={token} onClose={()=>setComposeOpen(false)}/>}
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12,flexShrink:0}}>
-        <div style={{fontSize:11,fontWeight:800,color:"#F59E0B",letterSpacing:2,fontFamily:FONT_MONO}}>INBOX {unreadCount>0&&`(${unreadCount} unread)`}</div>
+        <div style={{fontSize:11,fontWeight:800,color:"#EF5350",letterSpacing:2,fontFamily:FONT_MONO}}>INBOX {unreadCount>0&&`(${unreadCount} unread)`}</div>
         <button onClick={()=>setComposeOpen(true)} style={{...btnSt("#3B5BDB"),padding:"6px 12px",fontSize:11}}>✉ COMPOSE</button>
       </div>
       {loading&&<div style={{fontSize:13,color:"rgba(255,255,255,0.35)",padding:"16px 0",textAlign:"center"}}>Loading emails...</div>}
@@ -2371,7 +2382,7 @@ function GmailPanel({token,unreadCount,onClose}){
         <SwipeableEmailRow key={msg.id} msg={msg} token={token} onOpen={setSelectedMsg} onArchived={(id)=>setMessages(p=>p.filter(m=>m.id!==id))}/>
       ))}
       {nextPageToken&&(
-        <button onClick={loadMore} disabled={loadingMore} style={{margin:"12px 0",width:"100%",background:"rgba(245,158,11,0.15)",border:"1px solid #F59E0B44",color:"#F59E0B",borderRadius:10,padding:"10px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:FONT_MONO}}>
+        <button onClick={loadMore} disabled={loadingMore} style={{margin:"12px 0",width:"100%",background:"rgba(239,83,80,0.15)",border:"1px solid #EF535044",color:"#EF5350",borderRadius:10,padding:"10px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:FONT_MONO}}>
           {loadingMore?"Loading...":"LOAD MORE ↓"}
         </button>
       )}
@@ -2385,8 +2396,8 @@ function StatCards({allTasks,urgentTasks,upcoming,allNotes,open,onOpen,unreadMai
     {key:"tasks",label:"TASKS",val:allTasks.length,color:"#3B5BDB",gradient:"linear-gradient(135deg, #3B5BDB, #6B8EFF)"},
     {key:"urgent",label:"URGENT",val:urgentTasks.length,color:"#C62828",gradient:"linear-gradient(135deg, #C62828, #EF5350)"},
     {key:"upcoming",label:"UPCOMING",val:upcoming.length,color:"#0097A7",gradient:"linear-gradient(135deg, #0097A7, #00BCD4)"},
-    {key:"notes",label:"NOTES",val:notesFlat.length,color:"#F59E0B",gradient:"linear-gradient(135deg, #F59E0B, #FFB830)"},
-    {key:"mail",label:"MAIL",val:unreadMail==null?"-":unreadMail>99?"99+":unreadMail,color:"#F59E0B",gradient:"linear-gradient(135deg, #F59E0B, #FFB830)"},
+    {key:"notes",label:"NOTES",val:notesFlat.length,color:"#EF5350",gradient:"linear-gradient(135deg, #EF5350, #FF8A80)"},
+    {key:"mail",label:"MAIL",val:unreadMail==null?"-":unreadMail>99?"99+":unreadMail,color:"#EF5350",gradient:"linear-gradient(135deg, #EF5350, #FF8A80)"},
   ];
   return(
     <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
@@ -2399,7 +2410,7 @@ function StatCards({allTasks,urgentTasks,upcoming,allNotes,open,onOpen,unreadMai
             boxShadow:open===s.key?`0 4px 20px ${s.color}44`:"0 6px 20px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.06) inset",
             transform:open===s.key?"scale(1.05)":"none",
             transition:"all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"}}>
-          <div style={{fontSize:26,fontWeight:900,color:open===s.key?"#fff":"#F59E0B",lineHeight:1,transition:"color 0.3s"}}>{s.val}</div>
+          <div style={{fontSize:26,fontWeight:900,color:open===s.key?"#fff":"#EF5350",lineHeight:1,transition:"color 0.3s"}}>{s.val}</div>
           <div style={{fontSize:8,color:open===s.key?"rgba(255,255,255,0.8)":"rgba(255,255,255,0.4)",letterSpacing:0,fontWeight:600,fontFamily:FONT_MONO,textTransform:"uppercase",transition:"color 0.3s",textAlign:"center"}}>{s.label}</div>
         </div>
       ))}
@@ -2514,6 +2525,27 @@ function EditBizModal({bizId,onSave,onClose}){
     </div>,document.body);
 }
 
+function WidgetCard({widget,onOpen}){
+  const c=widget.color;
+  return(
+    <div onClick={onOpen}
+      style={{background:`linear-gradient(180deg,${c}18 0%,${c}08 100%)`,border:`1px solid ${c}30`,borderTop:`1px solid ${c}55`,borderRadius:16,padding:"14px 16px",cursor:"pointer",position:"relative",minWidth:0,overflow:"hidden",display:"flex",flexDirection:"column",boxSizing:"border-box",boxShadow:`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`,transition:"all 0.18s"}}
+      onMouseEnter={e=>{e.currentTarget.style.background=`linear-gradient(180deg,${c}28 0%,${c}12 100%)`;e.currentTarget.style.boxShadow=`0 8px 44px ${c}66, 0 1px 0 ${c}33 inset`;e.currentTarget.style.transform="translateY(-3px) scale(1.02)";}}
+      onMouseLeave={e=>{e.currentTarget.style.background=`linear-gradient(180deg,${c}18 0%,${c}08 100%)`;e.currentTarget.style.boxShadow=`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`;e.currentTarget.style.transform="none";}}>
+      <div style={{fontSize:14,fontWeight:700,color:c,marginBottom:3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{widget.name}</div>
+      <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",marginBottom:10,fontWeight:600}}>{widget.category.toUpperCase()}</div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:3,textAlign:"center"}}>
+        {widget.stats.map(({v,l})=>(
+          <div key={l} style={{background:`${c}14`,borderRadius:6,padding:"5px 2px"}}>
+            <div style={{fontSize:15,fontWeight:800,color:"rgba(255,255,255,0.88)",lineHeight:1}}>{v}</div>
+            <div style={{fontSize:9,color:`${c}cc`,fontWeight:700,letterSpacing:0.5,marginTop:2}}>{l}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function SortableBizCard({bizId,state,allEvents,urgentTasks,td,isAuthed,gTasksFlat,onNavigate,onDeleteBiz,onEditBiz}){
   const b=BIZ[bizId];
   const isMobile=window.innerWidth<768;
@@ -2601,19 +2633,19 @@ function TodayBriefModal({urgentTasks,allEvents,td,onNavigate,onClose,state,isAu
   const totalUrgent=urgentTasks.length;
   return createPortal(
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(6px)",padding:"16px"}}>
-      <div onClick={e=>e.stopPropagation()} style={{background:"#0e1320",border:"1px solid rgba(0,180,200,0.2)",borderTop:"3px solid #F59E0B",borderRadius:20,width:"100%",maxWidth:560,maxHeight:"80vh",display:"flex",flexDirection:"column",animation:"fadeSlideIn 0.22s ease-out",boxShadow:"0 8px 60px rgba(0,0,0,0.8)"}}>
+      <div onClick={e=>e.stopPropagation()} style={{background:"#0e1320",border:"1px solid rgba(0,180,200,0.2)",borderTop:"3px solid #EF5350",borderRadius:20,width:"100%",maxWidth:560,maxHeight:"80vh",display:"flex",flexDirection:"column",animation:"fadeSlideIn 0.22s ease-out",boxShadow:"0 8px 60px rgba(0,0,0,0.8)"}}>
         {/* Header */}
         <div style={{padding:"20px 20px 14px",borderBottom:"1px solid rgba(255,255,255,0.06)",flexShrink:0}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
             <div>
-              <div style={{fontSize:18,fontWeight:800,color:"#F59E0B",fontFamily:FONT,letterSpacing:-0.5}}>Today's Brief</div>
+              <div style={{fontSize:18,fontWeight:800,color:"#EF5350",fontFamily:FONT,letterSpacing:-0.5}}>Today's Brief</div>
               <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,letterSpacing:1.5,marginTop:3}}>{dateLabel.toUpperCase()}</div>
             </div>
             <button onClick={onClose} style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.5)",width:32,height:32,borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
           </div>
           {/* Summary pills */}
           <div style={{display:"flex",gap:8,marginTop:12,flexWrap:"wrap"}}>
-            {totalEvents>0&&<span style={{fontSize:10,fontWeight:700,color:"#F59E0B",background:"rgba(245,158,11,0.12)",border:"1px solid rgba(245,158,11,0.25)",borderRadius:20,padding:"3px 10px",fontFamily:FONT_MONO,letterSpacing:0.5}}>{totalEvents} EVENT{totalEvents!==1?"S":""} TODAY</span>}
+            {totalEvents>0&&<span style={{fontSize:10,fontWeight:700,color:"#EF5350",background:"rgba(239,83,80,0.12)",border:"1px solid rgba(239,83,80,0.25)",borderRadius:20,padding:"3px 10px",fontFamily:FONT_MONO,letterSpacing:0.5}}>{totalEvents} EVENT{totalEvents!==1?"S":""} TODAY</span>}
             {totalUrgent>0&&<span style={{fontSize:10,fontWeight:700,color:"#FF3B3B",background:"rgba(255,59,59,0.12)",border:"1px solid rgba(255,59,59,0.3)",borderRadius:20,padding:"3px 10px",fontFamily:FONT_MONO,letterSpacing:0.5}}>⚠ {totalUrgent} URGENT</span>}
             {bizData.length===0&&<span style={{fontSize:10,color:"rgba(255,255,255,0.25)",fontFamily:FONT_MONO,letterSpacing:0.5}}>ALL CLEAR — NOTHING DUE TODAY</span>}
           </div>
@@ -2662,6 +2694,209 @@ function TodayBriefModal({urgentTasks,allEvents,td,onNavigate,onClose,state,isAu
         </div>
       </div>
     </div>,document.body);
+}
+
+const EXAMPLE_GOALS=[
+  {id:"ex1",title:"Run 50 miles",target:50,current:18,unit:"miles",color:"#43A047",isExample:true,createdAt:new Date().toISOString()},
+  {id:"ex2",title:"Save $2,000",target:2000,current:1200,unit:"dollars",color:"#3B5BDB",isExample:true,createdAt:new Date().toISOString()},
+  {id:"ex3",title:"Read 12 books",target:12,current:3,unit:"books",color:"#FF7043",isExample:true,createdAt:new Date().toISOString()},
+  {id:"ex4",title:"Pay off $3,000",target:3000,current:1350,unit:"dollars",color:"#AB47BC",isExample:true,createdAt:new Date().toISOString()},
+];
+
+function GoalEQBars({pct}){
+  const maxH=28;
+  const clipTop=Math.max(0,maxH-Math.max(3,Math.round(pct/100*maxH)));
+  const segH=2,segGap=1;
+  const mask=`repeating-linear-gradient(to top,#000 0px,#000 ${segH}px,transparent ${segH}px,transparent ${segH+segGap}px)`;
+  return(
+    <div style={{display:"flex",alignItems:"flex-end",gap:2,clipPath:`inset(${clipTop}px 0 0 0)`,transition:"clip-path 0.15s ease"}}>
+      {BAR_CONF.map((b,i)=>(
+        <div key={i} style={{
+          width:5,height:maxH,borderRadius:1,
+          transformOrigin:"bottom center",
+          background:BAR_GRADIENTS[i],
+          maskImage:mask,
+          WebkitMaskImage:mask,
+          animation:`${b.ha} ${b.hd} linear ${b.hd2} infinite,eqOp ${b.od} ease-in-out ${b.od2} infinite`,
+        }}/>
+      ))}
+    </div>
+  );
+}
+
+function GoalsWidget({onBack}){
+  const isMobile=window.innerWidth<768;
+  const[goals,setGoals]=useState(()=>{
+    try{const s=localStorage.getItem("cp_goals");return s?JSON.parse(s):[];}catch{return[];}
+  });
+  const[dismissedExamples,setDismissedExamples]=useState(()=>{
+    try{const s=localStorage.getItem("cp_goals_dismissed_ex");return s?JSON.parse(s):[];}catch{return[];}
+  });
+  const[showAdd,setShowAdd]=useState(false);
+  const[exPreviews,setExPreviews]=useState({});
+  const[logGoalId,setLogGoalId]=useState(null);
+  const[logVal,setLogVal]=useState("");
+  const[newTitle,setNewTitle]=useState("");
+  const[newTarget,setNewTarget]=useState("");
+  const[newUnit,setNewUnit]=useState("");
+  const[newColor,setNewColor]=useState("#FF7043");
+
+  const save=(list)=>{setGoals(list);try{localStorage.setItem("cp_goals",JSON.stringify(list));}catch{}};
+  const saveDismissed=(list)=>{setDismissedExamples(list);try{localStorage.setItem("cp_goals_dismissed_ex",JSON.stringify(list));}catch{}};
+
+  const useExample=(ex)=>{
+    const current=exPreviews[ex.id]??ex.current;
+    const g={...ex,id:`g_${Date.now()}`,current,isExample:false,createdAt:new Date().toISOString()};
+    save([...goals,g]);
+    saveDismissed([...dismissedExamples,ex.id]);
+  };
+  const dismissExample=(id)=>saveDismissed([...dismissedExamples,id]);
+
+  const addGoal=()=>{
+    if(!newTitle.trim()||!newTarget)return;
+    const g={id:`g_${Date.now()}`,title:newTitle.trim(),target:parseFloat(newTarget)||100,current:0,unit:newUnit.trim()||"",color:newColor,isExample:false,createdAt:new Date().toISOString()};
+    save([...goals,g]);
+    setNewTitle("");setNewTarget("");setNewUnit("");setNewColor("#FF7043");setShowAdd(false);
+  };
+
+  const slideGoal=(id,val)=>{
+    save(goals.map(g=>g.id===id?{...g,current:parseFloat(val)}:g));
+  };
+
+  const logProgress=(id)=>{
+    const amt=parseFloat(logVal);
+    if(isNaN(amt)||amt<=0){setLogGoalId(null);setLogVal("");return;}
+    save(goals.map(g=>g.id===id?{...g,current:Math.min(g.target,g.current+amt)}:g));
+    setLogGoalId(null);setLogVal("");
+  };
+
+  const deleteGoal=(id)=>save(goals.filter(g=>g.id!==id));
+
+  const visibleExamples=EXAMPLE_GOALS.filter(e=>!dismissedExamples.includes(e.id)&&!goals.some(g=>g.title===e.title));
+  const GOAL_COLORS=["#EF5350","#FF7043","#F59E0B","#43A047","#3B5BDB","#42A5F5","#AB47BC","#0097A7"];
+
+  return(
+    <div style={{padding:"16px",paddingBottom:"80px",display:"flex",flexDirection:"column",gap:16}}>
+      {/* Persistent brand header — same as Overview */}
+      <div style={{position:"sticky",top:0,zIndex:50,background:"linear-gradient(180deg,#0e1320 80%,transparent 100%)",paddingTop:isMobile?"14px":"32px",paddingBottom:12,marginBottom:-4}}>
+        <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?22:32,fontWeight:900,letterSpacing:-1,color:"#F59E0B",lineHeight:1.1}}><span style={{color:"#F59E0B"}}>command</span><br/><span style={{color:"#EF5350"}}>personal.</span></div>
+        <div style={{fontSize:isMobile?10:13,color:"rgba(255,255,255,0.4)",letterSpacing:2,marginTop:6,fontWeight:500,fontFamily:FONT_MONO}}>{new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}).toUpperCase()}</div>
+      </div>
+
+      {/* Goals section header with back button */}
+      <div style={{display:"flex",alignItems:"center",gap:12}}>
+        <button onClick={onBack} style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.7)",borderRadius:9,padding:"6px 14px",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:FONT}}>← Back</button>
+        <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?16:20,fontWeight:800,letterSpacing:-0.3,lineHeight:1}}>
+          <span style={{color:"#FF7043"}}>goals</span><span style={{color:"rgba(255,255,255,0.3)"}}>.</span>
+        </div>
+      </div>
+
+      {/* Add goal button */}
+      <button onClick={()=>setShowAdd(v=>!v)} style={{background:showAdd?"rgba(255,112,67,0.12)":"rgba(255,112,67,0.1)",border:`1px solid ${showAdd?"#FF7043":"rgba(255,112,67,0.3)"}`,color:"#FF7043",borderRadius:12,padding:"12px 0",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:FONT,width:"100%",transition:"all 0.15s"}}>
+        {showAdd?"✕ Cancel":"+ Add New Goal"}
+      </button>
+
+      {/* Add goal form */}
+      {showAdd&&(
+        <div style={{background:"rgba(255,112,67,0.08)",border:"1px solid rgba(255,112,67,0.3)",borderRadius:16,padding:20,display:"flex",flexDirection:"column",gap:12,animation:"fadeSlideIn 0.2s ease-out"}}>
+          <div style={{fontSize:12,fontWeight:700,color:"#FF7043",fontFamily:FONT_MONO,letterSpacing:1.5}}>NEW GOAL</div>
+          <input value={newTitle} onChange={e=>setNewTitle(e.target.value)} placeholder="What are you working toward?" style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:9,padding:"10px 14px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}}/>
+          <div style={{display:"flex",gap:10}}>
+            <input value={newTarget} onChange={e=>setNewTarget(e.target.value)} placeholder="Target (e.g. 50)" type="number" style={{flex:1,background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:9,padding:"10px 14px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}}/>
+            <input value={newUnit} onChange={e=>setNewUnit(e.target.value)} placeholder="Unit (miles, books…)" style={{flex:1,background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:9,padding:"10px 14px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}}/>
+          </div>
+          <div style={{display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
+            {GOAL_COLORS.map(c=>(
+              <div key={c} onClick={()=>setNewColor(c)} style={{width:24,height:24,borderRadius:"50%",background:c,cursor:"pointer",border:newColor===c?"3px solid #fff":"2px solid transparent",boxSizing:"border-box",boxShadow:newColor===c?`0 0 8px ${c}88`:"none",transition:"all 0.15s"}}/>
+            ))}
+          </div>
+          <button onClick={addGoal} style={{padding:"12px 0",background:newTitle.trim()&&newTarget?"#FF7043":"rgba(255,255,255,0.08)",border:"none",color:newTitle.trim()&&newTarget?"#fff":"rgba(255,255,255,0.25)",borderRadius:9,fontSize:14,fontWeight:800,cursor:newTitle.trim()&&newTarget?"pointer":"default",fontFamily:FONT}}>Add Goal</button>
+        </div>
+      )}
+
+      {/* Active goals */}
+      {goals.length===0&&visibleExamples.length===0&&(
+        <div style={{textAlign:"center",padding:"48px 24px",color:"rgba(255,255,255,0.35)",fontSize:14,lineHeight:1.6}}>
+          What are you working toward?<br/>
+          <span style={{fontSize:12}}>Set a goal and track it with your voice.</span>
+        </div>
+      )}
+
+      {goals.map(g=>{
+        const pct=Math.round(Math.min(100,g.current/g.target*100));
+        const done=pct>=100;
+        return(
+          <div key={g.id} style={{background:`linear-gradient(180deg,${g.color}14 0%,${g.color}06 100%)`,border:`1px solid ${g.color}30`,borderTop:`2px solid ${g.color}66`,borderRadius:16,padding:"16px 18px",display:"flex",flexDirection:"column",gap:10,animation:"fadeSlideIn 0.2s ease-out"}}>
+            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10}}>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:15,fontWeight:700,color:"rgba(255,255,255,0.92)",marginBottom:2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{g.title}</div>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,letterSpacing:1}}>
+                  {g.current} / {g.target}{g.unit?" "+g.unit:""} · {pct}%
+                </div>
+              </div>
+              <GoalEQBars pct={pct} color={g.color}/>
+              <button onClick={()=>deleteGoal(g.id)} style={{background:"transparent",border:"none",color:"rgba(255,255,255,0.18)",fontSize:16,cursor:"pointer",padding:"2px 4px",lineHeight:1,borderRadius:4,flexShrink:0,transition:"color 0.15s"}}
+                onMouseEnter={e=>e.currentTarget.style.color="#EF5350"}
+                onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.18)"}>✕</button>
+            </div>
+            {/* Thin auxiliary slider */}
+            <div style={{position:"relative",height:16,display:"flex",alignItems:"center",opacity:0.6}}>
+              <div style={{position:"absolute",left:0,right:0,height:3,borderRadius:2,background:"rgba(255,255,255,0.07)",zIndex:0}}/>
+              <div style={{position:"absolute",left:0,width:`${pct}%`,height:3,borderRadius:2,background:`linear-gradient(90deg,${g.color}66,${g.color}aa)`,transition:"width 0.08s ease",pointerEvents:"none",zIndex:1}}/>
+              <input type="range" className="goal-slider" style={{"--goal-color":g.color,position:"relative",zIndex:2}} min={0} max={g.target} step={g.target>=100?1:0.1} value={g.current} onChange={e=>slideGoal(g.id,e.target.value)}/>
+            </div>
+            {/* Primary log interaction */}
+            {done?(
+              <div style={{fontSize:11,color:g.color,fontWeight:700,fontFamily:FONT_MONO,letterSpacing:1,textAlign:"center"}}>🎉 COMPLETED</div>
+            ):logGoalId===g.id?(
+              <div style={{display:"flex",gap:8}}>
+                <input value={logVal} onChange={e=>setLogVal(e.target.value)} type="number" placeholder={`Add ${g.unit||"progress"}…`} style={{flex:1,background:"rgba(255,255,255,0.06)",border:`1px solid ${g.color}44`,borderRadius:9,padding:"8px 12px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}} autoFocus onKeyDown={e=>{if(e.key==="Enter")logProgress(g.id);if(e.key==="Escape"){setLogGoalId(null);setLogVal("");}}}/>
+                <button onClick={()=>logProgress(g.id)} style={{background:g.color,border:"none",color:"#fff",borderRadius:9,padding:"8px 16px",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:FONT}}>Log</button>
+                <button onClick={()=>{setLogGoalId(null);setLogVal("");}} style={{background:"rgba(255,255,255,0.06)",border:"none",color:"rgba(255,255,255,0.5)",borderRadius:9,padding:"8px 12px",fontSize:13,cursor:"pointer"}}>✕</button>
+              </div>
+            ):(
+              <button onClick={()=>setLogGoalId(g.id)} style={{background:`${g.color}18`,border:`1px solid ${g.color}30`,color:g.color,borderRadius:9,padding:"9px 0",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:FONT,width:"100%",transition:"all 0.15s"}}
+                onMouseEnter={e=>e.currentTarget.style.background=`${g.color}2e`}
+                onMouseLeave={e=>e.currentTarget.style.background=`${g.color}18`}>
+                + Log {g.unit||"progress"}
+              </button>
+            )}
+          </div>
+        );
+      })}
+
+      {/* Example goals */}
+      {visibleExamples.length>0&&(
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",fontFamily:FONT_MONO,letterSpacing:1.5,paddingLeft:2}}>EXAMPLES — TAP TO USE</div>
+          {visibleExamples.map(ex=>{
+            const cur=exPreviews[ex.id]??ex.current;
+            const pct=Math.round(Math.min(100,cur/ex.target*100));
+            return(
+              <div key={ex.id} style={{background:`linear-gradient(180deg,${ex.color}10 0%,${ex.color}04 100%)`,border:`1px solid ${ex.color}22`,borderTop:`2px solid ${ex.color}44`,borderRadius:14,padding:"14px 16px",display:"flex",flexDirection:"column",gap:10}}>
+                <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:13,fontWeight:600,color:"rgba(255,255,255,0.75)",marginBottom:2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ex.title}</div>
+                    <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",fontFamily:FONT_MONO}}>{Math.round(cur)} / {ex.target} {ex.unit} · {pct}%</div>
+                  </div>
+                  <GoalEQBars pct={pct}/>
+                  <div style={{display:"flex",flexDirection:"column",gap:5,flexShrink:0}}>
+                    <button onClick={()=>useExample(ex)} style={{background:ex.color,border:"none",color:"#fff",borderRadius:8,padding:"6px 12px",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:FONT,whiteSpace:"nowrap"}}>Use this</button>
+                    <button onClick={()=>dismissExample(ex.id)} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.35)",borderRadius:8,padding:"5px 10px",fontSize:11,cursor:"pointer",fontFamily:FONT}}>Dismiss</button>
+                  </div>
+                </div>
+                <div style={{position:"relative",height:16,display:"flex",alignItems:"center",opacity:0.65}}>
+                  <div style={{position:"absolute",left:0,right:0,height:3,borderRadius:2,background:"rgba(255,255,255,0.07)",zIndex:0}}/>
+                  <div style={{position:"absolute",left:0,width:`${pct}%`,height:3,borderRadius:2,background:`linear-gradient(90deg,${ex.color}66,${ex.color}aa)`,transition:"width 0.08s ease",pointerEvents:"none",zIndex:1}}/>
+                  <input type="range" className="goal-slider" style={{"--goal-color":ex.color,position:"relative",zIndex:2}} min={0} max={ex.target} step={ex.target>=100?1:0.1} value={cur} onChange={e=>setExPreviews(p=>({...p,[ex.id]:parseFloat(e.target.value)}))}/>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskLists,authStatus,authToken,onCompleteGTask,onDeleteGTask,onAddTask,onAddCalEvent,onUpdateNote,onDeleteNote,onAddNote,deletedBizIds,onDeleteBiz,onEditBiz,bizOrder,onReorder}){
@@ -2717,15 +2952,15 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
     {key:"tasks",label:"TASKS",val:allTasks.filter(t=>!t.done).length,color:"#3B5BDB",gradient:"linear-gradient(135deg, #3B5BDB, #6B8EFF)"},
     {key:"urgent",label:"URGENT",val:urgentTasks.length,color:"#C62828",gradient:"linear-gradient(135deg, #C62828, #EF5350)"},
     {key:"upcoming",label:"UPCOMING",val:upcoming.length,color:"#0097A7",gradient:"linear-gradient(135deg, #0097A7, #00BCD4)"},
-    {key:"notes",label:"NOTES",val:notesFlat.length,color:"#F59E0B",gradient:"linear-gradient(135deg, #F59E0B, #FFB830)"},
-    {key:"mail",label:"MAIL",val:unreadMail==null?"-":unreadMail>99?"99+":unreadMail,color:"#F59E0B",gradient:"linear-gradient(135deg, #F59E0B, #FFB830)"},
+    {key:"notes",label:"NOTES",val:notesFlat.length,color:"#EF5350",gradient:"linear-gradient(135deg, #EF5350, #FF8A80)"},
+    {key:"mail",label:"MAIL",val:unreadMail==null?"-":unreadMail>99?"99+":unreadMail,color:"#EF5350",gradient:"linear-gradient(135deg, #EF5350, #FF8A80)"},
   ];
   const statItems=statOpen==="tasks"?allTasks.filter(t=>!t.done):statOpen==="urgent"?urgentTasks:statOpen==="upcoming"?upcoming:statOpen==="notes"?[...notesFlat].sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp)):[];
   const statActiveCard=statCards.find(c=>c.key===statOpen&&c.key!=="mail");
   return(
     <div style={{padding:"16px",paddingTop:isMobile?"0":"0",paddingBottom:"80px",display:"flex",flexDirection:"column",gap:20}}>
       <div style={{position:"sticky",top:0,zIndex:50,background:"linear-gradient(180deg,#0e1320 80%,transparent 100%)",paddingTop:isMobile?"14px":"32px",paddingBottom:12,marginBottom:-4}}>
-        <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?22:32,fontWeight:900,letterSpacing:-1,color:"#F59E0B",lineHeight:1.1}}>command bean<br/>mogul.</div>
+        <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?22:32,fontWeight:900,letterSpacing:-1,color:"#F59E0B",lineHeight:1.1}}><span style={{color:"#F59E0B"}}>command</span><br/><span style={{color:"#EF5350"}}>personal.</span></div>
         <div style={{fontSize:isMobile?10:13,color:"rgba(255,255,255,0.4)",letterSpacing:2,marginTop:6,fontWeight:500,fontFamily:FONT_MONO}}>{new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}).toUpperCase()}</div>
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:12,width:"100%",maxWidth:520}}>
@@ -2790,8 +3025,8 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
       </div>
       {/* Gmail Inbox Panel — full width */}
       {statOpen==="mail"&&token&&(
-        <div style={{background:"rgba(14,20,38,0.97)",backdropFilter:"blur(24px)",WebkitBackdropFilter:"blur(24px)",borderRadius:20,border:"2px solid #F59E0B44",boxShadow:"0 8px 40px rgba(0,0,0,0.5)",overflow:"hidden",animation:"fadeSlideIn 0.3s ease-out",maxHeight:"65vh",display:"flex",flexDirection:"column",width:"100%",maxWidth:800}}>
-          <div style={{padding:"14px 20px",background:"linear-gradient(135deg,#F59E0B,#FFB830)",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+        <div style={{background:"rgba(14,20,38,0.97)",backdropFilter:"blur(24px)",WebkitBackdropFilter:"blur(24px)",borderRadius:20,border:"2px solid #EF535044",boxShadow:"0 8px 40px rgba(0,0,0,0.5)",overflow:"hidden",animation:"fadeSlideIn 0.3s ease-out",maxHeight:"65vh",display:"flex",flexDirection:"column",width:"100%",maxWidth:800}}>
+          <div style={{padding:"14px 20px",background:"linear-gradient(135deg,#EF5350,#FF8A80)",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
             <div style={{fontSize:14,fontWeight:800,color:"#fff",letterSpacing:1.5,fontFamily:FONT_MONO}}>✉ INBOX</div>
             <button onClick={()=>setStatOpen(null)} style={{background:"rgba(255,255,255,0.2)",border:"none",color:"#fff",width:28,height:28,borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
           </div>
@@ -2812,7 +3047,7 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
           onMouseEnter={e=>e.currentTarget.style.borderColor='rgba(0,180,200,0.35)'}
           onMouseLeave={e=>e.currentTarget.style.borderColor='rgba(0,180,200,0.18)'}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
-            <div style={{fontSize:11,fontWeight:800,color:'#F59E0B',letterSpacing:2,fontFamily:FONT_MONO}}>⚡ TODAY'S BRIEF</div>
+            <div style={{fontSize:11,fontWeight:800,color:'#EF5350',letterSpacing:2,fontFamily:FONT_MONO}}>⚡ TODAY'S BRIEF</div>
             <div style={{fontSize:9,color:'rgba(0,180,200,0.5)',fontFamily:FONT_MONO,letterSpacing:1}}>TAP TO OPEN ›</div>
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:4}}>
@@ -2828,7 +3063,7 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
                     <div style={{display:'flex',gap:6,alignItems:'center',flex:1,minWidth:0,flexWrap:'wrap'}}>
                       {u>0&&<span style={{fontSize:9,fontWeight:800,color:'#FF3B3B',fontFamily:FONT_MONO,background:'rgba(255,59,59,0.12)',border:'1px solid rgba(255,59,59,0.3)',borderRadius:5,padding:'1px 6px',flexShrink:0}}>⚠ {u} URGENT</span>}
                       {todayEvs.slice(0,2).map(ev=>(
-                        <span key={ev.id} style={{fontSize:9,color:'#F59E0B',fontFamily:FONT_MONO,opacity:0.75,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:160}}>
+                        <span key={ev.id} style={{fontSize:9,color:'#EF5350',fontFamily:FONT_MONO,opacity:0.75,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:160}}>
                           {ev.allDay?'ALL DAY':fmtTime(ev.start)} · {ev.summary}
                         </span>
                       ))}
@@ -2842,15 +3077,11 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
       )}
       {briefOpen&&<TodayBriefModal urgentTasks={urgentTasks} allEvents={allEvents} td={td} onNavigate={onNavigate} onClose={()=>setBriefOpen(false)} state={state} isAuthed={isAuthed} gTasksFlat={gTasksFlat||[]}/>}
       <DailySheetCard authToken={authToken}/>
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={visibleOrder} strategy={rectSortingStrategy}>
-          <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":"repeat(auto-fill,minmax(170px,1fr))",gap:12,gridAutoRows:isMobile?"110px":"auto"}}>
-            {visibleOrder.map(i=>(
-              <SortableBizCard key={i} bizId={i} state={state} allEvents={allEvents} urgentTasks={urgentTasks} td={td} isAuthed={isAuthed} gTasksFlat={gTasksFlat} onNavigate={onNavigate} onDeleteBiz={onDeleteBiz} onEditBiz={onEditBiz}/>
-            ))}
-          </div>
-        </SortableContext>
-      </DndContext>
+      <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":"repeat(4,1fr)",gap:12}}>
+        {WIDGETS.map(w=>(
+          <WidgetCard key={w.id} widget={w} onOpen={()=>w.id==="goals"?onNavigate("goals"):w.id==="budget"?onNavigate("budget"):null}/>
+        ))}
+      </div>
       {urgentTasks.length>0&&(
         <div style={panelSt("#C62828")}>
           <div style={{fontSize:13,fontWeight:800,color:"#C62828",letterSpacing:2,marginBottom:14}}>URGENT TASKS</div>
@@ -3038,8 +3269,8 @@ function CommandBeanDialog({state,allEvents,gTasks,gTaskLists,isAuthed,onClose,o
         {/* Header */}
         <div style={{background:"linear-gradient(135deg,#12192b,#1e2a44)",padding:"14px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:34,height:34,borderRadius:9,background:"rgba(245,158,11,0.12)",border:"1px solid rgba(245,158,11,0.28)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-              <span style={{fontFamily:"Sora,sans-serif",fontWeight:800,fontSize:20,color:"#F59E0B",lineHeight:1,userSelect:"none"}}>b</span>
+            <div style={{width:34,height:34,borderRadius:9,background:"rgba(239,83,80,0.12)",border:"1px solid rgba(239,83,80,0.28)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <span style={{fontFamily:"Sora,sans-serif",fontWeight:800,fontSize:20,color:"#EF5350",lineHeight:1,userSelect:"none"}}>b</span>
             </div>
             <div>
               <div style={{fontSize:12,fontWeight:800,color:"#fff",letterSpacing:2,fontFamily:FONT_MONO}}>COMMAND BEAN MOGUL</div>
@@ -3058,9 +3289,9 @@ function CommandBeanDialog({state,allEvents,gTasks,gTaskLists,isAuthed,onClose,o
               <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr 1fr":"repeat(4,1fr)",gap:6}}>
                 {recentQueries.map((q,i)=>(
                   <button key={i} onClick={()=>{setQuery(q);runQuery(q);}}
-                    style={{background:"#F59E0B0D",border:"1px solid #F59E0B30",borderRadius:10,padding:"7px 9px",cursor:"pointer",fontFamily:FONT_MONO,fontSize:10,color:"#F59E0B",fontWeight:600,textAlign:"left",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",transition:"all 0.15s"}}
-                    onMouseEnter={e=>{e.currentTarget.style.background="#F59E0B20";e.currentTarget.style.borderColor="#F59E0B60";}}
-                    onMouseLeave={e=>{e.currentTarget.style.background="#F59E0B0D";e.currentTarget.style.borderColor="#F59E0B30";}}>
+                    style={{background:"#EF53500D",border:"1px solid #EF535030",borderRadius:10,padding:"7px 9px",cursor:"pointer",fontFamily:FONT_MONO,fontSize:10,color:"#EF5350",fontWeight:600,textAlign:"left",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",transition:"all 0.15s"}}
+                    onMouseEnter={e=>{e.currentTarget.style.background="#EF535020";e.currentTarget.style.borderColor="#EF535060";}}
+                    onMouseLeave={e=>{e.currentTarget.style.background="#EF53500D";e.currentTarget.style.borderColor="#EF535030";}}>
                     {q}
                   </button>
                 ))}
@@ -3086,8 +3317,8 @@ function CommandBeanDialog({state,allEvents,gTasks,gTaskLists,isAuthed,onClose,o
 
           {/* Results */}
           {results&&(
-            <div ref={resultsRef} style={panelSt(results.color||"#F59E0B")}>
-              <div style={{fontSize:11,fontWeight:800,color:results.color||"#F59E0B",letterSpacing:2,fontFamily:FONT_MONO,marginBottom:12}}>{results.label.toUpperCase()}</div>
+            <div ref={resultsRef} style={panelSt(results.color||"#EF5350")}>
+              <div style={{fontSize:11,fontWeight:800,color:results.color||"#EF5350",letterSpacing:2,fontFamily:FONT_MONO,marginBottom:12}}>{results.label.toUpperCase()}</div>
 
               {results.type==="tasks"&&(
                 results.items.length===0
@@ -3159,18 +3390,24 @@ function CommandBeanDialog({state,allEvents,gTasks,gTaskLists,isAuthed,onClose,o
 }
 
 function FixedVoice({currentBizId,isAuthed,onAddTask,onAddCalEvent,onAddNote,onOpenCommandBean,isMobile,onGoHome}){
-  const isOverview=currentBizId===-1;
   const[open,setOpen]=useState(false);
-  const[step,setStep]=useState(isOverview?1:2);
-  const[selBiz,setSelBiz]=useState(null);
+  const[step,setStep]=useState(1);
   const[mode,setMode]=useState(null);
   const[listening,setListening]=useState(false);
   const[transcript,setTranscript]=useState("");
   const[status,setStatus]=useState("");
   const recRef=useRef(null);
-  useEffect(()=>{if(!open){setStep(isOverview?1:2);setSelBiz(null);setMode(null);setTranscript("");setStatus("");}},[currentBizId,open]);
-  const bizId=isOverview?selBiz:currentBizId;
-  const biz=bizId!=null?BIZ[bizId]:null;
+  useEffect(()=>{if(!open){setStep(1);setMode(null);setTranscript("");setStatus("");}},[open]);
+  const VOICE_TYPES=[
+    {key:"task",     label:"Task",         prompt:"What needs to get done?",        color:"#3B5BDB"},
+    {key:"note",     label:"Note",         prompt:"What's on your mind?",           color:"#AB47BC"},
+    {key:"expense",  label:"Expense",      prompt:"What did you spend?",            color:"#F59E0B"},
+    {key:"goal",     label:"Goal",         prompt:"What are you working toward?",   color:"#FF7043"},
+    {key:"habit",    label:"Habit",        prompt:"What did you do today?",         color:"#43A047"},
+    {key:"subscription",label:"Subscription",prompt:"What are you paying for?",    color:"#0097A7"},
+    {key:"calendar", label:"Calendar",     prompt:"What's happening and when?",     color:"#42A5F5"},
+  ];
+  const activeType=VOICE_TYPES.find(t=>t.key===mode);
   const stopRec=()=>{if(recRef.current){recRef.current._keepAlive=false;try{recRef.current.stop();}catch(e){}}};
   const startRec=()=>{
     if(!("webkitSpeechRecognition" in window||"SpeechRecognition" in window)){setStatus("Voice not supported");return;}
@@ -3182,12 +3419,16 @@ function FixedVoice({currentBizId,isAuthed,onAddTask,onAddCalEvent,onAddNote,onO
     rec.onerror=(e)=>{if(e.error==="no-speech")return;setListening(false);rec._keepAlive=false;setStatus("Mic error \u2014 try again");};
     rec._keepAlive=true;recRef.current=rec;rec.start();setListening(true);
   };
-  const reset=()=>{stopRec();setOpen(false);setStep(isOverview?1:2);setSelBiz(null);setMode(null);setListening(false);setTranscript("");setStatus("");};
+  const reset=()=>{stopRec();setOpen(false);setStep(1);setMode(null);setListening(false);setTranscript("");setStatus("");};
   const send=()=>{
     if(!transcript.trim())return;
-    if(mode==="calendar"){const cmd=parseVoiceCmd("event "+transcript,bizId);onAddCalEvent?.(cmd);setStatus(`\u2705 ${cmd.title} \u00B7 ${fmtDate(cmd.date)}`);}
-    else if(mode==="task"){onAddTask?.(bizId,{text:transcript.trim(),priority:"med",due:"",done:false});setStatus("\u2705 Task added");}
-    else if(mode==="note"){onAddNote?.(bizId,transcript.trim());setStatus("\u2705 Note added");}
+    if(mode==="calendar"){const cmd=parseVoiceCmd("event "+transcript,6);onAddCalEvent?.(cmd);setStatus(`\u2705 ${cmd.title} \u00B7 ${fmtDate(cmd.date)}`);}
+    else if(mode==="task"){onAddTask?.(6,{text:transcript.trim(),priority:"med",due:"",done:false});setStatus("\u2705 Task added");}
+    else if(mode==="note"){onAddNote?.(6,transcript.trim());setStatus("\u2705 Note added");}
+    else if(mode==="expense"){onAddNote?.(6,`💰 Expense: ${transcript.trim()}`);setStatus("\u2705 Expense logged");}
+    else if(mode==="goal"){onAddNote?.(6,`🎯 Goal: ${transcript.trim()}`);setStatus("\u2705 Goal added");}
+    else if(mode==="habit"){onAddNote?.(6,`✅ Habit: ${transcript.trim()}`);setStatus("\u2705 Habit logged");}
+    else if(mode==="subscription"){onAddNote?.(6,`🔄 Subscription: ${transcript.trim()}`);setStatus("\u2705 Subscription added");}
     setTranscript("");setListening(false);setTimeout(()=>reset(),2500);
   };
   return(
@@ -3196,8 +3437,8 @@ function FixedVoice({currentBizId,isAuthed,onAddTask,onAddCalEvent,onAddNote,onO
       <div style={{position:"fixed",top:10,right:16,zIndex:2000,display:"inline-flex",alignItems:"stretch",
         background:"linear-gradient(135deg,#12192b,#1a2744)",
         borderRadius:isMobile?16:20,
-        border:"1px solid rgba(245,158,11,0.18)",
-        boxShadow:"0 4px 24px rgba(0,0,0,0.45),0 0 0 1px rgba(245,158,11,0.06)",
+        border:"1px solid rgba(239,83,80,0.18)",
+        boxShadow:"0 4px 24px rgba(0,0,0,0.45),0 0 0 1px rgba(239,83,80,0.06)",
         overflow:"hidden"}}>
         {/* Bean logo side — equal width box */}
         <div onClick={onGoHome} style={{cursor:"pointer",width:isMobile?80:96,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,padding:"6px 0",position:"relative",overflow:"hidden"}}>
@@ -3221,11 +3462,11 @@ function FixedVoice({currentBizId,isAuthed,onAddTask,onAddCalEvent,onAddNote,onO
           </svg>
         </div>
         {/* Amber divider */}
-        <div style={{width:1,background:"rgba(245,158,11,0.45)",flexShrink:0}}/>
+        <div style={{width:1,background:"rgba(239,83,80,0.45)",flexShrink:0}}/>
         {/* Voice side — equal width box */}
         <div style={{position:"relative",width:isMobile?80:96,flexShrink:0}}>
           {!open&&(<>
-            <div style={{position:"absolute",top:0,right:0,width:44,height:44,borderBottom:"2px solid rgba(245,158,11,0.75)",borderLeft:"2px solid rgba(245,158,11,0.75)",borderTop:"none",borderRight:"none",borderRadius:"0 0 0 100%",transformOrigin:"top right",animation:"arcPulse 2.4s ease-out 0s infinite",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",top:0,right:0,width:44,height:44,borderBottom:"2px solid rgba(239,83,80,0.75)",borderLeft:"2px solid rgba(239,83,80,0.75)",borderTop:"none",borderRight:"none",borderRadius:"0 0 0 100%",transformOrigin:"top right",animation:"arcPulse 2.4s ease-out 0s infinite",pointerEvents:"none"}}/>
             <div style={{position:"absolute",top:0,right:0,width:44,height:44,borderBottom:"2px solid rgba(0,151,167,0.65)",borderLeft:"2px solid rgba(0,151,167,0.65)",borderTop:"none",borderRight:"none",borderRadius:"0 0 0 100%",transformOrigin:"top right",animation:"arcPulse 2.4s ease-out 0.8s infinite",pointerEvents:"none"}}/>
             <div style={{position:"absolute",top:0,right:0,width:44,height:44,borderBottom:"2px solid rgba(123,31,162,0.6)",borderLeft:"2px solid rgba(123,31,162,0.6)",borderTop:"none",borderRight:"none",borderRadius:"0 0 0 100%",transformOrigin:"top right",animation:"arcPulse 2.4s ease-out 1.6s infinite",pointerEvents:"none"}}/>
           </>)}
@@ -3238,7 +3479,7 @@ function FixedVoice({currentBizId,isAuthed,onAddTask,onAddCalEvent,onAddNote,onO
               ?<span style={{fontSize:18,color:"rgba(255,255,255,0.7)",fontWeight:400,lineHeight:1,padding:"5px 0"}}>{"\u2715"}</span>
               :<EQBars fab={true}/>
             }
-            <div style={{fontSize:9,color:"#F59E0B",letterSpacing:2,fontWeight:700,fontFamily:FONT_MONO}}>{open?"CLOSE":"VOICE"}</div>
+            <div style={{fontSize:9,color:"#EF5350",letterSpacing:2,fontWeight:700,fontFamily:FONT_MONO}}>{open?"CLOSE":"VOICE"}</div>
           </div>
         </div>
       </div>
@@ -3254,7 +3495,7 @@ function FixedVoice({currentBizId,isAuthed,onAddTask,onAddCalEvent,onAddNote,onO
               <EQBars fab={false}/>
               <div>
                 <div style={{fontSize:12,fontWeight:800,color:"#fff",letterSpacing:2,fontFamily:FONT_MONO}}>BEAN VOICE</div>
-                <div style={{fontSize:9,color:"rgba(255,255,255,0.65)",letterSpacing:1,marginTop:1,fontFamily:FONT_MONO}}>{step===1?"SELECT BUSINESS":step===2?"SELECT TYPE":"RECORDING"}</div>
+                <div style={{fontSize:9,color:"rgba(255,255,255,0.65)",letterSpacing:1,marginTop:1,fontFamily:FONT_MONO}}>{step===1?"WHAT ARE YOU ADDING?":"RECORDING"}</div>
               </div>
             </div>
             <button onClick={reset} style={{background:"rgba(255,255,255,0.2)",border:"none",color:"#fff",width:24,height:24,borderRadius:6,cursor:"pointer",fontSize:12,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
@@ -3263,58 +3504,45 @@ function FixedVoice({currentBizId,isAuthed,onAddTask,onAddCalEvent,onAddNote,onO
             {step===1&&(
               <div style={{display:"flex",flexDirection:"column",gap:8}}>
                 <button onClick={()=>{reset();onOpenCommandBean?.();}}
-                  style={{display:"flex",alignItems:"center",gap:12,background:"#F59E0B10",border:"2px solid #F59E0B44",borderRadius:12,padding:"11px 14px",cursor:"pointer",fontFamily:FONT,transition:"all 0.15s",width:"100%"}}
-                  onMouseEnter={e=>{e.currentTarget.style.background="#F59E0B22";e.currentTarget.style.borderColor="#F59E0B";}}
-                  onMouseLeave={e=>{e.currentTarget.style.background="#F59E0B10";e.currentTarget.style.borderColor="#F59E0B44";}}>
-                  <div style={{width:34,height:34,borderRadius:9,background:"linear-gradient(135deg,#F59E0B,#F59E0Bcc)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  style={{display:"flex",alignItems:"center",gap:12,background:"#EF535010",border:"2px solid #EF535044",borderRadius:12,padding:"11px 14px",cursor:"pointer",fontFamily:FONT,transition:"all 0.15s",width:"100%"}}
+                  onMouseEnter={e=>{e.currentTarget.style.background="#EF535022";e.currentTarget.style.borderColor="#EF5350";}}
+                  onMouseLeave={e=>{e.currentTarget.style.background="#EF535010";e.currentTarget.style.borderColor="#EF535044";}}>
+                  <div style={{width:34,height:34,borderRadius:9,background:"linear-gradient(135deg,#EF5350,#EF5350cc)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
                     <span style={{fontFamily:"Sora,sans-serif",fontWeight:800,fontSize:20,color:"#fff",lineHeight:1}}>b</span>
                   </div>
                   <div style={{textAlign:"left"}}>
-                    <div style={{fontSize:12,fontWeight:800,color:"#F59E0B",letterSpacing:0.3}}>COMMAND BEAN MOGUL</div>
+                    <div style={{fontSize:12,fontWeight:800,color:"#EF5350",letterSpacing:0.3}}>COMMAND PERSONAL</div>
                     <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",marginTop:1}}>search your data.</div>
                   </div>
                 </button>
-                <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,letterSpacing:1,marginBottom:2,marginTop:4}}>Or add to a business:</div>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,letterSpacing:1,marginTop:4,marginBottom:2}}>Or speak something new:</div>
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:7}}>
-                  {BIZ.map((b,i)=>(
-                    <button key={i} onClick={()=>{setSelBiz(i);setStep(2);}}
-                      style={{background:`${b.color}12`,border:`2px solid ${b.color}44`,borderRadius:11,padding:"9px 12px",cursor:"pointer",textAlign:"left",fontFamily:FONT,transition:"all 0.15s"}}
-                      onMouseEnter={e=>{e.currentTarget.style.background=`${b.color}25`;e.currentTarget.style.borderColor=b.color;}}
-                      onMouseLeave={e=>{e.currentTarget.style.background=`${b.color}12`;e.currentTarget.style.borderColor=`${b.color}44`;}}>
-                      <div style={{fontSize:11,fontWeight:700,color:BIZ_TEXT[i]}}>{b.short}</div>
-                      <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",marginTop:1}}>{b.type}</div>
+                  {VOICE_TYPES.map(t=>(
+                    <button key={t.key} onClick={()=>{if(t.key==="calendar"&&!isAuthed){setStatus("Connect Google for calendar");return;}setMode(t.key);setStep(2);setTimeout(startRec,300);}}
+                      style={{background:`${t.color}12`,border:`2px solid ${t.color}44`,borderRadius:11,padding:"11px 12px",cursor:"pointer",textAlign:"left",fontFamily:FONT,transition:"all 0.15s",gridColumn:t.key==="calendar"?"1 / -1":"auto"}}
+                      onMouseEnter={e=>{e.currentTarget.style.background=`${t.color}25`;e.currentTarget.style.borderColor=t.color;}}
+                      onMouseLeave={e=>{e.currentTarget.style.background=`${t.color}12`;e.currentTarget.style.borderColor=`${t.color}44`;}}>
+                      <div style={{fontSize:12,fontWeight:800,color:t.color,letterSpacing:0.3,textAlign:t.key==="calendar"?"center":"left"}}>{t.label.toUpperCase()}</div>
                     </button>
                   ))}
                 </div>
-              </div>
-            )}
-            {step===2&&(
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                {biz&&<div style={{fontSize:10,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,letterSpacing:1,marginBottom:2}}>Adding to: <span style={{color:BIZ_TEXT[bizId],fontWeight:700}}>{biz.short}</span></div>}
-                {[{key:"cmd",label:"COMMAND BEAN MOGUL",color:"#F59E0B",Icon:Terminal},{key:"calendar",label:"CALENDAR EVENT",color:biz?.color||"#F59E0B",Icon:CalendarDays},{key:"task",label:"TASK",color:"#3B5BDB",Icon:ListChecks},{key:"note",label:"NOTE",color:"#7B1FA2",Icon:PenLine}].map(m=>(
-                  <button key={m.key} onClick={()=>{if(m.key==="cmd"){reset();onOpenCommandBean?.();return;}if(!isAuthed){setStatus("Connect Google first");return;}setMode(m.key);setStep(3);setTimeout(startRec,300);}}
-                    style={{display:"flex",alignItems:"center",gap:12,background:`${m.color}10`,border:`2px solid ${m.color}44`,borderRadius:12,padding:"12px 14px",cursor:"pointer",fontFamily:FONT,transition:"all 0.15s"}}
-                    onMouseEnter={e=>{e.currentTarget.style.background=`${m.color}22`;e.currentTarget.style.borderColor=m.color;}}
-                    onMouseLeave={e=>{e.currentTarget.style.background=`${m.color}10`;e.currentTarget.style.borderColor=`${m.color}44`;}}>
-                    <div style={{width:34,height:34,borderRadius:10,background:`linear-gradient(135deg,${m.color},${m.color}cc)`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                      <m.Icon size={17} color="#fff" strokeWidth={2}/>
-                    </div>
-                    <span style={{fontSize:12,fontWeight:800,color:m.color,letterSpacing:0.3}}>{m.label}</span>
-                  </button>
-                ))}
                 {status&&<div style={{fontSize:11,color:"#C62828",fontWeight:600,padding:"4px 0"}}>{status}</div>}
               </div>
             )}
-            {step===3&&(
+            {step===2&&(
               <div style={{display:"flex",flexDirection:"column",gap:10}}>
-                <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,letterSpacing:1}}>{(mode||"").toUpperCase()} \u00B7 {biz?.short||""}</div>
-                {listening&&!transcript&&<div style={{fontSize:13,color:"rgba(255,255,255,0.3)",fontStyle:"italic"}}>Listening\u2026 speak now</div>}
-                {transcript&&<div style={{fontSize:15,color:"rgba(255,255,255,0.88)",fontWeight:500,lineHeight:1.6,borderBottom:"1px solid #f0f0f5",paddingBottom:8}}>{transcript}</div>}
+                <div style={{fontSize:10,color:activeType?.color||"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,letterSpacing:1,fontWeight:700}}>{(mode||"").toUpperCase()}</div>
+                {listening&&!transcript&&(
+                  <div style={{fontSize:16,color:"rgba(255,255,255,0.5)",fontStyle:"italic",lineHeight:1.5,padding:"4px 0"}}>
+                    {activeType?.prompt||"Speak now\u2026"}
+                  </div>
+                )}
+                {transcript&&<div style={{fontSize:15,color:"rgba(255,255,255,0.88)",fontWeight:500,lineHeight:1.6,borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:8}}>{transcript}</div>}
                 {status&&<div style={{fontSize:12,fontWeight:700,color:status.startsWith("\u2705")?"#2E7D32":"#C62828"}}>{status}</div>}
                 <div style={{display:"flex",gap:7}}>
                   <button onClick={()=>{stopRec();reset();}} style={{flex:1,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.12)",color:"rgba(255,255,255,0.6)",borderRadius:10,padding:"9px",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:FONT}}>CANCEL</button>
                   {listening&&<button onClick={stopRec} style={{flex:1,background:"rgba(198,40,40,0.1)",border:"1px solid #C62828",color:"#C62828",borderRadius:10,padding:"9px",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:FONT}}>{"\u25A0"} STOP</button>}
-                  {transcript&&!listening&&<button onClick={send} style={{flex:2,background:"linear-gradient(135deg,#3B5BDB,#5C7CFA)",border:"none",color:"#fff",borderRadius:10,padding:"9px",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:FONT,boxShadow:"0 4px 12px rgba(59,91,219,0.35)"}}>ADD {(mode||"").toUpperCase()} \u2192</button>}
+                  {transcript&&!listening&&<button onClick={send} style={{flex:2,background:`linear-gradient(135deg,${activeType?.color||"#3B5BDB"},${activeType?.color||"#5C7CFA"}cc)`,border:"none",color:"#fff",borderRadius:10,padding:"9px",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:FONT,boxShadow:`0 4px 12px ${activeType?.color||"#3B5BDB"}55`}}>SAVE {(mode||"").toUpperCase()} \u2192</button>}
                 </div>
               </div>
             )}
@@ -3340,13 +3568,13 @@ function _VitalsCard_DELETED({bizId,biz}){
   const getDelta=(curr,prev)=>{if(!n(prev))return null;const d=(n(curr)-n(prev))/n(prev)*100;return{pct:Math.abs(d).toFixed(1),up:d>=0};};
   const save=()=>{setVitals(form);try{localStorage.setItem(storageKey,JSON.stringify(form));}catch{}setEditing(false);};
   const eqCh=[
-    {v:hasData?Math.round((rev/maxV)*5):0,c:'#F59E0B',l:'REV'},
+    {v:hasData?Math.round((rev/maxV)*5):0,c:'#EF5350',l:'REV'},
     {v:hasData?Math.round((cogs/maxV)*5):0,c:'#3B5BDB',l:'CGS'},
     {v:hasData?Math.round((gp/maxV)*5):0,c:'#00D4FF',l:'GP'},
     {v:hasData?Math.round((Math.max(0,net)/maxV)*5):0,c:net>=0?'#00E676':'#FF3B3B',l:'NET'},
   ];
   const rows=[
-    {label:'REV',key:'revenue',prevKey:'revenuePrev',color:'#F59E0B',neg:false},
+    {label:'REV',key:'revenue',prevKey:'revenuePrev',color:'#EF5350',neg:false},
     {label:'COGS',key:'cogs',prevKey:'cogsPrev',color:'#3B5BDB',neg:true},
     {label:'GP',key:'grossProfit',prevKey:'grossProfitPrev',color:'#00D4FF',neg:false},
     {label:'NET',key:'netIncome',prevKey:'netIncomePrev',color:net>=0?'#00E676':'#FF3B3B',neg:false},
@@ -3483,7 +3711,7 @@ function BizPage({biz,bizId,state,allEvents,calMonth,setCalMonth,onAddTask,onDel
   return(
     <div style={{padding:"16px",paddingTop:0,paddingBottom:"80px",display:"flex",flexDirection:"column",gap:16,overflow:"hidden"}}>
       <div style={{position:"sticky",top:0,zIndex:50,background:"linear-gradient(180deg,#0e1320 80%,transparent 100%)",paddingTop:isMobile?"14px":"32px",paddingBottom:12,marginBottom:-4}}>
-        <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?22:32,fontWeight:900,letterSpacing:-1,color:"#F59E0B",lineHeight:1.1}}>command bean<br/>mogul.</div>
+        <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?22:32,fontWeight:900,letterSpacing:-1,color:"#F59E0B",lineHeight:1.1}}><span style={{color:"#F59E0B"}}>command</span><br/><span style={{color:"#EF5350"}}>personal.</span></div>
         <div style={{fontSize:isMobile?10:13,color:"rgba(255,255,255,0.4)",letterSpacing:2,marginTop:6,fontWeight:500,fontFamily:FONT_MONO}}>{new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}).toUpperCase()}</div>
       </div>
       <div style={{borderLeft:`5px solid ${biz.color}`,paddingLeft:16,borderImage:`linear-gradient(180deg, ${biz.color}, ${biz.color}66) 1`}}>
@@ -3548,14 +3776,14 @@ function OnboardingFlow({onComplete,onConnectGoogle}){
     <div style={{...termBg,minHeight:"100dvh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:isMob?"20px 16px 48px":"40px 24px",overflowY:"auto"}}>
       <div style={{width:"100%",maxWidth:400,textAlign:"center"}}>
         <div style={{fontSize:11,fontWeight:800,color:"rgba(0,180,200,0.5)",letterSpacing:3,fontFamily:FONT_MONO,marginBottom:20}}>COMMAND BEAN MOGUL v1.0</div>
-        <div style={{fontSize:isMob?38:46,fontWeight:900,color:"#F59E0B",fontFamily:"'Sora',sans-serif",letterSpacing:-2,lineHeight:1,marginBottom:8}}>command bean<br/>mogul.</div>
+        <div style={{fontSize:isMob?38:46,fontWeight:900,color:"#F59E0B",fontFamily:"'Sora',sans-serif",letterSpacing:-2,lineHeight:1,marginBottom:8}}><span style={{color:"#F59E0B"}}>command</span><br/><span style={{color:"#EF5350"}}>personal.</span></div>
         <div style={{fontSize:12,color:"rgba(255,255,255,0.3)",fontFamily:FONT_MONO,letterSpacing:2,marginBottom:36}}>command center.</div>
         <div style={{background:"rgba(0,180,200,0.05)",border:"1px solid rgba(0,180,200,0.15)",borderRadius:16,padding:"22px 20px",marginBottom:28,textAlign:"left"}}>
           <div style={{fontSize:11,color:"rgba(0,180,200,0.6)",fontFamily:FONT_MONO,letterSpacing:2,marginBottom:10}}>{"> "} SYSTEM INIT</div>
           <div style={{fontSize:15,color:"rgba(255,255,255,0.8)",lineHeight:1.65}}>Your multi-business command center. Manage tasks, vitals, calendar, and notes — all in one place.</div>
           <div style={{fontSize:13,color:"rgba(255,255,255,0.4)",marginTop:10,lineHeight:1.5}}>Setup takes under 2 minutes.</div>
         </div>
-        <button onClick={()=>setStep(1)} style={{background:"#F59E0B",color:"#080c14",border:"none",borderRadius:12,padding:"14px 0",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:FONT,width:"100%",letterSpacing:0.3}}>Get Started →</button>
+        <button onClick={()=>setStep(1)} style={{background:"#EF5350",color:"#080c14",border:"none",borderRadius:12,padding:"14px 0",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:FONT,width:"100%",letterSpacing:0.3}}>Get Started →</button>
       </div>
     </div>
   );
@@ -3588,7 +3816,7 @@ function OnboardingFlow({onComplete,onConnectGoogle}){
         {bizList.length<6&&(
           <button onClick={addBiz} style={{width:"100%",background:"transparent",border:"1px dashed rgba(0,180,200,0.22)",borderRadius:12,padding:"12px",color:"rgba(0,180,200,0.55)",fontSize:12,fontFamily:FONT_MONO,cursor:"pointer",letterSpacing:1.5,marginBottom:20}}>+ ADD ANOTHER BUSINESS</button>
         )}
-        <button onClick={saveBizAndAdvance} disabled={!canNext} style={{width:"100%",background:canNext?"#F59E0B":"rgba(255,255,255,0.08)",color:canNext?"#080c14":"rgba(255,255,255,0.25)",border:"none",borderRadius:12,padding:"14px 0",fontSize:15,fontWeight:800,cursor:canNext?"pointer":"default",fontFamily:FONT,marginTop:canNext?0:4}}>
+        <button onClick={saveBizAndAdvance} disabled={!canNext} style={{width:"100%",background:canNext?"#EF5350":"rgba(255,255,255,0.08)",color:canNext?"#080c14":"rgba(255,255,255,0.25)",border:"none",borderRadius:12,padding:"14px 0",fontSize:15,fontWeight:800,cursor:canNext?"pointer":"default",fontFamily:FONT,marginTop:canNext?0:4}}>
           {canNext?"Next: Connect Google →":"Enter at least one business name to continue"}
         </button>
         <div style={{textAlign:"center",marginTop:16}}>
@@ -3629,7 +3857,7 @@ function OnboardingFlow({onComplete,onConnectGoogle}){
             </div>
           </div>
         </div>
-        <button onClick={()=>finish(true)} style={{width:"100%",background:"#F59E0B",color:"#080c14",border:"none",borderRadius:12,padding:"14px 0",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:FONT,marginBottom:12,letterSpacing:0.3}}>Connect Google →</button>
+        <button onClick={()=>finish(true)} style={{width:"100%",background:"#EF5350",color:"#080c14",border:"none",borderRadius:12,padding:"14px 0",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:FONT,marginBottom:12,letterSpacing:0.3}}>Connect Google →</button>
         <button onClick={()=>finish(false)} style={{width:"100%",background:"transparent",border:"1px solid rgba(255,255,255,0.12)",color:"rgba(255,255,255,0.35)",borderRadius:12,padding:"12px 0",fontSize:13,cursor:"pointer",fontFamily:FONT}}>Skip for now</button>
         <div style={{textAlign:"center",marginTop:16}}>
           <button onClick={()=>setStep(1)} style={{background:"none",border:"none",color:"rgba(255,255,255,0.2)",fontSize:12,cursor:"pointer",fontFamily:FONT_MONO,letterSpacing:1}}>← BACK</button>
@@ -3677,19 +3905,19 @@ function TutorialHints({onDone}){
   return createPortal(
     <div style={{position:"fixed",inset:0,zIndex:8000,pointerEvents:"none"}}>
       <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.55)"}}/>
-      <div style={{position:"absolute",...(panelTop?{top:isMob?70:80,right:isMob?12:16,left:isMob?12:"auto"}:{top:"50%",left:"50%",transform:"translate(-50%,-50%)"}),pointerEvents:"auto",background:"#141c2e",border:"1px solid rgba(245,158,11,0.35)",borderTop:"3px solid #F59E0B",borderRadius:16,padding:"20px 20px 16px",maxWidth:320,width:isMob&&panelTop?"calc(100% - 24px)":"320px",boxShadow:"0 16px 48px rgba(0,0,0,0.6)",animation:"fadeSlideIn 0.22s ease-out"}}>
-        {hint.arrow&&<div style={{position:"absolute",...(hint.arrow==="↗"?{top:-22,right:isMob?60:16,fontSize:28,transform:"rotate(0deg)"}:{top:-26,left:"50%",transform:"translateX(-50%)",fontSize:28}),color:"#F59E0B",lineHeight:1}}>{hint.arrow}</div>}
+      <div style={{position:"absolute",...(panelTop?{top:isMob?70:80,right:isMob?12:16,left:isMob?12:"auto"}:{top:"50%",left:"50%",transform:"translate(-50%,-50%)"}),pointerEvents:"auto",background:"#141c2e",border:"1px solid rgba(239,83,80,0.35)",borderTop:"3px solid #EF5350",borderRadius:16,padding:"20px 20px 16px",maxWidth:320,width:isMob&&panelTop?"calc(100% - 24px)":"320px",boxShadow:"0 16px 48px rgba(0,0,0,0.6)",animation:"fadeSlideIn 0.22s ease-out"}}>
+        {hint.arrow&&<div style={{position:"absolute",...(hint.arrow==="↗"?{top:-22,right:isMob?60:16,fontSize:28,transform:"rotate(0deg)"}:{top:-26,left:"50%",transform:"translateX(-50%)",fontSize:28}),color:"#EF5350",lineHeight:1}}>{hint.arrow}</div>}
         <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
           <span style={{fontSize:22}}>{hint.emoji}</span>
           <div style={{fontSize:15,fontWeight:800,color:"#fff",fontFamily:FONT,flex:1}}>{hint.title}</div>
           <div style={{display:"flex",gap:4}}>
-            {TUTORIAL_HINTS.map(h=><div key={h.id} style={{width:6,height:6,borderRadius:"50%",background:h.id===step?"#F59E0B":"rgba(255,255,255,0.18)"}}/>)}
+            {TUTORIAL_HINTS.map(h=><div key={h.id} style={{width:6,height:6,borderRadius:"50%",background:h.id===step?"#EF5350":"rgba(255,255,255,0.18)"}}/>)}
           </div>
         </div>
         <div style={{fontSize:13,color:"rgba(255,255,255,0.6)",lineHeight:1.6,marginBottom:16}}>{hint.body}</div>
         <div style={{display:"flex",gap:8}}>
           <button onClick={skip} style={{flex:1,padding:"9px 0",background:"transparent",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.3)",borderRadius:8,fontSize:12,cursor:"pointer",fontFamily:FONT}}>Skip</button>
-          <button onClick={advance} style={{flex:2,padding:"9px 0",background:"#F59E0B",color:"#080c14",border:"none",borderRadius:8,fontSize:13,fontWeight:800,cursor:"pointer",fontFamily:FONT}}>{isLast?"Let's go ✓":"Got it →"}</button>
+          <button onClick={advance} style={{flex:2,padding:"9px 0",background:"#EF5350",color:"#080c14",border:"none",borderRadius:8,fontSize:13,fontWeight:800,cursor:"pointer",fontFamily:FONT}}>{isLast?"Let's go ✓":"Got it →"}</button>
         </div>
       </div>
     </div>,document.body);
@@ -3712,7 +3940,7 @@ export default function App(){
   const[isMobile,setIsMobile]=useState(()=>window.innerWidth<768);
   useEffect(()=>{const h=()=>setIsMobile(window.innerWidth<768);window.addEventListener("resize",h);return()=>window.removeEventListener("resize",h);},[]);
   const[showTooltip,setShowTooltip]=useState(()=>!localStorage.getItem("dws_vt"));
-  const[showOnboarding,setShowOnboarding]=useState(()=>!localStorage.getItem("dws_onboarding_done"));
+  const[showOnboarding,setShowOnboarding]=useState(false);
   // ?newuser=1 resets all localStorage so Duane can test the new-user experience
   useEffect(()=>{
     const p=new URLSearchParams(window.location.search);
@@ -4167,7 +4395,7 @@ export default function App(){
           <text x="100" y="201" fontFamily="Inter,sans-serif" fontWeight="400" fontSize="9.5" letterSpacing="0.5" textAnchor="middle" fill="rgba(255,255,255,0.55)" style={{animation:"textPulse 3s ease-in-out infinite"}}>Stop typing. Start commanding.</text>
         </svg>
         <div style={{display:"flex",alignItems:"center",gap:6,marginTop:4,animation:"fadeSlideIn 1.6s ease-out both",opacity:0.55}}>
-          {[{n:"Command",c:"#F59E0B"},{n:"Personal",c:"#E53935"},{n:"Pulse",c:"#2E7D32"},{n:"Partners",c:"#0097A7"},{n:"Family",c:"#7B1FA2"}].map((p,i)=>(
+          {[{n:"Command",c:"#EF5350"},{n:"Personal",c:"#E53935"},{n:"Pulse",c:"#2E7D32"},{n:"Partners",c:"#0097A7"},{n:"Family",c:"#7B1FA2"}].map((p,i)=>(
             <span key={p.n} style={{display:"flex",alignItems:"center",gap:6}}>
               <span style={{fontSize:8,fontWeight:700,color:p.c,fontFamily:"Sora,sans-serif",letterSpacing:0.3}}>{p.n}</span>
               {i<4&&<span style={{fontSize:8,color:"rgba(255,255,255,0.2)"}}>·</span>}
@@ -4206,12 +4434,12 @@ export default function App(){
         <div onClick={()=>{setShowTooltip(false);localStorage.setItem("dws_vt","1");}}
           style={{position:"fixed",top:isMobile?104:104,right:16,zIndex:1998,maxWidth:isMobile?"calc(100vw - 32px)":220,
             background:"rgba(255,255,255,0.97)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
-            borderRadius:14,border:"1.5px solid rgba(245,158,11,0.5)",
-            boxShadow:"0 8px 30px rgba(245,158,11,0.2),0 2px 8px rgba(0,0,0,0.08)",
+            borderRadius:14,border:"1.5px solid rgba(239,83,80,0.5)",
+            boxShadow:"0 8px 30px rgba(239,83,80,0.2),0 2px 8px rgba(0,0,0,0.08)",
             padding:"12px 14px",cursor:"pointer",animation:"fadeSlideIn 0.4s ease-out",fontFamily:FONT}}>
-          <div style={{position:"absolute",top:-8,right:28,width:0,height:0,borderLeft:"7px solid transparent",borderRight:"7px solid transparent",borderBottom:"8px solid rgba(245,158,11,0.5)"}}/>
+          <div style={{position:"absolute",top:-8,right:28,width:0,height:0,borderLeft:"7px solid transparent",borderRight:"7px solid transparent",borderBottom:"8px solid rgba(239,83,80,0.5)"}}/>
           <div style={{position:"absolute",top:-6,right:29,width:0,height:0,borderLeft:"6px solid transparent",borderRight:"6px solid transparent",borderBottom:"7px solid rgba(255,255,255,0.97)"}}/>
-          <div style={{fontSize:12,fontWeight:700,color:"#F59E0B",letterSpacing:1,fontFamily:FONT_MONO,marginBottom:4}}>BEAN VOICE</div>
+          <div style={{fontSize:12,fontWeight:700,color:"#EF5350",letterSpacing:1,fontFamily:FONT_MONO,marginBottom:4}}>BEAN VOICE</div>
           <div style={{fontSize:13,color:"rgba(255,255,255,0.88)",lineHeight:1.5}}>Tap the voice button to add tasks, notes, and events with your voice.</div>
           <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginTop:6,letterSpacing:0.5}}>Tap to dismiss</div>
         </div>
@@ -4221,19 +4449,21 @@ export default function App(){
       {editBizId!==null&&<EditBizModal bizId={editBizId} onSave={saveEditBiz} onClose={()=>setEditBizId(null)}/>}
       {showTutorial&&<TutorialHints onDone={()=>setShowTutorial(false)}/>}
       {needsDriveConsent&&(
-        <div style={{background:"#F59E0B",padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexShrink:0}}>
+        <div style={{background:"#EF5350",padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexShrink:0}}>
           <span style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.88)",fontFamily:FONT_MONO,letterSpacing:0.5}}>NOTES NEED DRIVE ACCESS</span>
-          <button onClick={()=>{setNeedsDriveConsent(false);tcRef.current?.requestAccessToken({prompt:"consent"});}} style={{background:"#1a1a2e",color:"#F59E0B",border:"none",borderRadius:6,padding:"6px 14px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:FONT_MONO,letterSpacing:0.5,whiteSpace:"nowrap"}}>GRANT ACCESS</button>
+          <button onClick={()=>{setNeedsDriveConsent(false);tcRef.current?.requestAccessToken({prompt:"consent"});}} style={{background:"#1a1a2e",color:"#EF5350",border:"none",borderRadius:6,padding:"6px 14px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:FONT_MONO,letterSpacing:0.5,whiteSpace:"nowrap"}}>GRANT ACCESS</button>
         </div>
       )}
       <div style={{flex:1,minHeight:0,overflow:"auto",WebkitOverflowScrolling:"touch"}}>
         {activeTab===-1
           ?<Overview state={state} allEvents={allEvents} calLoading={calLoading} authStatus={authStatus} authToken={authToken} onRefresh={doRefresh} onNavigate={setActiveTab} gTasks={gTasks} gTaskLists={gTaskLists} onCompleteGTask={completeGTask} onDeleteGTask={deleteGTask} onAddTask={addTask} onAddCalEvent={addCalEvent} onUpdateNote={updateNote} onDeleteNote={deleteNote} onAddNote={addNote} deletedBizIds={deletedBizIds} onDeleteBiz={deleteBiz} onEditBiz={setEditBizId} bizOrder={bizOrder} onReorder={setBizOrder}/>
+          :activeTab==="goals"
+          ?<GoalsWidget onBack={()=>setActiveTab(-1)}/>
           :<BizPage biz={biz} bizId={activeTab} state={state} allEvents={allEvents} calMonth={calMonth} setCalMonth={setCalMonth} onAddTask={addTask} onDeleteTask={deleteTask} onDeleteAllTasks={deleteAllTasks} onToggleTask={toggleTask} onEditTask={editLocalTask} gTasks={gTasks} gTaskLists={gTaskLists} onAddCalEvent={addCalEvent} onDeleteCalEvent={deleteCalEvent} onDeleteAllCalEvent={deleteAllRecurringEvents} onEditCalEvent={editCalEvent} onEditAllCalEvent={editAllCalEvents} onCompleteGTask={completeGTask} onDeleteGTask={deleteGTask} onEditGTask={editGTask} isAuthed={authStatus==="authed"||authStatus==="cached"} onPushBudgetEvent={authStatus==="authed"?pushBudgetEvent:null} onUpdateNote={updateNote} onDeleteNote={deleteNote} onAddNote={addNote} onNavigate={setActiveTab} bizOrder={bizOrder}/>
         }
       </div>
       <div style={{background:"linear-gradient(90deg, #12122a, #1e1e3a)",borderTop:"1px solid rgba(255,255,255,0.06)",padding:"6px 18px",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
-        <span onClick={authStatus!=="authed"?(authStatus==="expired"?reAuth:signIn):undefined} style={{fontSize:10,color:authStatus==="authed"?"rgba(255,255,255,0.3)":authStatus==="expired"?"#F59E0B":"rgba(100,180,255,0.7)",fontFamily:FONT_MONO,letterSpacing:0.5,cursor:authStatus!=="authed"?"pointer":"default",textDecoration:authStatus!=="authed"?"underline":"none",textUnderlineOffset:2}}>DWS v7.0 · {authStatus==="authed"?"Google Live ✓":authStatus==="expired"?"Session expired — Tap to reconnect →":authStatus==="cached"?"Cached — Tap to connect Google →":"Tap to connect Google →"}</span>
+        <span onClick={authStatus!=="authed"?(authStatus==="expired"?reAuth:signIn):undefined} style={{fontSize:10,color:authStatus==="authed"?"rgba(255,255,255,0.3)":authStatus==="expired"?"#EF5350":"rgba(100,180,255,0.7)",fontFamily:FONT_MONO,letterSpacing:0.5,cursor:authStatus!=="authed"?"pointer":"default",textDecoration:authStatus!=="authed"?"underline":"none",textUnderlineOffset:2}}>DWS v7.0 · {authStatus==="authed"?"Google Live ✓":authStatus==="expired"?"Session expired — Tap to reconnect →":authStatus==="cached"?"Cached — Tap to connect Google →":"Tap to connect Google →"}</span>
         <span style={{fontSize:11,color:"rgba(255,255,255,0.4)",fontWeight:600,fontFamily:FONT_MONO}}><LiveClock/></span>
       </div>
     </div>
