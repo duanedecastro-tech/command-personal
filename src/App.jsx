@@ -2529,7 +2529,7 @@ function WidgetCard({widget,onOpen}){
   const c=widget.color;
   return(
     <div onClick={onOpen}
-      style={{background:`linear-gradient(180deg,${c}18 0%,${c}08 100%)`,border:`1px solid ${c}30`,borderTop:`1px solid ${c}55`,borderRadius:16,padding:"14px 16px",cursor:"pointer",position:"relative",minWidth:0,overflow:"hidden",display:"flex",flexDirection:"column",boxSizing:"border-box",boxShadow:`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`,transition:"all 0.18s"}}
+      style={{background:`linear-gradient(180deg,${c}18 0%,${c}08 100%)`,border:`1px solid ${c}30`,borderTop:`1px solid ${c}55`,borderRadius:16,padding:"14px 16px 32px",cursor:"pointer",position:"relative",minWidth:0,overflow:"hidden",display:"flex",flexDirection:"column",boxSizing:"border-box",boxShadow:`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`,transition:"all 0.18s",minHeight:160}}
       onMouseEnter={e=>{e.currentTarget.style.background=`linear-gradient(180deg,${c}28 0%,${c}12 100%)`;e.currentTarget.style.boxShadow=`0 8px 44px ${c}66, 0 1px 0 ${c}33 inset`;e.currentTarget.style.transform="translateY(-3px) scale(1.02)";}}
       onMouseLeave={e=>{e.currentTarget.style.background=`linear-gradient(180deg,${c}18 0%,${c}08 100%)`;e.currentTarget.style.boxShadow=`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`;e.currentTarget.style.transform="none";}}>
       <div style={{fontSize:14,fontWeight:700,color:c,marginBottom:3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{widget.name}</div>
@@ -2697,29 +2697,132 @@ function TodayBriefModal({urgentTasks,allEvents,td,onNavigate,onClose,state,isAu
 }
 
 const EXAMPLE_GOALS=[
-  {id:"ex1",title:"Run 50 miles",target:50,current:18,unit:"miles",color:"#43A047",isExample:true,createdAt:new Date().toISOString()},
-  {id:"ex2",title:"Save $2,000",target:2000,current:1200,unit:"dollars",color:"#3B5BDB",isExample:true,createdAt:new Date().toISOString()},
-  {id:"ex3",title:"Read 12 books",target:12,current:3,unit:"books",color:"#FF7043",isExample:true,createdAt:new Date().toISOString()},
-  {id:"ex4",title:"Pay off $3,000",target:3000,current:1350,unit:"dollars",color:"#AB47BC",isExample:true,createdAt:new Date().toISOString()},
+  {id:"ex1",title:"Run 50 miles",target:50,current:18,unit:"miles",color:"#43A047",isExample:true,createdAt:new Date().toISOString(),lastLogged:"2026-04-14",streak:3},
+  {id:"ex2",title:"Save $2,000",target:2000,current:1200,unit:"dollars",color:"#3B5BDB",isExample:true,createdAt:new Date().toISOString(),lastLogged:"2026-04-15",streak:7},
+  {id:"ex3",title:"Read 12 books",target:12,current:3,unit:"books",color:"#FF7043",isExample:true,createdAt:new Date().toISOString(),lastLogged:"2026-04-12",streak:1},
+  {id:"ex4",title:"Pay off $3,000",target:3000,current:1350,unit:"dollars",color:"#AB47BC",isExample:true,createdAt:new Date().toISOString(),lastLogged:"2026-04-15",streak:12},
 ];
 
-function GoalEQBars({pct}){
-  const maxH=28;
-  const clipTop=Math.max(0,maxH-Math.max(3,Math.round(pct/100*maxH)));
-  const segH=2,segGap=1;
+function parseVoiceNumber(text){
+  const m=text.match(/[\d,.]+/);
+  if(m)return parseFloat(m[0].replace(/,/g,""));
+  return null;
+}
+
+function daysAgo(dateStr){
+  if(!dateStr)return null;
+  const d=new Date(dateStr+"T12:00:00");
+  const now=new Date();
+  const diff=Math.floor((now-d)/(1000*60*60*24));
+  return diff;
+}
+
+function streakLabel(streak){
+  if(!streak||streak<1)return null;
+  return `${streak}d streak`;
+}
+
+function hexToRgbStr(hex){
+  const h=hex.replace("#","");
+  const r=parseInt(h.substring(0,2),16)||0;
+  const g=parseInt(h.substring(2,4),16)||0;
+  const b=parseInt(h.substring(4,6),16)||0;
+  return`${r},${g},${b}`;
+}
+
+// Lava lamp — contrasting color pairings per goal color
+const LAMP_PAIRS={
+  "#EF5350":{fluid:"#1A237E",blob:"#CE93D8",blob2:"#9C27B0"},
+  "#FF7043":{fluid:"#004D40",blob:"#26C6DA",blob2:"#00838F"},
+  "#F59E0B":{fluid:"#1A237E",blob:"#CE93D8",blob2:"#7B1FA2"},
+  "#43A047":{fluid:"#1A0033",blob:"#F48FB1",blob2:"#AD1457"},
+  "#3B5BDB":{fluid:"#7B1900",blob:"#FFAB40",blob2:"#E64A19"},
+  "#42A5F5":{fluid:"#1B5E20",blob:"#FFF176",blob2:"#F9A825"},
+  "#AB47BC":{fluid:"#004D40",blob:"#FFD54F",blob2:"#F57F17"},
+  "#0097A7":{fluid:"#4A148C",blob:"#FF80AB",blob2:"#F06292"},
+};
+const LAMP_DEFAULT={fluid:"#1A237E",blob:"#AB47BC",blob2:"#CE93D8"};
+
+function ArcRing({pct,color}){
+  const pair=LAMP_PAIRS[color]||LAMP_DEFAULT;
+  const fp=Math.min(100,Math.max(0,pct));
+  const SIZE=64;
+  const cx=SIZE/2;
+  const cy=SIZE/2;
+  const r=26;
+  const strokeW=4.5;
+  const circ=2*Math.PI*r;
+  const offset=circ*(1-fp/100);
+  const angleDeg=(fp/100)*360-90;
+  const angleRad=angleDeg*Math.PI/180;
+  const dotX=+(cx+r*Math.cos(angleRad)).toFixed(2);
+  const dotY=+(cy+r*Math.sin(angleRad)).toFixed(2);
+  const glowId=`ag_${color.replace("#","")}`;
+  return(
+    <div style={{position:"relative",width:SIZE,height:SIZE,flexShrink:0}}>
+      <svg width={SIZE} height={SIZE} style={{overflow:"visible"}}>
+        <defs>
+          <filter id={glowId} x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="2.5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        {/* Background track */}
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={strokeW}/>
+        {/* Progress arc */}
+        {fp>0&&(
+          <circle cx={cx} cy={cy} r={r}
+            fill="none" stroke={pair.blob}
+            strokeWidth={strokeW} strokeLinecap="round"
+            strokeDasharray={circ} strokeDashoffset={offset}
+            transform={`rotate(-90 ${cx} ${cy})`}
+            style={{
+              filter:`drop-shadow(0 0 4px ${pair.blob}) drop-shadow(0 0 10px ${pair.blob}77)`,
+              transition:"stroke-dashoffset 0.65s cubic-bezier(0.34,1.56,0.64,1)",
+            }}
+          />
+        )}
+        {/* Leading dot with pulse ring */}
+        {fp>0&&fp<100&&(
+          <>
+            <g style={{transformOrigin:`${dotX}px ${dotY}px`,animation:"arcPulse 2s ease-out infinite"}}>
+              <circle cx={dotX} cy={dotY} r={7} fill="none" stroke={pair.blob} strokeWidth={1.5} opacity={0.55}/>
+            </g>
+            <circle cx={dotX} cy={dotY} r={4.5} fill={pair.blob} filter={`url(#${glowId})`}/>
+          </>
+        )}
+        {/* Center label */}
+        <text x={cx} y={cy+0.5} textAnchor="middle" dominantBaseline="middle"
+          fill={fp>0?pair.blob:"rgba(255,255,255,0.18)"}
+          fontSize={fp>=100?11:13} fontWeight="800"
+          fontFamily="'JetBrains Mono',monospace"
+          style={{filter:fp>0?`drop-shadow(0 0 6px ${pair.blob}99)`:"none"}}>
+          {fp>=100?"DONE":`${fp}%`}
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+function GoalVoiceButton({onTap,listening,color}){
+  const segH=3,segGap=1;
   const mask=`repeating-linear-gradient(to top,#000 0px,#000 ${segH}px,transparent ${segH}px,transparent ${segH+segGap}px)`;
   return(
-    <div style={{display:"flex",alignItems:"flex-end",gap:2,clipPath:`inset(${clipTop}px 0 0 0)`,transition:"clip-path 0.15s ease"}}>
-      {BAR_CONF.map((b,i)=>(
-        <div key={i} style={{
-          width:5,height:maxH,borderRadius:1,
-          transformOrigin:"bottom center",
-          background:BAR_GRADIENTS[i],
-          maskImage:mask,
-          WebkitMaskImage:mask,
-          animation:`${b.ha} ${b.hd} linear ${b.hd2} infinite,eqOp ${b.od} ease-in-out ${b.od2} infinite`,
-        }}/>
-      ))}
+    <div onClick={onTap} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,cursor:"pointer",padding:"8px 16px",borderRadius:12,background:listening?`${color||"#3B5BDB"}22`:"transparent",border:listening?`1px solid ${color||"#3B5BDB"}44`:"1px solid transparent",transition:"all 0.2s"}}>
+      <div style={{display:"flex",alignItems:"flex-end",gap:3}}>
+        {BAR_CONF.map((b,i)=>(
+          <div key={i} style={{
+            width:7,height:36,borderRadius:1,
+            transformOrigin:"bottom center",
+            background:BAR_GRADIENTS[i],
+            maskImage:mask,
+            WebkitMaskImage:mask,
+            animation:`${b.ha} ${b.hd} linear ${b.hd2} infinite,eqOp ${b.od} ease-in-out ${b.od2} infinite`,
+          }}/>
+        ))}
+      </div>
+      <div style={{fontSize:9,fontWeight:800,letterSpacing:2,color:listening?"#fff":"rgba(255,255,255,0.5)",fontFamily:FONT_MONO,transition:"color 0.2s"}}>{listening?"LISTENING":"VOICE"}</div>
+      <div style={{fontSize:8,color:listening?`${color||"#3B5BDB"}`:"rgba(255,255,255,0.25)",fontFamily:FONT_MONO,letterSpacing:0.5}}>tap to talk</div>
     </div>
   );
 }
@@ -2733,20 +2836,62 @@ function GoalsWidget({onBack}){
     try{const s=localStorage.getItem("cp_goals_dismissed_ex");return s?JSON.parse(s):[];}catch{return[];}
   });
   const[showAdd,setShowAdd]=useState(false);
-  const[exPreviews,setExPreviews]=useState({});
-  const[logGoalId,setLogGoalId]=useState(null);
-  const[logVal,setLogVal]=useState("");
   const[newTitle,setNewTitle]=useState("");
   const[newTarget,setNewTarget]=useState("");
   const[newUnit,setNewUnit]=useState("");
   const[newColor,setNewColor]=useState("#FF7043");
+  // Voice state
+  const[voiceGoalId,setVoiceGoalId]=useState(null);
+  const[voiceTranscript,setVoiceTranscript]=useState("");
+  const[voiceStatus,setVoiceStatus]=useState("");
+  const[voiceStatusFor,setVoiceStatusFor]=useState(null);
+  const voiceRef=useRef(null);
 
   const save=(list)=>{setGoals(list);try{localStorage.setItem("cp_goals",JSON.stringify(list));}catch{}};
   const saveDismissed=(list)=>{setDismissedExamples(list);try{localStorage.setItem("cp_goals_dismissed_ex",JSON.stringify(list));}catch{}};
 
+  const todayDate=new Date().toISOString().split("T")[0];
+
+  const logProgressAmount=(id,amt)=>{
+    if(isNaN(amt)||amt<=0)return;
+    save(goals.map(g=>{
+      if(g.id!==id)return g;
+      const newCurrent=Math.min(g.target,g.current+amt);
+      const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
+      const yStr=yesterday.toISOString().split("T")[0];
+      const newStreak=(g.lastLogged===todayDate)?g.streak||1:(g.lastLogged===yStr)?(g.streak||0)+1:1;
+      return{...g,current:newCurrent,lastLogged:todayDate,streak:newStreak};
+    }));
+  };
+
+  const startVoice=(goalId)=>{
+    if(voiceGoalId===goalId){stopVoice();return;}
+    stopVoice();
+    if(!("webkitSpeechRecognition" in window||"SpeechRecognition" in window)){setVoiceStatus("Voice not supported");return;}
+    setVoiceGoalId(goalId);setVoiceTranscript("");setVoiceStatus("");
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    const rec=new SR();rec.continuous=false;rec.interimResults=true;rec.lang="en-US";
+    rec.onresult=(e)=>{let t="";for(let i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;setVoiceTranscript(t);};
+    rec.onend=()=>{
+      setVoiceGoalId(vid=>{
+        if(vid===goalId){
+          setVoiceTranscript(tr=>{
+            const num=parseVoiceNumber(tr);
+            if(num&&num>0){logProgressAmount(goalId,num);setVoiceStatus(`+${num} logged`);setVoiceStatusFor(goalId);setTimeout(()=>{setVoiceStatus("");setVoiceStatusFor(null);},2500);}
+            else if(tr.trim()){setVoiceStatus("No number found — try again");setVoiceStatusFor(goalId);setTimeout(()=>{setVoiceStatus("");setVoiceStatusFor(null);},3000);}
+            return"";
+          });
+        }
+        return null;
+      });
+    };
+    rec.onerror=(e)=>{if(e.error!=="no-speech"){setVoiceStatus("Mic error");setVoiceStatusFor(goalId);setTimeout(()=>{setVoiceStatus("");setVoiceStatusFor(null);},3000);}setVoiceGoalId(null);};
+    voiceRef.current=rec;rec.start();
+  };
+  const stopVoice=()=>{if(voiceRef.current){try{voiceRef.current.stop();}catch(e){}}voiceRef.current=null;};
+
   const useExample=(ex)=>{
-    const current=exPreviews[ex.id]??ex.current;
-    const g={...ex,id:`g_${Date.now()}`,current,isExample:false,createdAt:new Date().toISOString()};
+    const g={...ex,id:`g_${Date.now()}`,isExample:false,createdAt:new Date().toISOString()};
     save([...goals,g]);
     saveDismissed([...dismissedExamples,ex.id]);
   };
@@ -2754,26 +2899,24 @@ function GoalsWidget({onBack}){
 
   const addGoal=()=>{
     if(!newTitle.trim()||!newTarget)return;
-    const g={id:`g_${Date.now()}`,title:newTitle.trim(),target:parseFloat(newTarget)||100,current:0,unit:newUnit.trim()||"",color:newColor,isExample:false,createdAt:new Date().toISOString()};
+    const g={id:`g_${Date.now()}`,title:newTitle.trim(),target:parseFloat(newTarget)||100,current:0,unit:newUnit.trim()||"",color:newColor,isExample:false,createdAt:new Date().toISOString(),lastLogged:null,streak:0};
     save([...goals,g]);
     setNewTitle("");setNewTarget("");setNewUnit("");setNewColor("#FF7043");setShowAdd(false);
-  };
-
-  const slideGoal=(id,val)=>{
-    save(goals.map(g=>g.id===id?{...g,current:parseFloat(val)}:g));
-  };
-
-  const logProgress=(id)=>{
-    const amt=parseFloat(logVal);
-    if(isNaN(amt)||amt<=0){setLogGoalId(null);setLogVal("");return;}
-    save(goals.map(g=>g.id===id?{...g,current:Math.min(g.target,g.current+amt)}:g));
-    setLogGoalId(null);setLogVal("");
   };
 
   const deleteGoal=(id)=>save(goals.filter(g=>g.id!==id));
 
   const visibleExamples=EXAMPLE_GOALS.filter(e=>!dismissedExamples.includes(e.id)&&!goals.some(g=>g.title===e.title));
   const GOAL_COLORS=["#EF5350","#FF7043","#F59E0B","#43A047","#3B5BDB","#42A5F5","#AB47BC","#0097A7"];
+
+  const goalPrompt=(g)=>{
+    const u=(g.unit||"").toLowerCase();
+    if(u.includes("dollar")||u.includes("$"))return"How much did you save?";
+    if(u.includes("mile"))return"How far did you go?";
+    if(u.includes("book"))return"How many did you finish?";
+    if(u.includes("hour"))return"How many hours?";
+    return"How much progress today?";
+  };
 
   return(
     <div style={{padding:"16px",paddingBottom:"80px",display:"flex",flexDirection:"column",gap:16}}>
@@ -2783,7 +2926,7 @@ function GoalsWidget({onBack}){
         <div style={{fontSize:isMobile?10:13,color:"rgba(255,255,255,0.4)",letterSpacing:2,marginTop:6,fontWeight:500,fontFamily:FONT_MONO}}>{new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}).toUpperCase()}</div>
       </div>
 
-      {/* Goals section header with back button */}
+      {/* Goals section header */}
       <div style={{display:"flex",alignItems:"center",gap:12}}>
         <button onClick={onBack} style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.7)",borderRadius:9,padding:"6px 14px",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:FONT}}>← Back</button>
         <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?16:20,fontWeight:800,letterSpacing:-0.3,lineHeight:1}}>
@@ -2818,48 +2961,68 @@ function GoalsWidget({onBack}){
       {goals.length===0&&visibleExamples.length===0&&(
         <div style={{textAlign:"center",padding:"48px 24px",color:"rgba(255,255,255,0.35)",fontSize:14,lineHeight:1.6}}>
           What are you working toward?<br/>
-          <span style={{fontSize:12}}>Set a goal and track it with your voice.</span>
+          <span style={{fontSize:12}}>Tap the bars to log progress with your voice.</span>
         </div>
       )}
 
       {goals.map(g=>{
         const pct=Math.round(Math.min(100,g.current/g.target*100));
         const done=pct>=100;
+        const isListening=voiceGoalId===g.id;
+        const da=daysAgo(g.lastLogged);
+        const sk=streakLabel(g.streak);
         return(
-          <div key={g.id} style={{background:`linear-gradient(180deg,${g.color}14 0%,${g.color}06 100%)`,border:`1px solid ${g.color}30`,borderTop:`2px solid ${g.color}66`,borderRadius:16,padding:"16px 18px",display:"flex",flexDirection:"column",gap:10,animation:"fadeSlideIn 0.2s ease-out"}}>
-            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10}}>
+          <div key={g.id} style={{background:`linear-gradient(180deg,${g.color}14 0%,${g.color}06 100%)`,border:`1px solid ${g.color}30`,borderTop:`2px solid ${g.color}66`,borderRadius:16,padding:"16px 18px",display:"flex",flexDirection:"column",gap:12,animation:"fadeSlideIn 0.2s ease-out"}}>
+            {/* Title row */}
+            <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8}}>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:15,fontWeight:700,color:"rgba(255,255,255,0.92)",marginBottom:2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{g.title}</div>
-                <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,letterSpacing:1}}>
+                <div style={{display:"flex",alignItems:"center",gap:8}}>
+                  <span style={{fontSize:15,fontWeight:700,color:"rgba(255,255,255,0.92)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{g.title}</span>
+                  {sk&&<span style={{fontSize:9,fontWeight:700,color:"#F59E0B",fontFamily:FONT_MONO,letterSpacing:0.5,flexShrink:0}}>🔥 {sk}</span>}
+                </div>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,letterSpacing:1,marginTop:2}}>
                   {g.current} / {g.target}{g.unit?" "+g.unit:""} · {pct}%
                 </div>
+                {da!==null&&<div style={{fontSize:9,color:"rgba(255,255,255,0.22)",fontFamily:FONT_MONO,marginTop:3}}>{da===0?"Updated today":da===1?"Updated yesterday":`Updated ${da} days ago`}</div>}
               </div>
-              <GoalEQBars pct={pct} color={g.color}/>
               <button onClick={()=>deleteGoal(g.id)} style={{background:"transparent",border:"none",color:"rgba(255,255,255,0.18)",fontSize:16,cursor:"pointer",padding:"2px 4px",lineHeight:1,borderRadius:4,flexShrink:0,transition:"color 0.15s"}}
                 onMouseEnter={e=>e.currentTarget.style.color="#EF5350"}
                 onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.18)"}>✕</button>
             </div>
-            {/* Thin auxiliary slider */}
-            <div style={{position:"relative",height:16,display:"flex",alignItems:"center",opacity:0.6}}>
-              <div style={{position:"absolute",left:0,right:0,height:3,borderRadius:2,background:"rgba(255,255,255,0.07)",zIndex:0}}/>
-              <div style={{position:"absolute",left:0,width:`${pct}%`,height:3,borderRadius:2,background:`linear-gradient(90deg,${g.color}66,${g.color}aa)`,transition:"width 0.08s ease",pointerEvents:"none",zIndex:1}}/>
-              <input type="range" className="goal-slider" style={{"--goal-color":g.color,position:"relative",zIndex:2}} min={0} max={g.target} step={g.target>=100?1:0.1} value={g.current} onChange={e=>slideGoal(g.id,e.target.value)}/>
-            </div>
-            {/* Primary log interaction */}
-            {done?(
-              <div style={{fontSize:11,color:g.color,fontWeight:700,fontFamily:FONT_MONO,letterSpacing:1,textAlign:"center"}}>🎉 COMPLETED</div>
-            ):logGoalId===g.id?(
-              <div style={{display:"flex",gap:8}}>
-                <input value={logVal} onChange={e=>setLogVal(e.target.value)} type="number" placeholder={`Add ${g.unit||"progress"}…`} style={{flex:1,background:"rgba(255,255,255,0.06)",border:`1px solid ${g.color}44`,borderRadius:9,padding:"8px 12px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}} autoFocus onKeyDown={e=>{if(e.key==="Enter")logProgress(g.id);if(e.key==="Escape"){setLogGoalId(null);setLogVal("");}}}/>
-                <button onClick={()=>logProgress(g.id)} style={{background:g.color,border:"none",color:"#fff",borderRadius:9,padding:"8px 16px",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:FONT}}>Log</button>
-                <button onClick={()=>{setLogGoalId(null);setLogVal("");}} style={{background:"rgba(255,255,255,0.06)",border:"none",color:"rgba(255,255,255,0.5)",borderRadius:9,padding:"8px 12px",fontSize:13,cursor:"pointer"}}>✕</button>
+
+            {/* Voice center + Thermometer right */}
+            <div style={{display:"flex",alignItems:"center",padding:"8px 0 4px"}}>
+              {/* Voice button — centered in remaining space */}
+              <div style={{flex:1,display:"flex",justifyContent:"center"}}>
+                {done
+                  ?<div style={{fontSize:14,color:g.color,fontWeight:700,fontFamily:FONT_MONO,letterSpacing:1,textAlign:"center",lineHeight:1.4}}>🎉<br/>COMPLETE</div>
+                  :<GoalVoiceButton onTap={()=>startVoice(g.id)} listening={isListening} color={g.color}/>
+                }
               </div>
-            ):(
-              <button onClick={()=>setLogGoalId(g.id)} style={{background:`${g.color}18`,border:`1px solid ${g.color}30`,color:g.color,borderRadius:9,padding:"9px 0",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:FONT,width:"100%",transition:"all 0.15s"}}
-                onMouseEnter={e=>e.currentTarget.style.background=`${g.color}2e`}
-                onMouseLeave={e=>e.currentTarget.style.background=`${g.color}18`}>
-                + Log {g.unit||"progress"}
-              </button>
+              {/* Lava lamp — far right */}
+              <div style={{paddingRight:4,paddingBottom:12}}>
+                <ArcRing pct={pct} color={g.color}/>
+              </div>
+            </div>
+
+            {/* Voice recording state */}
+            {isListening&&(
+              <div style={{textAlign:"center",padding:"6px 0",animation:"fadeSlideIn 0.15s ease-out"}}>
+                <div style={{fontSize:12,color:g.color,fontWeight:600,marginBottom:4}}>{goalPrompt(g)}</div>
+                {voiceTranscript&&<div style={{fontSize:14,color:"rgba(255,255,255,0.85)",fontWeight:500}}>{voiceTranscript}</div>}
+              </div>
+            )}
+            {voiceStatus&&voiceStatusFor===g.id&&(
+              <div style={{textAlign:"center",fontSize:12,fontWeight:700,color:voiceStatus.includes("logged")?"#43A047":"rgba(255,255,255,0.45)",fontFamily:FONT_MONO,animation:"fadeSlideIn 0.15s ease-out"}}>{voiceStatus}</div>
+            )}
+
+            {/* Thin slider bar — auxiliary */}
+            {!done&&(
+              <div style={{position:"relative",height:16,display:"flex",alignItems:"center",opacity:0.55}}>
+                <div style={{position:"absolute",left:0,right:0,height:3,borderRadius:2,background:"rgba(255,255,255,0.07)",zIndex:0}}/>
+                <div style={{position:"absolute",left:0,width:`${pct}%`,height:3,borderRadius:2,background:`linear-gradient(90deg,${g.color}55,${g.color}99)`,transition:"width 0.3s ease",pointerEvents:"none",zIndex:1}}/>
+                <input type="range" className="goal-slider" style={{"--goal-color":g.color,position:"relative",zIndex:2}} min={0} max={g.target} step={g.target>=100?1:0.1} value={g.current} onChange={e=>{const v=parseFloat(e.target.value);save(goals.map(gg=>gg.id===g.id?{...gg,current:v}:gg));}}/>
+              </div>
             )}
           </div>
         );
@@ -2870,25 +3033,30 @@ function GoalsWidget({onBack}){
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",fontFamily:FONT_MONO,letterSpacing:1.5,paddingLeft:2}}>EXAMPLES — TAP TO USE</div>
           {visibleExamples.map(ex=>{
-            const cur=exPreviews[ex.id]??ex.current;
-            const pct=Math.round(Math.min(100,cur/ex.target*100));
+            const pct=Math.round(Math.min(100,ex.current/ex.target*100));
+            const sk=streakLabel(ex.streak);
             return(
               <div key={ex.id} style={{background:`linear-gradient(180deg,${ex.color}10 0%,${ex.color}04 100%)`,border:`1px solid ${ex.color}22`,borderTop:`2px solid ${ex.color}44`,borderRadius:14,padding:"14px 16px",display:"flex",flexDirection:"column",gap:10}}>
                 <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
                   <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:13,fontWeight:600,color:"rgba(255,255,255,0.75)",marginBottom:2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ex.title}</div>
-                    <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",fontFamily:FONT_MONO}}>{Math.round(cur)} / {ex.target} {ex.unit} · {pct}%</div>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <span style={{fontSize:13,fontWeight:600,color:"rgba(255,255,255,0.75)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ex.title}</span>
+                      {sk&&<span style={{fontSize:9,fontWeight:700,color:"#F59E0B",fontFamily:FONT_MONO,flexShrink:0}}>🔥 {sk}</span>}
+                    </div>
+                    <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",fontFamily:FONT_MONO,marginTop:2}}>{ex.current} / {ex.target} {ex.unit} · {pct}%</div>
                   </div>
-                  <GoalEQBars pct={pct}/>
                   <div style={{display:"flex",flexDirection:"column",gap:5,flexShrink:0}}>
                     <button onClick={()=>useExample(ex)} style={{background:ex.color,border:"none",color:"#fff",borderRadius:8,padding:"6px 12px",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:FONT,whiteSpace:"nowrap"}}>Use this</button>
                     <button onClick={()=>dismissExample(ex.id)} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.35)",borderRadius:8,padding:"5px 10px",fontSize:11,cursor:"pointer",fontFamily:FONT}}>Dismiss</button>
                   </div>
                 </div>
-                <div style={{position:"relative",height:16,display:"flex",alignItems:"center",opacity:0.65}}>
-                  <div style={{position:"absolute",left:0,right:0,height:3,borderRadius:2,background:"rgba(255,255,255,0.07)",zIndex:0}}/>
-                  <div style={{position:"absolute",left:0,width:`${pct}%`,height:3,borderRadius:2,background:`linear-gradient(90deg,${ex.color}66,${ex.color}aa)`,transition:"width 0.08s ease",pointerEvents:"none",zIndex:1}}/>
-                  <input type="range" className="goal-slider" style={{"--goal-color":ex.color,position:"relative",zIndex:2}} min={0} max={ex.target} step={ex.target>=100?1:0.1} value={cur} onChange={e=>setExPreviews(p=>({...p,[ex.id]:parseFloat(e.target.value)}))}/>
+                {/* Mini thermometer + EQ preview */}
+                <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:20,padding:"4px 0"}}>
+                  <ArcRing pct={pct} color={ex.color} height={38}/>
+                  <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,opacity:0.5}}>
+                    <EQBars fab={false}/>
+                    <div style={{fontSize:8,color:"rgba(255,255,255,0.3)",fontFamily:FONT_MONO,letterSpacing:1}}>VOICE</div>
+                  </div>
                 </div>
               </div>
             );
@@ -3035,49 +3203,56 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
           </div>
         </div>
       )}
-      {/* Daily Brief */}
-      {BIZ.some((b,i)=>{
-        const u=urgentTasks.filter(t=>t.bizId===i).length;
-        const todayEv=allEvents.filter(ev=>ev.bizId===i&&(ev.start||"").split("T")[0]===td).length;
-        return u>0||todayEv>0;
-      })&&(
-        <div onClick={()=>setBriefOpen(true)} style={{background:'#080c14',borderRadius:20,border:'1px solid rgba(0,180,200,0.18)',padding:'14px 16px',
-          backgroundImage:'linear-gradient(rgba(0,180,200,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,200,0.03) 1px,transparent 1px)',
-          backgroundSize:'22px 22px',boxShadow:'0 4px 30px rgba(0,0,0,0.5),inset 0 1px 0 rgba(0,180,200,0.08)',cursor:'pointer',transition:'border-color 0.15s'}}
-          onMouseEnter={e=>e.currentTarget.style.borderColor='rgba(0,180,200,0.35)'}
-          onMouseLeave={e=>e.currentTarget.style.borderColor='rgba(0,180,200,0.18)'}>
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
-            <div style={{fontSize:11,fontWeight:800,color:'#EF5350',letterSpacing:2,fontFamily:FONT_MONO}}>⚡ TODAY'S BRIEF</div>
-            <div style={{fontSize:9,color:'rgba(0,180,200,0.5)',fontFamily:FONT_MONO,letterSpacing:1}}>TAP TO OPEN ›</div>
-          </div>
-          <div style={{display:'flex',flexDirection:'column',gap:4}}>
-            {BIZ.map((b,i)=>{
-              const u=urgentTasks.filter(t=>t.bizId===i).length;
-              const todayEvs=allEvents.filter(ev=>ev.bizId===i&&(ev.start||"").split("T")[0]===td);
-              if(u===0&&todayEvs.length===0)return null;
-              return(
-                <div key={b.id} style={{display:'flex',alignItems:'center',gap:0,borderRadius:8,overflow:'hidden'}}>
-                  <div style={{width:3,alignSelf:'stretch',background:b.color,flexShrink:0,borderRadius:'2px 0 0 2px'}}/>
-                  <div style={{display:'flex',alignItems:'center',gap:8,padding:'6px 10px',flex:1,minWidth:0}}>
-                    <span style={{fontSize:10,fontWeight:800,color:b.color,fontFamily:FONT_MONO,minWidth:74,flexShrink:0,letterSpacing:0.3}}>{b.short.toUpperCase()}</span>
-                    <div style={{display:'flex',gap:6,alignItems:'center',flex:1,minWidth:0,flexWrap:'wrap'}}>
-                      {u>0&&<span style={{fontSize:9,fontWeight:800,color:'#FF3B3B',fontFamily:FONT_MONO,background:'rgba(255,59,59,0.12)',border:'1px solid rgba(255,59,59,0.3)',borderRadius:5,padding:'1px 6px',flexShrink:0}}>⚠ {u} URGENT</span>}
-                      {todayEvs.slice(0,2).map(ev=>(
-                        <span key={ev.id} style={{fontSize:9,color:'#EF5350',fontFamily:FONT_MONO,opacity:0.75,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:160}}>
-                          {ev.allDay?'ALL DAY':fmtTime(ev.start)} · {ev.summary}
-                        </span>
-                      ))}
+      {/* Daily Brief — always visible */}
+      {(()=>{
+        const hasBriefData=BIZ.some((b,i)=>{
+          const u=urgentTasks.filter(t=>t.bizId===i).length;
+          const todayEv=allEvents.filter(ev=>ev.bizId===i&&(ev.start||"").split("T")[0]===td).length;
+          return u>0||todayEv>0;
+        });
+        return(
+          <div onClick={()=>setBriefOpen(true)} style={{background:'#080c14',borderRadius:20,border:'1px solid rgba(0,180,200,0.18)',padding:'14px 16px',
+            backgroundImage:'linear-gradient(rgba(0,180,200,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,200,0.03) 1px,transparent 1px)',
+            backgroundSize:'22px 22px',boxShadow:'0 4px 30px rgba(0,0,0,0.5),inset 0 1px 0 rgba(0,180,200,0.08)',cursor:'pointer',transition:'border-color 0.15s',
+            maxWidth:isMobile?"100%":640,minHeight:130}}
+            onMouseEnter={e=>e.currentTarget.style.borderColor='rgba(0,180,200,0.35)'}
+            onMouseLeave={e=>e.currentTarget.style.borderColor='rgba(0,180,200,0.18)'}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+              <div style={{fontSize:11,fontWeight:800,color:'#EF5350',letterSpacing:2,fontFamily:FONT_MONO}}>⚡ TODAY'S BRIEF</div>
+              <div style={{fontSize:9,color:'rgba(0,180,200,0.5)',fontFamily:FONT_MONO,letterSpacing:1}}>TAP TO OPEN ›</div>
+            </div>
+            {hasBriefData
+              ?<div style={{display:'flex',flexDirection:'column',gap:4}}>
+                {BIZ.map((b,i)=>{
+                  const u=urgentTasks.filter(t=>t.bizId===i).length;
+                  const todayEvs=allEvents.filter(ev=>ev.bizId===i&&(ev.start||"").split("T")[0]===td);
+                  if(u===0&&todayEvs.length===0)return null;
+                  return(
+                    <div key={b.id} style={{display:'flex',alignItems:'center',gap:0,borderRadius:8,overflow:'hidden'}}>
+                      <div style={{width:3,alignSelf:'stretch',background:b.color,flexShrink:0,borderRadius:'2px 0 0 2px'}}/>
+                      <div style={{display:'flex',alignItems:'center',gap:8,padding:'6px 10px',flex:1,minWidth:0}}>
+                        <span style={{fontSize:10,fontWeight:800,color:b.color,fontFamily:FONT_MONO,minWidth:74,flexShrink:0,letterSpacing:0.3}}>{b.short.toUpperCase()}</span>
+                        <div style={{display:'flex',gap:6,alignItems:'center',flex:1,minWidth:0,flexWrap:'wrap'}}>
+                          {u>0&&<span style={{fontSize:9,fontWeight:800,color:'#FF3B3B',fontFamily:FONT_MONO,background:'rgba(255,59,59,0.12)',border:'1px solid rgba(255,59,59,0.3)',borderRadius:5,padding:'1px 6px',flexShrink:0}}>⚠ {u} URGENT</span>}
+                          {todayEvs.slice(0,2).map(ev=>(
+                            <span key={ev.id} style={{fontSize:9,color:'#EF5350',fontFamily:FONT_MONO,opacity:0.75,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:160}}>
+                              {ev.allDay?'ALL DAY':fmtTime(ev.start)} · {ev.summary}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
+                  );
+                })}
+              </div>
+              :<div style={{fontSize:12,color:'rgba(255,255,255,0.25)',fontFamily:FONT_MONO,letterSpacing:1}}>All clear — nothing urgent today.</div>
+            }
           </div>
-        </div>
-      )}
+        );
+      })()}
       {briefOpen&&<TodayBriefModal urgentTasks={urgentTasks} allEvents={allEvents} td={td} onNavigate={onNavigate} onClose={()=>setBriefOpen(false)} state={state} isAuthed={isAuthed} gTasksFlat={gTasksFlat||[]}/>}
-      <DailySheetCard authToken={authToken}/>
-      <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":"repeat(4,1fr)",gap:12}}>
+      <div style={{maxWidth:isMobile?"100%":640,width:"100%"}}><DailySheetCard authToken={authToken}/></div>
+      <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":"repeat(8,minmax(0,175px))",gap:12,width:isMobile?"100%":"fit-content"}}>
         {WIDGETS.map(w=>(
           <WidgetCard key={w.id} widget={w} onOpen={()=>w.id==="goals"?onNavigate("goals"):w.id==="budget"?onNavigate("budget"):null}/>
         ))}
