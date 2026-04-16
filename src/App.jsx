@@ -4868,7 +4868,7 @@ export default function App(){
           <text x="100" y="201" fontFamily="Inter,sans-serif" fontWeight="400" fontSize="9.5" letterSpacing="0.5" textAnchor="middle" fill="rgba(255,255,255,0.55)" style={{animation:"textPulse 3s ease-in-out infinite"}}>Stop typing. Start commanding.</text>
         </svg>
         <div style={{display:"flex",alignItems:"center",gap:6,marginTop:4,animation:"fadeSlideIn 1.6s ease-out both",opacity:0.55}}>
-          {[{n:"Command",c:"#EF5350"},{n:"Personal",c:"#E53935"},{n:"Pulse",c:"#2E7D32"},{n:"Partners",c:"#0097A7"},{n:"Family",c:"#7B1FA2"}].map((p,i)=>(
+          {[{n:"Mogul",c:"#F59E0B"},{n:"Personal",c:"#EF5350"},{n:"Pulse",c:"#7C3AED"},{n:"Partners",c:"#3949AB"},{n:"Family",c:"#66BB6A"}].map((p,i)=>(
             <span key={p.n} style={{display:"flex",alignItems:"center",gap:6}}>
               <span style={{fontSize:8,fontWeight:700,color:p.c,fontFamily:"Sora,sans-serif",letterSpacing:0.3}}>{p.n}</span>
               {i<4&&<span style={{fontSize:8,color:"rgba(255,255,255,0.2)"}}>·</span>}
