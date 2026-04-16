@@ -2584,11 +2584,11 @@ function CommandScore({urgentTasks, mini=false}){
               <circle cx={mcx-18} cy={mcy-12} r={36} fill="#EF5350" filter="url(#blobBlurMini)" className="score-blob-1" opacity={0.9}/>
               <circle cx={mcx+20} cy={mcy+18} r={32} fill="#43A047" filter="url(#blobBlurMini)" className="score-blob-2" opacity={0.8}/>
               <circle cx={mcx-5} cy={mcy+22} r={28} fill="#3B5BDB" filter="url(#blobBlurMini)" className="score-blob-3" opacity={0.7}/>
-              {/* Smoke orbs — coral, rising from bottom, blobby */}
-              <circle cx={mcx-10} cy={mcy+54} r={26} fill="#EF5350" opacity={0.55} filter="url(#orbBlobMini)" style={{mixBlendMode:"screen"}} className="score-orb-mini-1"/>
-              <circle cx={mcx+12} cy={mcy+58} r={26} fill="#EF5350" opacity={0.55} filter="url(#orbBlobMini)" style={{mixBlendMode:"screen"}} className="score-orb-mini-2"/>
-              <circle cx={mcx} cy={mcy+52} r={26} fill="#EF5350" opacity={0.55} filter="url(#orbBlobMini)" style={{mixBlendMode:"screen"}} className="score-orb-mini-3"/>
-              <circle cx={mcx+16} cy={mcy+56} r={26} fill="#EF5350" opacity={0.55} filter="url(#orbBlobMini)" style={{mixBlendMode:"screen"}} className="score-orb-mini-4"/>
+              {/* Smoke orbs — varied origins for full-circle coverage */}
+              <circle cx={mcx-18} cy={mcy+52} r={26} fill="#EF5350" opacity={0.6} filter="url(#orbBlobMini)" style={{mixBlendMode:"screen"}} className="score-orb-mini-1"/>
+              <circle cx={mcx-58} cy={mcy+8} r={26} fill="#EF5350" opacity={0.6} filter="url(#orbBlobMini)" style={{mixBlendMode:"screen"}} className="score-orb-mini-2"/>
+              <circle cx={mcx+10} cy={mcy+54} r={26} fill="#EF5350" opacity={0.6} filter="url(#orbBlobMini)" style={{mixBlendMode:"screen"}} className="score-orb-mini-3"/>
+              <circle cx={mcx-56} cy={mcy+22} r={26} fill="#EF5350" opacity={0.6} filter="url(#orbBlobMini)" style={{mixBlendMode:"screen"}} className="score-orb-mini-4"/>
             </g>
             {/* Outer ring */}
             <circle cx={mcx} cy={mcy} r={mouterR} fill="none" stroke="#EF5350" strokeWidth={3} opacity={0.18} style={{filter:"blur(2px)"}}/>
