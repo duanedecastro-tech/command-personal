@@ -1979,7 +1979,7 @@ function DailySheetCard({authToken}){
           <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10}}>
             <div>
               <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?20:24,fontWeight:800,color:"#EF5350",letterSpacing:-0.5,lineHeight:1}}>my rhythm.</div>
-              <div style={{transition:"opacity 0.9s ease",opacity:quoteFade?1:0,marginTop:5}}>
+              <div style={{transition:"opacity 0.9s ease",opacity:quoteFade?1:0,marginTop:5,minHeight:52}}>
                 <div style={{fontSize:11,color:"rgba(239,83,80,0.65)",fontFamily:FONT,fontStyle:"italic",lineHeight:1.45}}>"{activeQuotes[quoteIdx%activeQuotes.length].q}"</div>
                 <div style={{fontSize:9,color:"rgba(239,83,80,0.4)",fontFamily:FONT_MONO,letterSpacing:1,marginTop:3}}>— {activeQuotes[quoteIdx%activeQuotes.length].a}</div>
               </div>
@@ -2539,11 +2539,11 @@ function WidgetCard({widget,onOpen,goalsData}){
       <div style={{fontSize:14,fontWeight:700,color:c,marginBottom:3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{widget.name}</div>
       <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",marginBottom:10,fontWeight:600}}>{widget.category.toUpperCase()}</div>
       {isGoals?(
-        <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:2,WebkitOverflowScrolling:"touch",flex:1,alignItems:"center"}}>
-          {goalsData.map(g=>{
+        <div style={{display:"flex",gap:8,flex:1,alignItems:"center",justifyContent:"center"}}>
+          {goalsData.slice(0,3).map(g=>{
             const pct=Math.round(Math.min(100,(g.current||0)/(g.target||1)*100));
             return(
-              <div key={g.id} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,flexShrink:0}}>
+              <div key={g.id} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
                 <ArcRing pct={pct} color={g.color||c} size={ringSize}/>
                 <div style={{fontSize:8,color:"rgba(255,255,255,0.45)",fontFamily:"'JetBrains Mono',monospace",letterSpacing:0.3,width:ringSize,textAlign:"center",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{g.title}</div>
               </div>
@@ -2866,6 +2866,7 @@ function GoalsWidget({onBack}){
   const[newTarget,setNewTarget]=useState("");
   const[newUnit,setNewUnit]=useState("");
   const[newColor,setNewColor]=useState("#FF7043");
+  const[newStep,setNewStep]=useState("1");
   // Edit state
   const[editGoalId,setEditGoalId]=useState(null);
   const[editTitle,setEditTitle]=useState("");
@@ -2930,9 +2931,10 @@ function GoalsWidget({onBack}){
 
   const addGoal=()=>{
     if(!newTitle.trim()||!newTarget)return;
-    const g={id:`g_${Date.now()}`,title:newTitle.trim(),target:parseFloat(newTarget)||100,current:0,unit:newUnit.trim()||"",color:newColor,isExample:false,createdAt:new Date().toISOString(),lastLogged:null,streak:0};
+    const stepVal=parseFloat(newStep)||1;
+    const g={id:`g_${Date.now()}`,title:newTitle.trim(),target:parseFloat(newTarget)||100,current:0,unit:newUnit.trim()||"",color:newColor,step:stepVal,isExample:false,createdAt:new Date().toISOString(),lastLogged:null,streak:0};
     save([...goals,g]);
-    setNewTitle("");setNewTarget("");setNewUnit("");setNewColor("#FF7043");setShowAdd(false);
+    setNewTitle("");setNewTarget("");setNewUnit("");setNewColor("#FF7043");setNewStep("1");setShowAdd(false);
   };
 
   const deleteGoal=(id)=>save(goals.filter(g=>g.id!==id));
@@ -2983,8 +2985,18 @@ function GoalsWidget({onBack}){
           <div style={{fontSize:12,fontWeight:700,color:"#FF7043",fontFamily:FONT_MONO,letterSpacing:1.5}}>NEW GOAL</div>
           <input value={newTitle} onChange={e=>setNewTitle(e.target.value)} placeholder="What are you working toward?" style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:9,padding:"10px 14px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}}/>
           <div style={{display:"flex",gap:10}}>
-            <input value={newTarget} onChange={e=>setNewTarget(e.target.value)} placeholder="Target (e.g. 50)" type="number" style={{flex:1,background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:9,padding:"10px 14px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}}/>
-            <input value={newUnit} onChange={e=>setNewUnit(e.target.value)} placeholder="Unit (miles, books…)" style={{flex:1,background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:9,padding:"10px 14px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}}/>
+            <input value={newTarget} onChange={e=>setNewTarget(e.target.value)} placeholder="Target (e.g. 14)" type="number" style={{flex:1,background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:9,padding:"10px 14px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}}/>
+            <input value={newUnit} onChange={e=>setNewUnit(e.target.value)} placeholder="Unit (days, reps…)" style={{flex:1,background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:9,padding:"10px 14px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}}/>
+          </div>
+          <div style={{display:"flex",gap:10,alignItems:"center"}}>
+            <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",fontFamily:FONT_MONO,letterSpacing:1,flexShrink:0}}>INCREMENT BY</div>
+            <select value={newStep} onChange={e=>setNewStep(e.target.value)} style={{flex:1,background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:9,padding:"10px 14px",fontSize:14,color:"rgba(255,255,255,0.88)",fontFamily:FONT,outline:"none"}}>
+              <option value="1">1 (days, reps, sessions)</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="0.5">0.5</option>
+              <option value="0.1">0.1 (miles, dollars)</option>
+            </select>
           </div>
           <div style={{display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
             {GOAL_COLORS.map(c=>(
@@ -3033,7 +3045,7 @@ function GoalsWidget({onBack}){
                       {sk&&<span style={{fontSize:9,fontWeight:700,color:"#F59E0B",fontFamily:FONT_MONO,letterSpacing:0.5,flexShrink:0}}>🔥 {sk}</span>}
                     </div>
                     <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",fontFamily:FONT_MONO,letterSpacing:1,marginTop:2}}>
-                      {g.current} / {g.target}{g.unit?" "+g.unit:""} · {pct}%
+                      {(g.step||1)>=1?Math.round(g.current):g.current} / {g.target}{g.unit?" "+g.unit:""} · {pct}%
                     </div>
                     {da!==null&&<div style={{fontSize:9,color:"rgba(255,255,255,0.22)",fontFamily:FONT_MONO,marginTop:3}}>{da===0?"Updated today":da===1?"Updated yesterday":`Updated ${da} days ago`}</div>}
                   </div>
@@ -3076,7 +3088,7 @@ function GoalsWidget({onBack}){
                   <div style={{position:"relative",height:16,display:"flex",alignItems:"center"}}>
                     <div style={{position:"absolute",left:0,right:0,height:4,borderRadius:2,background:"rgba(255,255,255,0.14)",zIndex:0}}/>
                     <div style={{position:"absolute",left:0,width:`${pct}%`,height:4,borderRadius:2,background:`linear-gradient(90deg,${g.color}bb,${g.color})`,boxShadow:`0 0 6px ${g.color}66`,transition:"width 0.3s ease",pointerEvents:"none",zIndex:1}}/>
-                    <input type="range" className="goal-slider" style={{"--goal-color":g.color,position:"relative",zIndex:2}} min={0} max={g.target} step={g.target>=100?1:0.1} value={g.current} onChange={e=>{const v=parseFloat(e.target.value);save(goals.map(gg=>gg.id===g.id?{...gg,current:v}:gg));}}/>
+                    <input type="range" className="goal-slider" style={{"--goal-color":g.color,position:"relative",zIndex:2}} min={0} max={g.target} step={g.step||1} value={g.current} onChange={e=>{const v=parseFloat(e.target.value);save(goals.map(gg=>gg.id===g.id?{...gg,current:v}:gg));}}/>
                   </div>
                 )}
               </>
