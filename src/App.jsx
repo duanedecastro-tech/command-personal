@@ -2526,6 +2526,76 @@ function EditBizModal({bizId,onSave,onClose}){
     </div>,document.body);
 }
 
+function CommandScore({urgentTasks}){
+  const today=todayStr();
+  const rhythmToday=(()=>{try{const s=JSON.parse(localStorage.getItem("dws_rhythm")||"null");if(s&&s.date===today)return s.blocks;}catch{}return null;})();
+  const goals=(()=>{try{return JSON.parse(localStorage.getItem("cp_goals")||"[]");}catch{return[];}})();
+
+  // Rhythm — 30pts
+  const rhythmChecked=rhythmToday?Object.values(rhythmToday).filter(b=>Object.values(b.eq||{}).some(v=>v>0)).length:0;
+  const rhythmPts=rhythmChecked>=4?30:rhythmChecked===3?22:rhythmChecked===2?14:rhythmChecked===1?7:0;
+
+  // Goals — 20pts
+  const goalsLogged=goals.filter(g=>g.lastLogged===today).length;
+  const goalsPts=goalsLogged>=2?20:goalsLogged===1?12:0;
+
+  // Tasks — 25pts (no urgent = full marks)
+  const urgent=urgentTasks.length;
+  const tasksPts=urgent===0?25:urgent<=2?15:5;
+
+  // Streaks — 10pts
+  const bestStreak=goals.length?Math.max(...goals.map(g=>g.streak||0)):0;
+  const streakPts=bestStreak>=7?10:bestStreak>=3?6:bestStreak>=1?3:0;
+
+  // Budget — 15pts neutral until wired
+  const budgetPts=15;
+
+  const score=Math.min(100,rhythmPts+goalsPts+tasksPts+streakPts+budgetPts);
+  const scoreColor=score<40?"#EF5350":score<70?"#F59E0B":"#43A047";
+
+  const sz=180,cx=90,cy=90,outerR=82,innerR=68;
+  const innerCirc=2*Math.PI*innerR;
+  const innerArc=(score/100)*innerCirc;
+
+  const cats=[
+    {label:"RHYTHM", pts:rhythmPts, max:30, color:"#EF5350"},
+    {label:"GOALS",  pts:goalsPts,  max:20, color:"#FF7043"},
+    {label:"TASKS",  pts:tasksPts,  max:25, color:"#3B5BDB"},
+    {label:"STREAKS",pts:streakPts, max:10, color:"#43A047"},
+    {label:"BUDGET", pts:budgetPts, max:15, color:"#0097A7"},
+  ];
+
+  return(
+    <div style={{background:"#080e1c",border:`1px solid ${scoreColor}25`,borderRadius:20,padding:"20px 22px",display:"flex",flexDirection:"column",alignItems:"center",gap:14,boxShadow:`0 0 48px ${scoreColor}12, 0 4px 28px rgba(0,0,0,0.5)`,minWidth:220,flexShrink:0}}>
+      <div style={{fontSize:9,fontWeight:700,color:"rgba(255,255,255,0.3)",fontFamily:FONT_MONO,letterSpacing:2.5}}>COMMAND SCORE</div>
+      <svg width={sz} height={sz} style={{overflow:"visible"}}>
+        {/* Outer frame ring */}
+        <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={1.5}/>
+        {/* Score track */}
+        <circle cx={cx} cy={cy} r={innerR} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={9}/>
+        {/* Score arc */}
+        <circle cx={cx} cy={cy} r={innerR} fill="none" stroke={scoreColor} strokeWidth={9} strokeLinecap="round"
+          strokeDasharray={`${innerArc} ${innerCirc}`}
+          style={{transform:"rotate(-90deg)",transformOrigin:`${cx}px ${cy}px`,filter:`drop-shadow(0 0 7px ${scoreColor}99)`,transition:"stroke-dasharray 0.7s ease,stroke 0.7s ease"}}/>
+        {/* Score number */}
+        <text x={cx} y={cy-8} textAnchor="middle" dominantBaseline="middle"
+          style={{fontSize:48,fontWeight:900,fill:scoreColor,fontFamily:"'Sora',sans-serif",transition:"fill 0.7s ease"}}>{score}</text>
+        <text x={cx} y={cy+22} textAnchor="middle" dominantBaseline="middle"
+          style={{fontSize:9,fill:"rgba(255,255,255,0.22)",fontFamily:FONT_MONO,letterSpacing:1}}>/100</text>
+      </svg>
+      <div style={{width:"100%",display:"flex",flexDirection:"column",gap:5}}>
+        {cats.map(cat=>(
+          <div key={cat.label} style={{display:"flex",alignItems:"center",gap:8}}>
+            <div style={{width:5,height:5,borderRadius:"50%",background:cat.pts>0?cat.color:"rgba(255,255,255,0.12)",flexShrink:0}}/>
+            <div style={{fontSize:9,color:"rgba(255,255,255,0.4)",fontFamily:FONT_MONO,flex:1,letterSpacing:0.8}}>{cat.label}</div>
+            <div style={{fontSize:9,fontWeight:700,color:cat.pts>0?cat.color:"rgba(255,255,255,0.18)",fontFamily:FONT_MONO}}>{cat.pts}/{cat.max}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function WidgetCard({widget,onOpen,goalsData}){
   const c=widget.color;
   const isMobile=window.innerWidth<768;
@@ -3272,8 +3342,10 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
           </div>
         </div>
       )}
-      {/* My Rhythm — above Daily Brief so date in brief can't push it down */}
-      <div style={{maxWidth:isMobile?"100%":640,width:"100%"}}><DailySheetCard authToken={authToken}/></div>
+      {/* My Rhythm + Command Score — side by side on desktop */}
+      <div style={{display:"flex",gap:16,alignItems:"flex-start",width:"100%"}}>
+        <div style={{display:"flex",flexDirection:"column",gap:12,flex:1,minWidth:0,maxWidth:isMobile?"100%":640}}>
+        <DailySheetCard authToken={authToken}/>
       {/* Daily Brief — always visible */}
       {(()=>{
         const hasBriefData=BIZ.some((b,i)=>{
@@ -3285,7 +3357,7 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
           <div onClick={()=>setBriefOpen(true)} style={{background:'#080c14',borderRadius:20,border:'1px solid rgba(0,180,200,0.18)',padding:'14px 16px',
             backgroundImage:'linear-gradient(rgba(0,180,200,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,200,0.03) 1px,transparent 1px)',
             backgroundSize:'22px 22px',boxShadow:'0 4px 30px rgba(0,0,0,0.5),inset 0 1px 0 rgba(0,180,200,0.08)',cursor:'pointer',transition:'border-color 0.15s',
-            maxWidth:isMobile?"100%":640,minHeight:130}}
+            minHeight:130}}
             onMouseEnter={e=>e.currentTarget.style.borderColor='rgba(0,180,200,0.35)'}
             onMouseLeave={e=>e.currentTarget.style.borderColor='rgba(0,180,200,0.18)'}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
@@ -3321,6 +3393,9 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
           </div>
         );
       })()}
+      </div>{/* end left col */}
+        {!isMobile&&<CommandScore urgentTasks={urgentTasks}/>}
+      </div>{/* end two-col row */}
       {briefOpen&&<TodayBriefModal urgentTasks={urgentTasks} allEvents={allEvents} td={td} onNavigate={onNavigate} onClose={()=>setBriefOpen(false)} state={state} isAuthed={isAuthed} gTasksFlat={gTasksFlat||[]}/>}
       {(()=>{
         const liveGoals=(()=>{try{return JSON.parse(localStorage.getItem("cp_goals")||"[]");}catch{return[];}})();
@@ -3332,10 +3407,11 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
           </div>
         );
       })()}
-      {urgentTasks.length>0&&(
-        <div style={panelSt("#C62828")}>
-          <div style={{fontSize:13,fontWeight:800,color:"#C62828",letterSpacing:2,marginBottom:14}}>URGENT TASKS</div>
-          {urgentTasks.map(t=>(
+      <div style={panelSt("#C62828")}>
+        <div style={{fontSize:13,fontWeight:800,color:"#C62828",letterSpacing:2,marginBottom:14}}>URGENT TASKS</div>
+        {urgentTasks.length===0
+          ?<div style={{fontSize:13,color:"rgba(255,255,255,0.25)",fontFamily:FONT_MONO,letterSpacing:0.5}}>No urgent tasks — you're clear.</div>
+          :urgentTasks.map(t=>(
             <div key={t.id}
               style={{display:"flex",alignItems:"center",gap:12,padding:"10px 12px",borderBottom:"1px solid rgba(255,255,255,0.06)",borderLeft:"3px solid transparent",borderRadius:6,transition:"background 0.18s,border-left-color 0.18s",cursor:"default"}}
               onMouseEnter={e=>{e.currentTarget.style.background=`${BIZ[t.bizId].color}10`;e.currentTarget.style.borderLeftColor=BIZ[t.bizId].color;}}
@@ -3345,9 +3421,9 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
               <div style={{flex:1,fontSize:15,color:"rgba(255,255,255,0.88)",fontWeight:500}}>{t.text||t.title}</div>
               <div style={{fontSize:12,color:BIZ_TEXT[t.bizId],fontWeight:700}}>{BIZ[t.bizId].short}</div>
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        }
+      </div>
       <div style={panelSt("#0097A7")}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
           <div style={{fontSize:13,fontWeight:800,color:"#00BCD4",letterSpacing:2}}>NEXT 7 DAYS {calLoading&&"(syncing...)"}</div>
