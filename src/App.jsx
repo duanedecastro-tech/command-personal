@@ -2559,32 +2559,49 @@ function CommandScore({urgentTasks, mini=false}){
   ];
 
   if(mini){
-    const msz=110,mcx=55,mcy=55,mouterR=50,minnerR=40;
+    const msz=150,mcx=75,mcy=75,mouterR=66,minnerR=52;
     const minnerCirc=2*Math.PI*minnerR;
     const minnerArc=(score/100)*minnerCirc;
     return(
       <>
         <div onClick={()=>setOpen(true)} style={{cursor:"pointer",userSelect:"none",display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <svg width={msz} height={msz} style={{overflow:"visible",filter:"drop-shadow(0 0 10px #EF535044)",transition:"filter 0.3s ease"}}>
+          <svg width={msz} height={msz} style={{overflow:"visible",filter:"drop-shadow(0 0 16px #EF535055)",transition:"filter 0.3s ease"}}>
             <defs>
               <clipPath id="scoreMiniClip"><circle cx={mcx} cy={mcy} r={mouterR-1}/></clipPath>
-              <filter id="blobBlurMini"><feGaussianBlur stdDeviation="8"/></filter>
+              <filter id="blobBlurMini"><feGaussianBlur stdDeviation="10"/></filter>
+              <filter id="orbBlobMini" x="-40%" y="-40%" width="180%" height="180%">
+                <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="2" result="noise">
+                  <animate attributeName="baseFrequency" values="0.03;0.055;0.04;0.028;0.03" dur="20s" repeatCount="indefinite"/>
+                </feTurbulence>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="28" xChannelSelector="R" yChannelSelector="G" result="warped"/>
+                <feGaussianBlur in="warped" stdDeviation="4" result="glow"/>
+                <feMerge><feMergeNode in="glow"/><feMergeNode in="warped"/></feMerge>
+              </filter>
             </defs>
             <g clipPath="url(#scoreMiniClip)">
               <circle cx={mcx} cy={mcy} r={mouterR} fill="#060b16"/>
-              <circle cx={mcx-14} cy={mcy-10} r={28} fill="#EF5350" filter="url(#blobBlurMini)" className="score-blob-1" opacity={0.7}/>
-              <circle cx={mcx+16} cy={mcy+14} r={24} fill="#43A047" filter="url(#blobBlurMini)" className="score-blob-2" opacity={0.6}/>
-              <circle cx={mcx-4} cy={mcy+18} r={22} fill="#3B5BDB" filter="url(#blobBlurMini)" className="score-blob-3" opacity={0.5}/>
+              {/* Background blobs — high opacity for visibility at small size */}
+              <circle cx={mcx-18} cy={mcy-12} r={36} fill="#EF5350" filter="url(#blobBlurMini)" className="score-blob-1" opacity={0.9}/>
+              <circle cx={mcx+20} cy={mcy+18} r={32} fill="#43A047" filter="url(#blobBlurMini)" className="score-blob-2" opacity={0.8}/>
+              <circle cx={mcx-5} cy={mcy+22} r={28} fill="#3B5BDB" filter="url(#blobBlurMini)" className="score-blob-3" opacity={0.7}/>
+              {/* Smoke orbs — coral, rising from bottom, blobby */}
+              <circle cx={mcx-10} cy={mcy+54} r={26} fill="#EF5350" opacity={0.55} filter="url(#orbBlobMini)" style={{mixBlendMode:"screen"}} className="score-orb-mini-1"/>
+              <circle cx={mcx+12} cy={mcy+58} r={26} fill="#EF5350" opacity={0.55} filter="url(#orbBlobMini)" style={{mixBlendMode:"screen"}} className="score-orb-mini-2"/>
+              <circle cx={mcx} cy={mcy+52} r={26} fill="#EF5350" opacity={0.55} filter="url(#orbBlobMini)" style={{mixBlendMode:"screen"}} className="score-orb-mini-3"/>
+              <circle cx={mcx+16} cy={mcy+56} r={26} fill="#EF5350" opacity={0.55} filter="url(#orbBlobMini)" style={{mixBlendMode:"screen"}} className="score-orb-mini-4"/>
             </g>
-            <circle cx={mcx} cy={mcy} r={mouterR} fill="none" stroke="#EF5350" strokeWidth={2} opacity={0.18} style={{filter:"blur(2px)"}}/>
-            <circle cx={mcx} cy={mcy} r={mouterR} fill="none" stroke="#EF5350" strokeWidth={1} opacity={0.78}/>
-            <circle cx={mcx} cy={mcy} r={minnerR} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={6}/>
-            <circle cx={mcx} cy={mcy} r={minnerR} fill="none" stroke="#EF5350" strokeWidth={6} strokeLinecap="round"
+            {/* Outer ring */}
+            <circle cx={mcx} cy={mcy} r={mouterR} fill="none" stroke="#EF5350" strokeWidth={3} opacity={0.18} style={{filter:"blur(2px)"}}/>
+            <circle cx={mcx} cy={mcy} r={mouterR} fill="none" stroke="#EF5350" strokeWidth={1.2} opacity={0.78}/>
+            {/* Score track + arc */}
+            <circle cx={mcx} cy={mcy} r={minnerR} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={8}/>
+            <circle cx={mcx} cy={mcy} r={minnerR} fill="none" stroke="#EF5350" strokeWidth={8} strokeLinecap="round"
               strokeDasharray={`${minnerArc} ${minnerCirc}`}
-              style={{transform:"rotate(-90deg)",transformOrigin:`${mcx}px ${mcy}px`,filter:"drop-shadow(0 0 5px #EF5350cc)",transition:"stroke-dasharray 0.7s ease"}}/>
-            <circle cx={mcx} cy={mcy} r={26} fill="rgba(6,11,22,0.72)" stroke="#EF5350" strokeWidth={0.8} opacity={0.9}/>
+              style={{transform:"rotate(-90deg)",transformOrigin:`${mcx}px ${mcy}px`,filter:"drop-shadow(0 0 6px #EF5350cc)",transition:"stroke-dasharray 0.7s ease"}}/>
+            {/* Number backdrop + score */}
+            <circle cx={mcx} cy={mcy} r={32} fill="rgba(6,11,22,0.75)" stroke="#EF5350" strokeWidth={1} opacity={0.9}/>
             <text x={mcx} y={mcy} textAnchor="middle" dominantBaseline="central"
-              style={{fontSize:22,fontWeight:900,fill:"#EF5350",fontFamily:"'Orbitron',sans-serif"}}>{score}</text>
+              style={{fontSize:26,fontWeight:900,fill:"#EF5350",fontFamily:"'Orbitron',sans-serif"}}>{score}</text>
           </svg>
         </div>
         {open&&createPortal(
@@ -3514,11 +3531,10 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
                 :<div style={{fontSize:12,color:'rgba(255,255,255,0.25)',fontFamily:FONT_MONO,letterSpacing:1}}>All clear — nothing urgent today.</div>
               }
             </div>
-            {/* Right tap zone: mini Command Score (mobile only) */}
+            {/* Right tap zone: mini Command Score (mobile only) — 50/50 split */}
             {isMobile&&(
-              <div style={{width:120,flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',borderLeft:'1px solid rgba(0,180,200,0.12)',gap:4}}>
+              <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',borderLeft:'1px solid rgba(0,180,200,0.12)'}}>
                 <CommandScore urgentTasks={urgentTasks} mini/>
-                <div style={{fontSize:8,color:'rgba(255,255,255,0.2)',fontFamily:FONT_MONO,letterSpacing:1,textAlign:'center'}}>SCORE</div>
               </div>
             )}
           </div>
