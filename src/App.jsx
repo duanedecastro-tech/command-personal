@@ -2543,7 +2543,7 @@ function CommandScore({urgentTasks}){
   const budgetPts=15;
 
   const score=Math.min(100,rhythmPts+goalsPts+tasksPts+streakPts+budgetPts);
-  const scoreColor=score<40?"#EF5350":score<70?"#F59E0B":"#43A047";
+  const scoreColor=score<40?"#C62828":score<70?"#EF5350":"#43A047";
   const scoreMsg=score>=70?"Strong day. Keep it up.":score>=40?"Building momentum.":"Get your day started.";
 
   const sz=230,cx=115,cy=115,outerR=108,innerR=91;
@@ -2574,6 +2574,9 @@ function CommandScore({urgentTasks}){
             <circle cx={cx-28} cy={cy-22} r={60} fill="#EF5350" filter="url(#blobBlur)" className="score-blob-1"/>
             <circle cx={cx+32} cy={cy+28} r={55} fill="#43A047" filter="url(#blobBlur)" className="score-blob-2"/>
             <circle cx={cx-8} cy={cy+35} r={48} fill="#3B5BDB" filter="url(#blobBlur)" className="score-blob-3"/>
+            {/* Sheet lightning — two desynced flashes */}
+            <circle cx={cx} cy={cy} r={outerR} fill="#e8f4ff" className="score-lightning-a"/>
+            <circle cx={cx} cy={cy} r={outerR} fill="#fff8e8" className="score-lightning-b"/>
           </g>
           {/* Outer frame ring */}
           <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={1.5}/>
@@ -3431,9 +3434,8 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
         );
       })()}
       </div>{/* end left col */}
+        {!isMobile&&<CommandScore urgentTasks={urgentTasks}/>}
       </div>{/* end two-col row */}
-      {/* Command Score — centered, own row, desktop only */}
-      {!isMobile&&<div style={{display:"flex",justifyContent:"center",width:"100%"}}><CommandScore urgentTasks={urgentTasks}/></div>}
       {briefOpen&&<TodayBriefModal urgentTasks={urgentTasks} allEvents={allEvents} td={td} onNavigate={onNavigate} onClose={()=>setBriefOpen(false)} state={state} isAuthed={isAuthed} gTasksFlat={gTasksFlat||[]}/>}
       {(()=>{
         const liveGoals=(()=>{try{return JSON.parse(localStorage.getItem("cp_goals")||"[]");}catch{return[];}})();
