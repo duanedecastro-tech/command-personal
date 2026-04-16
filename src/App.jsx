@@ -1979,7 +1979,7 @@ function DailySheetCard({authToken}){
           <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10}}>
             <div>
               <div style={{fontFamily:"'Sora',sans-serif",fontSize:isMobile?20:24,fontWeight:800,color:"#EF5350",letterSpacing:-0.5,lineHeight:1}}>my rhythm.</div>
-              <div style={{transition:"opacity 0.9s ease",opacity:quoteFade?1:0,marginTop:5,minHeight:52}}>
+              <div style={{transition:"opacity 0.9s ease",opacity:quoteFade?1:0,marginTop:5}}>
                 <div style={{fontSize:11,color:"rgba(239,83,80,0.65)",fontFamily:FONT,fontStyle:"italic",lineHeight:1.45}}>"{activeQuotes[quoteIdx%activeQuotes.length].q}"</div>
                 <div style={{fontSize:9,color:"rgba(239,83,80,0.4)",fontFamily:FONT_MONO,letterSpacing:1,marginTop:3}}>— {activeQuotes[quoteIdx%activeQuotes.length].a}</div>
               </div>
@@ -3325,7 +3325,7 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
         <div style={{fontSize:isMobile?10:13,color:"rgba(255,255,255,0.4)",letterSpacing:2,marginTop:6,fontWeight:500,fontFamily:FONT_MONO}}>{new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}).toUpperCase()}</div>
       </div>
       <div style={{display:"flex",gap:20,alignItems:"flex-start",width:"100%"}}>
-      <div style={{display:"flex",flexDirection:"column",gap:12,flex:1,minWidth:0,maxWidth:580}}>
+      <div style={{display:"flex",flexDirection:"column",gap:12,flex:1,minWidth:0,maxWidth:640}}>
       <div style={{display:"flex",flexDirection:"column",gap:12,width:"100%",maxWidth:520}}>
         <StatCards allTasks={allTasks.filter(t=>!t.done)} urgentTasks={urgentTasks} upcoming={upcoming} allNotes={state.notes} open={statOpen} onOpen={setStatOpen} unreadMail={unreadMail}/>
         {statOpen&&statActiveCard&&(
