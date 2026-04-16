@@ -2561,20 +2561,36 @@ function CommandScore({urgentTasks}){
   return(
     <>
       <div onClick={()=>setOpen(true)} style={{cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0,userSelect:"none"}}
-        onMouseEnter={e=>e.currentTarget.querySelector("svg").style.filter=`drop-shadow(0 0 28px ${scoreColor}55)`}
-        onMouseLeave={e=>e.currentTarget.querySelector("svg").style.filter=`drop-shadow(0 0 18px ${scoreColor}33)`}>
-        <svg width={sz} height={sz} style={{overflow:"visible",filter:`drop-shadow(0 0 18px ${scoreColor}33)`,transition:"filter 0.3s ease"}}>
-          <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={1.5}/>
-          <circle cx={cx} cy={cy} r={innerR} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={11}/>
+        onMouseEnter={e=>e.currentTarget.querySelector("svg").style.filter=`drop-shadow(0 0 32px ${scoreColor}55)`}
+        onMouseLeave={e=>e.currentTarget.querySelector("svg").style.filter=`drop-shadow(0 0 20px ${scoreColor}33)`}>
+        <svg width={sz} height={sz} style={{overflow:"visible",filter:`drop-shadow(0 0 20px ${scoreColor}33)`,transition:"filter 0.3s ease"}}>
+          <defs>
+            <clipPath id="scoreClip"><circle cx={cx} cy={cy} r={outerR-1}/></clipPath>
+            <filter id="blobBlur"><feGaussianBlur stdDeviation="20"/></filter>
+          </defs>
+          {/* Dark fill + animated color blobs clipped to circle */}
+          <g clipPath="url(#scoreClip)">
+            <circle cx={cx} cy={cy} r={outerR} fill="#060b16"/>
+            <circle cx={cx-28} cy={cy-22} r={60} fill="#EF5350" filter="url(#blobBlur)" className="score-blob-1"/>
+            <circle cx={cx+32} cy={cy+28} r={55} fill="#43A047" filter="url(#blobBlur)" className="score-blob-2"/>
+            <circle cx={cx-8} cy={cy+35} r={48} fill="#3B5BDB" filter="url(#blobBlur)" className="score-blob-3"/>
+          </g>
+          {/* Outer frame ring */}
+          <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={1.5}/>
+          {/* Score track */}
+          <circle cx={cx} cy={cy} r={innerR} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={11}/>
+          {/* Score arc */}
           <circle cx={cx} cy={cy} r={innerR} fill="none" stroke={scoreColor} strokeWidth={11} strokeLinecap="round"
             strokeDasharray={`${innerArc} ${innerCirc}`}
-            style={{transform:"rotate(-90deg)",transformOrigin:`${cx}px ${cy}px`,filter:`drop-shadow(0 0 8px ${scoreColor}bb)`,transition:"stroke-dasharray 0.7s ease,stroke 0.7s ease"}}/>
-          <text x={cx} y={cy-10} textAnchor="middle" dominantBaseline="middle"
-            style={{fontSize:58,fontWeight:900,fill:scoreColor,fontFamily:"'Sora',sans-serif",transition:"fill 0.7s ease"}}>{score}</text>
-          <text x={cx} y={cy+32} textAnchor="middle" dominantBaseline="middle"
-            style={{fontSize:8,fill:"rgba(255,255,255,0.25)",fontFamily:FONT_MONO,letterSpacing:2.5}}>COMMAND SCORE</text>
-          <text x={cx} y={cy+48} textAnchor="middle" dominantBaseline="middle"
-            style={{fontSize:7,fill:"rgba(255,255,255,0.12)",fontFamily:FONT_MONO,letterSpacing:1}}>TAP FOR BREAKDOWN</text>
+            style={{transform:"rotate(-90deg)",transformOrigin:`${cx}px ${cy}px`,filter:`drop-shadow(0 0 9px ${scoreColor}cc)`,transition:"stroke-dasharray 0.7s ease,stroke 0.7s ease"}}/>
+          {/* Score number — Orbitron digital font, true center */}
+          <text x={cx} y={cy} textAnchor="middle" dominantBaseline="central"
+            style={{fontSize:62,fontWeight:900,fill:scoreColor,fontFamily:"'Orbitron',sans-serif",transition:"fill 0.7s ease"}}>{score}</text>
+          {/* COMMAND SCORE label — colored */}
+          <text x={cx} y={cy+46} textAnchor="middle" dominantBaseline="middle"
+            style={{fontSize:8,fill:scoreColor,fontFamily:FONT_MONO,letterSpacing:2.5,opacity:0.75}}>COMMAND SCORE</text>
+          <text x={cx} y={cy+61} textAnchor="middle" dominantBaseline="middle"
+            style={{fontSize:7,fill:"rgba(255,255,255,0.15)",fontFamily:FONT_MONO,letterSpacing:1}}>TAP FOR BREAKDOWN</text>
         </svg>
       </div>
 
@@ -3415,8 +3431,9 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
         );
       })()}
       </div>{/* end left col */}
-        {!isMobile&&<CommandScore urgentTasks={urgentTasks}/>}
       </div>{/* end two-col row */}
+      {/* Command Score — centered, own row, desktop only */}
+      {!isMobile&&<div style={{display:"flex",justifyContent:"center",width:"100%"}}><CommandScore urgentTasks={urgentTasks}/></div>}
       {briefOpen&&<TodayBriefModal urgentTasks={urgentTasks} allEvents={allEvents} td={td} onNavigate={onNavigate} onClose={()=>setBriefOpen(false)} state={state} isAuthed={isAuthed} gTasksFlat={gTasksFlat||[]}/>}
       {(()=>{
         const liveGoals=(()=>{try{return JSON.parse(localStorage.getItem("cp_goals")||"[]");}catch{return[];}})();

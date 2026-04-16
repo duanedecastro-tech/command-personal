@@ -13,7 +13,7 @@
     <title>Command Personal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { background: #0e1320; overflow: hidden; }
@@ -56,6 +56,12 @@
       @keyframes emberFloat2 { 0%{transform:translateY(0) translateX(0);opacity:0} 10%{opacity:0.7} 85%{opacity:0.2} 100%{transform:translateY(-44px) translateX(-4px);opacity:0} }
       @keyframes emberFloat3 { 0%{transform:translateY(0) translateX(0);opacity:0} 15%{opacity:0.9} 90%{opacity:0.3} 100%{transform:translateY(-58px) translateX(2px);opacity:0} }
       @keyframes vesselGlow { 0%,100%{opacity:0.6} 50%{opacity:1} }
+      @keyframes scoreBlob1 { 0%,100%{transform:translate(0px,0px);opacity:0.18} 33%{transform:translate(28px,-18px);opacity:0.28} 66%{transform:translate(-15px,22px);opacity:0.14} }
+      @keyframes scoreBlob2 { 0%,100%{transform:translate(0px,0px);opacity:0.13} 40%{transform:translate(-22px,16px);opacity:0.22} 75%{transform:translate(18px,-14px);opacity:0.09} }
+      @keyframes scoreBlob3 { 0%,100%{transform:translate(0px,0px);opacity:0.11} 55%{transform:translate(14px,20px);opacity:0.19} 80%{transform:translate(-10px,-18px);opacity:0.08} }
+      .score-blob-1{animation:scoreBlob1 13s ease-in-out infinite}
+      .score-blob-2{animation:scoreBlob2 17s ease-in-out infinite -5s}
+      .score-blob-3{animation:scoreBlob3 11s ease-in-out infinite -8s}
       @keyframes bubbleRise { 0%{transform:translateY(0) scale(1);opacity:0} 8%{opacity:0.9} 80%{opacity:0.45} 100%{transform:translateY(-58px) scale(0.3);opacity:0} }
       input[type=range].goal-slider{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;background:transparent;outline:none;cursor:pointer;}
       input[type=range].goal-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:13px;height:13px;border-radius:50%;background:#fff;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.5);border:2px solid var(--goal-color,#FF7043);transition:transform 0.15s;}
