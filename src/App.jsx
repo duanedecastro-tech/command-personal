@@ -2571,7 +2571,7 @@ function CommandScore({urgentTasks}){
               <feTurbulence type="turbulence" baseFrequency="0.03" numOctaves="2" result="noise">
                 <animate attributeName="baseFrequency" values="0.025;0.042;0.03;0.022;0.025" dur="22s" repeatCount="indefinite"/>
               </feTurbulence>
-              <feDisplacementMap in="SourceGraphic" in2="noise" scale="28" xChannelSelector="R" yChannelSelector="G" result="warped"/>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="45" xChannelSelector="R" yChannelSelector="G" result="warped"/>
               <feGaussianBlur in="warped" stdDeviation="5" result="glow"/>
               <feMerge><feMergeNode in="glow"/><feMergeNode in="warped"/></feMerge>
             </filter>
@@ -2599,7 +2599,7 @@ function CommandScore({urgentTasks}){
             style={{transform:"rotate(-90deg)",transformOrigin:`${cx}px ${cy}px`,filter:`drop-shadow(0 0 9px ${scoreColor}cc)`,transition:"stroke-dasharray 0.7s ease,stroke 0.7s ease"}}/>
           {/* Score number — Orbitron digital font, true center */}
           <text x={cx} y={cy} textAnchor="middle" dominantBaseline="central"
-            style={{fontSize:62,fontWeight:900,fill:scoreColor,fontFamily:"'Orbitron',sans-serif",transition:"fill 0.7s ease"}}>{score}</text>
+            style={{fontSize:62,fontWeight:900,fill:"#ffffff",fontFamily:"'Orbitron',sans-serif"}}>{score}</text>
           {/* COMMAND SCORE label — colored */}
           <text x={cx} y={cy+46} textAnchor="middle" dominantBaseline="middle"
             style={{fontSize:8,fill:scoreColor,fontFamily:FONT_MONO,letterSpacing:2.5,opacity:0.75}}>COMMAND SCORE</text>
