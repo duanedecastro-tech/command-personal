@@ -2526,24 +2526,40 @@ function EditBizModal({bizId,onSave,onClose}){
     </div>,document.body);
 }
 
-function WidgetCard({widget,onOpen}){
+function WidgetCard({widget,onOpen,goalsData}){
   const c=widget.color;
   const isMobile=window.innerWidth<768;
+  const isGoals=widget.id==="goals"&&goalsData&&goalsData.length>0;
+  const ringSize=isMobile?40:46;
   return(
     <div onClick={onOpen}
-      style={{background:`linear-gradient(180deg,${c}18 0%,${c}08 100%)`,border:`1px solid ${c}30`,borderTop:`1px solid ${c}55`,borderRadius:14,padding:isMobile?"10px 12px 14px":"14px 16px 32px",cursor:"pointer",position:"relative",minWidth:0,overflow:"hidden",display:"flex",flexDirection:"column",boxSizing:"border-box",boxShadow:`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`,transition:"all 0.18s",minHeight:isMobile?90:160}}
+      style={{background:`linear-gradient(180deg,${c}18 0%,${c}08 100%)`,border:`1px solid ${c}30`,borderTop:`1px solid ${c}55`,borderRadius:14,padding:isMobile?"10px 12px 14px":"14px 16px 16px",cursor:"pointer",position:"relative",minWidth:0,overflow:"hidden",display:"flex",flexDirection:"column",boxSizing:"border-box",boxShadow:`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`,transition:"all 0.18s",minHeight:isMobile?90:160}}
       onMouseEnter={e=>{e.currentTarget.style.background=`linear-gradient(180deg,${c}28 0%,${c}12 100%)`;e.currentTarget.style.boxShadow=`0 8px 44px ${c}66, 0 1px 0 ${c}33 inset`;e.currentTarget.style.transform="translateY(-3px) scale(1.02)";}}
       onMouseLeave={e=>{e.currentTarget.style.background=`linear-gradient(180deg,${c}18 0%,${c}08 100%)`;e.currentTarget.style.boxShadow=`0 6px 24px rgba(0,0,0,0.4), 0 1px 0 ${c}22 inset`;e.currentTarget.style.transform="none";}}>
       <div style={{fontSize:14,fontWeight:700,color:c,marginBottom:3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{widget.name}</div>
       <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",marginBottom:10,fontWeight:600}}>{widget.category.toUpperCase()}</div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:3,textAlign:"center"}}>
-        {widget.stats.map(({v,l})=>(
-          <div key={l} style={{background:`${c}14`,borderRadius:6,padding:"5px 2px"}}>
-            <div style={{fontSize:15,fontWeight:800,color:"rgba(255,255,255,0.88)",lineHeight:1}}>{v}</div>
-            <div style={{fontSize:9,color:`${c}cc`,fontWeight:700,letterSpacing:0.5,marginTop:2}}>{l}</div>
-          </div>
-        ))}
-      </div>
+      {isGoals?(
+        <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:2,WebkitOverflowScrolling:"touch",flex:1,alignItems:"center"}}>
+          {goalsData.map(g=>{
+            const pct=Math.round(Math.min(100,(g.current||0)/(g.target||1)*100));
+            return(
+              <div key={g.id} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,flexShrink:0}}>
+                <ArcRing pct={pct} color={g.color||c} size={ringSize}/>
+                <div style={{fontSize:8,color:"rgba(255,255,255,0.45)",fontFamily:"'JetBrains Mono',monospace",letterSpacing:0.3,width:ringSize,textAlign:"center",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{g.title}</div>
+              </div>
+            );
+          })}
+        </div>
+      ):(
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:3,textAlign:"center"}}>
+          {widget.stats.map(({v,l})=>(
+            <div key={l} style={{background:`${c}14`,borderRadius:6,padding:"5px 2px"}}>
+              <div style={{fontSize:15,fontWeight:800,color:"rgba(255,255,255,0.88)",lineHeight:1}}>{v}</div>
+              <div style={{fontSize:9,color:`${c}cc`,fontWeight:700,letterSpacing:0.5,marginTop:2}}>{l}</div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -2753,21 +2769,25 @@ const LAMP_PAIRS={
 };
 const LAMP_DEFAULT={fluid:"#1A237E",blob:"#AB47BC",blob2:"#CE93D8"};
 
-function ArcRing({pct,color}){
+function ArcRing({pct,color,size}){
   const pair=LAMP_PAIRS[color]||LAMP_DEFAULT;
   const fp=Math.min(100,Math.max(0,pct));
-  const SIZE=64;
+  const SIZE=size||64;
   const cx=SIZE/2;
   const cy=SIZE/2;
-  const r=26;
-  const strokeW=4.5;
+  const r=SIZE*0.406;
+  const strokeW=SIZE*0.07;
   const circ=2*Math.PI*r;
   const offset=circ*(1-fp/100);
   const angleDeg=(fp/100)*360-90;
   const angleRad=angleDeg*Math.PI/180;
   const dotX=+(cx+r*Math.cos(angleRad)).toFixed(2);
   const dotY=+(cy+r*Math.sin(angleRad)).toFixed(2);
-  const glowId=`ag_${color.replace("#","")}`;
+  const glowId=`ag_${color.replace("#","")}${SIZE}`;
+  const fsSm=SIZE*0.17;
+  const fsDone=SIZE*0.155;
+  const dotR=SIZE*0.07;
+  const dotPulseR=SIZE*0.109;
   return(
     <div style={{position:"relative",width:SIZE,height:SIZE,flexShrink:0}}>
       <svg width={SIZE} height={SIZE} style={{overflow:"visible"}}>
@@ -2777,9 +2797,7 @@ function ArcRing({pct,color}){
             <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
         </defs>
-        {/* Background track */}
         <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={strokeW}/>
-        {/* Progress arc */}
         {fp>0&&(
           <circle cx={cx} cy={cy} r={r}
             fill="none" stroke={pair.blob}
@@ -2792,19 +2810,17 @@ function ArcRing({pct,color}){
             }}
           />
         )}
-        {/* Leading dot with pulse ring */}
         {fp>0&&fp<100&&(
           <>
             <g style={{transformOrigin:`${dotX}px ${dotY}px`,animation:"arcPulse 2s ease-out infinite"}}>
-              <circle cx={dotX} cy={dotY} r={7} fill="none" stroke={pair.blob} strokeWidth={1.5} opacity={0.55}/>
+              <circle cx={dotX} cy={dotY} r={dotPulseR} fill="none" stroke={pair.blob} strokeWidth={1.5} opacity={0.55}/>
             </g>
-            <circle cx={dotX} cy={dotY} r={4.5} fill={pair.blob} filter={`url(#${glowId})`}/>
+            <circle cx={dotX} cy={dotY} r={dotR} fill={pair.blob} filter={`url(#${glowId})`}/>
           </>
         )}
-        {/* Center label */}
         <text x={cx} y={cy+0.5} textAnchor="middle" dominantBaseline="middle"
           fill={fp>0?pair.blob:"rgba(255,255,255,0.18)"}
-          fontSize={fp>=100?11:13} fontWeight="800"
+          fontSize={fp>=100?fsDone:fsSm} fontWeight="800"
           fontFamily="'JetBrains Mono',monospace"
           style={{filter:fp>0?`drop-shadow(0 0 6px ${pair.blob}99)`:"none"}}>
           {fp>=100?"DONE":`${fp}%`}
@@ -3296,38 +3312,11 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
       {briefOpen&&<TodayBriefModal urgentTasks={urgentTasks} allEvents={allEvents} td={td} onNavigate={onNavigate} onClose={()=>setBriefOpen(false)} state={state} isAuthed={isAuthed} gTasksFlat={gTasksFlat||[]}/>}
       {(()=>{
         const liveGoals=(()=>{try{return JSON.parse(localStorage.getItem("cp_goals")||"[]");}catch{return[];}})();
-        const activeG=liveGoals.filter(g=>Math.round(Math.min(100,g.current/g.target*100))<100).length;
-        const onTrackG=liveGoals.filter(g=>{const p=Math.round(Math.min(100,g.current/g.target*100));return p>0&&p<100;}).length;
-        const doneG=liveGoals.filter(g=>Math.round(Math.min(100,g.current/g.target*100))>=100).length;
-        const widgets=WIDGETS.map(w=>w.id==="goals"?{...w,stats:[{v:activeG||"—",l:"ACTIVE"},{v:onTrackG||"—",l:"IN PROG"},{v:doneG||"—",l:"DONE"}]}:w);
         return(
           <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":"repeat(8,minmax(0,175px))",gap:isMobile?8:12,width:isMobile?"100%":"fit-content"}}>
-            {widgets.map(w=>(
-              <WidgetCard key={w.id} widget={w} onOpen={()=>w.id==="goals"?onNavigate("goals"):w.id==="budget"?onNavigate("budget"):null}/>
+            {WIDGETS.map(w=>(
+              <WidgetCard key={w.id} widget={w} goalsData={w.id==="goals"?liveGoals:null} onOpen={()=>w.id==="goals"?onNavigate("goals"):w.id==="budget"?onNavigate("budget"):null}/>
             ))}
-          </div>
-        );
-      })()}
-      {(()=>{
-        const liveGoals=(()=>{try{return JSON.parse(localStorage.getItem("cp_goals")||"[]");}catch{return[];}})();
-        if(!liveGoals.length)return null;
-        return(
-          <div style={{background:"rgba(255,255,255,0.03)",borderRadius:16,padding:"16px 16px 18px",border:"1px solid rgba(255,255,255,0.07)"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-              <div style={{fontSize:13,fontWeight:800,color:"#FF7043",letterSpacing:2,fontFamily:"'JetBrains Mono',monospace"}}>GOALS</div>
-              <button onClick={()=>onNavigate("goals")} style={{background:"rgba(255,112,67,0.12)",border:"1px solid rgba(255,112,67,0.25)",color:"#FF7043",borderRadius:8,padding:"4px 12px",fontSize:11,cursor:"pointer",fontFamily:"inherit",fontWeight:700,letterSpacing:1}}>VIEW ALL</button>
-            </div>
-            <div style={{display:"flex",gap:16,overflowX:"auto",paddingBottom:4,WebkitOverflowScrolling:"touch"}}>
-              {liveGoals.map(g=>{
-                const pct=Math.round(Math.min(100,(g.current||0)/(g.target||1)*100));
-                return(
-                  <div key={g.id} onClick={()=>onNavigate("goals")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,cursor:"pointer",flexShrink:0}}>
-                    <ArcRing pct={pct} color={g.color||"#FF7043"}/>
-                    <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontFamily:"'JetBrains Mono',monospace",letterSpacing:0.5,width:64,textAlign:"center",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{g.title}</div>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         );
       })()}
