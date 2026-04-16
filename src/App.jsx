@@ -2583,9 +2583,9 @@ function CommandScore({urgentTasks}){
             <circle cx={cx+32} cy={cy+28} r={55} fill="#43A047" filter="url(#blobBlur)" className="score-blob-2"/>
             <circle cx={cx-8} cy={cy+35} r={48} fill="#3B5BDB" filter="url(#blobBlur)" className="score-blob-3"/>
             {/* Floating plasma orbs — blobby, centered, always drifting */}
-            <circle cx={90} cy={95} r={34} fill="#5B9EC9" opacity={0.62} filter="url(#orbBlob)" className="score-orb-1"/>
-            <circle cx={140} cy={88} r={34} fill="#8B6BB5" opacity={0.62} filter="url(#orbBlob)" className="score-orb-2"/>
-            <circle cx={100} cy={142} r={34} fill="#45B0A0" opacity={0.62} filter="url(#orbBlob)" className="score-orb-3"/>
+            <circle cx={90} cy={95} r={26} fill="#5B9EC9" opacity={0.62} filter="url(#orbBlob)" className="score-orb-1"/>
+            <circle cx={140} cy={88} r={26} fill="#8B6BB5" opacity={0.62} filter="url(#orbBlob)" className="score-orb-2"/>
+            <circle cx={100} cy={142} r={26} fill="#45B0A0" opacity={0.62} filter="url(#orbBlob)" className="score-orb-3"/>
           </g>
           {/* Outer frame ring — amber, glow + crisp edge */}
           <circle cx={cx} cy={cy} r={outerR} fill="none" stroke="#F59E0B" strokeWidth={4} opacity={0.18} style={{filter:"blur(3px)"}}/>
