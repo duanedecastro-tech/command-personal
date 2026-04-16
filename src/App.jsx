@@ -2706,6 +2706,14 @@ const EXAMPLE_GOALS=[
 ];
 
 function parseVoiceNumber(text){
+  const WORD_MAP={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,
+    eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,
+    eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,
+    seventy:70,eighty:80,ninety:90,hundred:100,thousand:1000};
+  const lower=text.toLowerCase();
+  for(const [word,val] of Object.entries(WORD_MAP)){
+    if(new RegExp(`\\b${word}\\b`).test(lower))return val;
+  }
   const m=text.match(/[\d,.]+/);
   if(m)return parseFloat(m[0].replace(/,/g,""));
   return null;
@@ -3297,6 +3305,29 @@ function Overview({state,allEvents,calLoading,onRefresh,onNavigate,gTasks,gTaskL
             {widgets.map(w=>(
               <WidgetCard key={w.id} widget={w} onOpen={()=>w.id==="goals"?onNavigate("goals"):w.id==="budget"?onNavigate("budget"):null}/>
             ))}
+          </div>
+        );
+      })()}
+      {(()=>{
+        const liveGoals=(()=>{try{return JSON.parse(localStorage.getItem("cp_goals")||"[]");}catch{return[];}})();
+        if(!liveGoals.length)return null;
+        return(
+          <div style={{background:"rgba(255,255,255,0.03)",borderRadius:16,padding:"16px 16px 18px",border:"1px solid rgba(255,255,255,0.07)"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+              <div style={{fontSize:13,fontWeight:800,color:"#FF7043",letterSpacing:2,fontFamily:"'JetBrains Mono',monospace"}}>GOALS</div>
+              <button onClick={()=>onNavigate("goals")} style={{background:"rgba(255,112,67,0.12)",border:"1px solid rgba(255,112,67,0.25)",color:"#FF7043",borderRadius:8,padding:"4px 12px",fontSize:11,cursor:"pointer",fontFamily:"inherit",fontWeight:700,letterSpacing:1}}>VIEW ALL</button>
+            </div>
+            <div style={{display:"flex",gap:16,overflowX:"auto",paddingBottom:4,WebkitOverflowScrolling:"touch"}}>
+              {liveGoals.map(g=>{
+                const pct=Math.round(Math.min(100,(g.current||0)/(g.target||1)*100));
+                return(
+                  <div key={g.id} onClick={()=>onNavigate("goals")} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,cursor:"pointer",flexShrink:0}}>
+                    <ArcRing pct={pct} color={g.color||"#FF7043"}/>
+                    <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontFamily:"'JetBrains Mono',monospace",letterSpacing:0.5,width:64,textAlign:"center",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{g.title}</div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         );
       })()}
