@@ -57,12 +57,7 @@ const SK = "dws_v5";
 const CLIENT_ID = "32624962382-rte923b8bm122u5pqv3592f0q73bai0q.apps.googleusercontent.com";
 const SCOPES = "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.compose";
 
-const EMAIL_BIZ_MAP = {
-  "duane@spliffsgastropub.com":0,
-  "duane@1904musichall.com":3,
-  "duane@terrapinapparel.com":5,
-  "inbox@terrapinapparel.com":5,
-};
+const EMAIL_BIZ_MAP = {};
 function emailToBizId(toHeader=""){
   const lower=toHeader.toLowerCase();
   for(const [addr,id] of Object.entries(EMAIL_BIZ_MAP)){if(lower.includes(addr))return id;}
@@ -96,50 +91,7 @@ function makeMime({from,to,subject,body}){
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const DAYS_S = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
-const GC_EVENTS = [
-  { id:"s1",  summary:"\u{1F338} Evening with Stephanie",            start:"2026-04-10", end:"2026-04-11", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s2",  summary:"\u{1F4CA} Budget Review \u2014 April 2026",       start:"2026-04-14T20:00:00-04:00",    allDay:false, bizId:6, color:"#E53935" },
-  { id:"s3",  summary:"\u{1F697} Jaguar car payment",                start:"2026-04-25", end:"2026-04-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s4",  summary:"\u{1F382} Solomon DeCastro's birthday",       start:"2026-04-25", end:"2026-04-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s5",  summary:"\u{1F9B7} Island Walk Dental Care",           start:"2026-04-28T14:30:00-04:00",    allDay:false, bizId:6, color:"#E53935" },
-  { id:"s6",  summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-05-01", end:"2026-05-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s7",  summary:"\u{1F697} Jaguar car payment",                start:"2026-05-25", end:"2026-05-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s8",  summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-06-01", end:"2026-06-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s9",  summary:"\u{1F382} Peter & Tish Gappmayr birthday",    start:"2026-06-23", end:"2026-06-24", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s10", summary:"\u{1F697} Jaguar car payment",                start:"2026-06-25", end:"2026-06-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s11", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-07-01", end:"2026-07-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s12", summary:"\u{1F697} Jaguar car payment",                start:"2026-07-25", end:"2026-07-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s13", summary:"\u{1F4B3} Care Credit \u2014 Verify Payoff",       start:"2026-08-01", end:"2026-08-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s14", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-08-01", end:"2026-08-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s15", summary:"\u{1F6A8} Care Credit \u2014 FINAL DEADLINE",      start:"2026-08-09", end:"2026-08-10", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s16", summary:"\u{1F697} Jaguar car payment",                start:"2026-08-25", end:"2026-08-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s17", summary:"\u{1F4B3} Lowes \u2014 Review & Increase Payment", start:"2026-09-01", end:"2026-09-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s18", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-09-01", end:"2026-09-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s19", summary:"\u{1F697} Jaguar car payment",                start:"2026-09-25", end:"2026-09-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s20", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-10-01", end:"2026-10-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s21", summary:"\u{1F382} Frank & Mercedez Dinino birthday",  start:"2026-10-07", end:"2026-10-08", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s22", summary:"\u{1F697} Jaguar car payment",                start:"2026-10-25", end:"2026-10-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s23", summary:"\u{1F382} Jason Hunnicutt birthday",          start:"2026-11-01", end:"2026-11-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s24", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-11-01", end:"2026-11-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s25", summary:"\u{1F4B3} Lowes \u2014 Verify Payoff on Track",    start:"2026-11-01", end:"2026-11-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s26", summary:"\u{1F382} Jeff Davis birthday",               start:"2026-11-10", end:"2026-11-11", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s27", summary:"\u{1F382} Isaac's birthday",                  start:"2026-11-11", end:"2026-11-12", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s28", summary:"\u{1F697} Jaguar car payment",                start:"2026-11-25", end:"2026-11-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s29", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2026-12-01", end:"2026-12-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s30", summary:"\u{1F697} Jaguar car payment",                start:"2026-12-25", end:"2026-12-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s31", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2027-01-01", end:"2027-01-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s32", summary:"\u{1F697} Jaguar car payment",                start:"2027-01-25", end:"2027-01-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s33", summary:"\u{1F382} Kristin Dinino birthday",           start:"2027-01-25", end:"2027-01-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s34", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2027-02-01", end:"2027-02-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s35", summary:"\u{1F6A8} Lowes \u2014 FINAL DEADLINE TODAY",      start:"2027-02-02", end:"2027-02-03", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s36", summary:"\u{1F697} Jaguar car payment",                start:"2027-02-25", end:"2027-02-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s37", summary:"\u{1F4B0} Monthly Budget Check-In",           start:"2027-03-01", end:"2027-03-02", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s38", summary:"\u{1F382} Ken & Charmaine Collins birthday",  start:"2027-03-05", end:"2027-03-06", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s39", summary:"\u{1F697} Jaguar car payment",                start:"2027-03-25", end:"2027-03-26", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s40", summary:"\u{1F382} Karl & Cassandra Kovacs birthday",  start:"2027-03-30", end:"2027-03-31", allDay:true,  bizId:6, color:"#E53935" },
-  { id:"s41", summary:"\u{1F382} Dave & Jenny DeCastro Birthday",    start:"2027-03-31", end:"2027-04-01", allDay:true,  bizId:6, color:"#7B1FA2" },
-  { id:"s42", summary:"\u{1F4B5} Cash Count \u2014 Spliffs Downtown",     start:"2026-04-06", end:"2026-04-07", allDay:true,  bizId:0, color:"#E65100" },
-];
+const GC_EVENTS = [];
 
 const DEFAULT_TASKS = [[], [], [], [], [], [], [], []];
 
@@ -2102,7 +2054,7 @@ function ComposeModal({token,onClose}){
         const all=(d.sendAs||[]).map(a=>a.sendAsEmail).filter(Boolean);
         if(all.length){setFromOpts(all);setFrom(all[0]);}
       }catch{
-        const fallback=["duanedecastro@gmail.com","duane@spliffsgastropub.com","duane@1904musichall.com","duane@terrapinapparel.com","inbox@terrapinapparel.com"];
+        const fallback=[];
         setFromOpts(fallback);setFrom(fallback[0]);
       }
     })();

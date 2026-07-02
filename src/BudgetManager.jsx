@@ -1,33 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 
 const STORAGE_KEY = "pbm_v4_data";
-const FORCED_OVERRIDES = { "Discover 1554": 2559, "Care Credit": 805 };
+const FORCED_OVERRIDES = {};
 
 const INIT_DATA = {
-  income: [{ n: "Salary", v: "14000" }],
-  cats: [
-    { name: "Housing", icon: "\u{1F3E0}", items: [{ n: "Rent/Mortgage", v: "1985" }, { n: "Utilities", v: 150 }] },
-    { name: "Food", icon: "\u{1F37D}", items: [{ n: "Groceries", v: "800" }, { n: "Dining out", v: 150 }] },
-    { name: "Transport", icon: "\u{1F697}", items: [{ n: "Gas", v: 120 }, { n: "Insurance", v: "150" }, { n: "Car Payment", v: "300" }] },
-    { name: "Entertainment", icon: "\u{1F3AC}", items: [{ n: "Streaming", v: 30 }, { n: "Accessories", v: "300" }] },
-    { name: "Health", icon: "\u2764\uFE0F", items: [{ n: "Gym", v: 40 }] },
-    { name: "Savings", icon: "\u{1F3E6}", items: [] },
-    { name: "Roth IRA Contributions", icon: "\u{1F3E6}", items: [{ n: "Charles Schwab IRA", v: "300" }] },
-    { name: "Child Support Payments", icon: "\u{1F3AF}", items: [{ n: "Child Support and Alimony Payments", v: "2368.23" }] },
-  ],
-  cards: [
-    { name: "Amex Delta",    balance: 14953.77, limit: 16400, minPay: 412,    apr: 18.74, due: "April 8",   notes: "" },
-    { name: "Amex Cash",     balance: 0,        limit: 2100,  minPay: 50,     apr: 26.49, due: "Apr 21",   notes: "" },
-    { name: "Citi 7805",     balance: 8266.25,  limit: 14500, minPay: 197.53, apr: 21.49, due: "April 23", notes: "" },
-    { name: "Citi 2421",     balance: 13740.94, limit: 28000, minPay: 204.50, apr: 28.24, due: "April 3",  notes: "" },
-    { name: "Discover 1554", balance: 10038.88, limit: 28000, minPay: 298,    apr: 28.24, due: "April 8",  notes: "" },
-    { name: "Discover 8363", balance: 20965.82, limit: 23500, minPay: 454,    apr: 26.49, due: "April 8",  notes: "" },
-    { name: "Capital One",   balance: 4389.00,  limit: 6400,  minPay: 122,    apr: 19.80, due: "April 6",  notes: "" },
-    { name: "Rooms To Go",   balance: 5185.73,  limit: 25000, minPay: 99,     apr: 0,     due: "April 11", notes: "Interest starts 9/18/2030" },
-    { name: "Care Credit",   balance: 3893.00,  limit: 16500, minPay: 131,    apr: 0,     due: "April 1",  notes: "Interest starts 8/9/2026" },
-    { name: "Lowes",         balance: 3154.96,  limit: 25000, minPay: 50,     apr: 0,     due: "March 25", notes: "Interest starts 2/2/2027" },
-  ],
-  overrides: { "Discover 1554": 2559, "Care Credit": 805 },
+  income: [],
+  cats: [],
+  cards: [],
+  overrides: {},
   settings: { minRemaining: 3000, startMonth: "2026-04" }
 };
 
@@ -586,7 +566,7 @@ function ExpensesTab({ data, setData, totalLiving, totalDebtPay, totalIncome }) 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
             <div style={{ fontSize: 14, fontWeight: 800, color: "#C62828", letterSpacing: 1 }}>CREDIT CARD PAYMENTS</div>
-            <div style={{ fontSize: 12, color: "#888", marginTop: 4 }}>Discover 1554: <span style={{ color: "#C62828", fontWeight: 700 }}>$2,559</span> | Care Credit: <span style={{ color: "#C62828", fontWeight: 700 }}>$805</span> | Others at min</div>
+            <div style={{ fontSize: 12, color: "#888", marginTop: 4 }}>Payoff strategy shown once cards are added</div>
           </div>
           <div style={{ fontSize: 22, fontWeight: 900, color: "#C62828", fontFamily: FONT_MONO }}>{fmt(totalDebtPay)}</div>
         </div>
@@ -751,7 +731,7 @@ function PlanTab({ data, setData, plan, totalIncome, totalLiving }) {
       <div style={panel("#0097A7")}>
         <div style={{ fontSize: 14, fontWeight: 800, color: "#006064", letterSpacing: 1, marginBottom: 4 }}>MONTHLY PAYMENT ALLOCATIONS</div>
         <div style={{ fontSize: 12, color: "#888", marginBottom: 14 }}>
-          All at min | <span style={{ color: "#E65100", fontWeight: 700 }}>Discover 1554: $2,559/mo</span> | <span style={{ color: "#E65100", fontWeight: 700 }}>Care Credit: $805/mo</span> | Total: <span style={{ color: "#1a1a2e", fontWeight: 700 }}>{fmt(plan.totalMonthlyDebt)}</span>
+          Total: <span style={{ color: "#1a1a2e", fontWeight: 700 }}>{fmt(plan.totalMonthlyDebt)}</span>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 90px 90px 70px", gap: 6, padding: "8px 10px", borderBottom: "2px solid #f0f0f5", marginBottom: 4 }}>
           {["Card", "Min Pay", "Plan Pay", "APR"].map((h, i) => (
